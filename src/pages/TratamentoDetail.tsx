@@ -231,7 +231,7 @@ export default function TratamentoDetail() {
         <Card>
           <h2 className="text-lg font-semibold text-text mb-4">Evolução da Dor</h2>
           <div className="h-64 flex items-end gap-2">
-            {sessoes.map((sessao, index) => (
+            {sessoes.map((sessao) => (
               <div
                 key={sessao.id}
                 className="flex-1 flex flex-col items-center gap-1"
