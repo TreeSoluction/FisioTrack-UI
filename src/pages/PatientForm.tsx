@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Save } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
@@ -8,17 +10,18 @@ import api from '../lib/api';
 
 export default function PacienteForm() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { id } = useParams();
   const isEditing = !!id;
 
   const [formData, setFormData] = useState({
-    nome: '',
+    name: '',
     cpf: '',
-    dataNascimento: '',
-    telefone: '',
+    birthDate: '',
+    phone: '',
     email: '',
-    endereco: '',
-    historico: '',
+    address: '',
+    medicalHistory: '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -31,10 +34,11 @@ export default function PacienteForm() {
 
   async function loadPaciente() {
     try {
-      const response = await api.get(`/pacientes/${id}`);
+      const response = await api.get(`/patients/${id}`);
       setFormData(response.data);
     } catch (error) {
-      console.error('Erro ao carregar paciente:', error);
+      console.error('Error loading patient:', error);
+      toast.error(t('common.error'));
     }
   }
 
@@ -49,13 +53,15 @@ export default function PacienteForm() {
 
     try {
       if (isEditing) {
-        await api.put(`/pacientes/${id}`, formData);
+        await api.put(`/patients/${id}`, formData);
       } else {
-        await api.post('/pacientes', formData);
+        await api.post('/patients', formData);
       }
-      navigate('/pacientes');
+      toast.success(t('patients.saved'));
+      navigate('/patients');
     } catch (error: any) {
-      setError(error.response?.data?.message || 'Erro ao salvar paciente');
+      setError(error.response?.data?.message || t('common.error'));
+      toast.error(t('common.error'));
     } finally {
       setLoading(false);
     }
@@ -65,13 +71,13 @@ export default function PacienteForm() {
     <div className="space-y-6">
       <div className="flex items-center gap-4">
         <button
-          onClick={() => navigate('/pacientes')}
-          className="p-2 text-text-muted hover:text-text hover:bg-slate-100 rounded-lg transition-colors"
+          onClick={() => navigate('/patients')}
+          className="p-2 text-text-muted dark:text-text-muted-dark hover:text-text dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <h1 className="text-2xl font-bold text-text">
-          {isEditing ? 'Editar Paciente' : 'Novo Paciente'}
+        <h1 className="text-2xl font-bold text-text dark:text-slate-100">
+          {isEditing ? t('patients.editing') : t('patients.creating')}
         </h1>
       </div>
 
@@ -85,14 +91,14 @@ export default function PacienteForm() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
-              label="Nome"
-              name="nome"
-              value={formData.nome}
+              label={t('patients.name')}
+              name="name"
+              value={formData.name}
               onChange={handleChange}
               required
             />
             <Input
-              label="CPF"
+              label={t('patients.cpf')}
               name="cpf"
               value={formData.cpf}
               onChange={handleChange}
@@ -100,47 +106,47 @@ export default function PacienteForm() {
               required
             />
             <Input
-              label="Data de Nascimento"
-              name="dataNascimento"
+              label={t('patients.birthDate')}
+              name="birthDate"
               type="date"
-              value={formData.dataNascimento}
+              value={formData.birthDate}
               onChange={handleChange}
               required
             />
             <Input
-              label="Telefone"
-              name="telefone"
-              value={formData.telefone}
+              label={t('patients.phone')}
+              name="phone"
+              value={formData.phone}
               onChange={handleChange}
               placeholder="(00) 00000-0000"
               required
             />
             <Input
-              label="Email"
+              label={t('patients.email')}
               name="email"
               type="email"
               value={formData.email}
               onChange={handleChange}
             />
             <Input
-              label="Endereço"
-              name="endereco"
-              value={formData.endereco}
+              label={t('patients.address')}
+              name="address"
+              value={formData.address}
               onChange={handleChange}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-text mb-1">
-              Histórico Médico
+            <label className="block text-sm font-medium text-text dark:text-slate-200 mb-1">
+              {t('patients.medicalHistory')}
             </label>
             <textarea
-              name="historico"
-              value={formData.historico}
+              name="medicalHistory"
+              value={formData.medicalHistory}
               onChange={handleChange}
               rows={4}
-              className="w-full px-3 py-2 rounded-lg border border-border bg-white text-text placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors resize-none"
-              placeholder="Descreva o histórico médico do paciente..."
+              className="w-full px-3 py-2 rounded-lg border border-border dark:border-border-dark bg-white dark:bg-slate-800 text-text dark:text-slate-100 placeholder:text-text-muted dark:placeholder:text-text-muted-dark focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors resize-none"
+              placeholder={t('patients.historyPlaceholder')}
             />
           </div>
 
@@ -148,13 +154,13 @@ export default function PacienteForm() {
             <Button
               type="button"
               variant="ghost"
-              onClick={() => navigate('/pacientes')}
+              onClick={() => navigate('/patients')}
             >
-              Cancelar
+              {t('patients.cancel')}
             </Button>
             <Button type="submit" disabled={loading}>
               <Save className="w-4 h-4 mr-2" />
-              {loading ? 'Salvando...' : 'Salvar'}
+              {loading ? t('patients.saving') : t('patients.save')}
             </Button>
           </div>
         </form>

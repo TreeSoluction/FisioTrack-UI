@@ -1,26 +1,28 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Activity, Calendar, TrendingUp } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Card from '../components/ui/Card';
 import api from '../lib/api';
-import type { Paciente, Tratamento } from '../types';
+import type { Patient, Treatment } from '../types';
 
 export default function Dashboard() {
-  const [pacientes, setPacientes] = useState<Paciente[]>([]);
-  const [tratamentos, setTratamentos] = useState<Tratamento[]>([]);
+  const { t } = useTranslation();
+  const [pacientes, setPacientes] = useState<Patient[]>([]);
+  const [tratamentos, setTratamentos] = useState<Treatment[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
       try {
         const [pacientesRes, tratamentosRes] = await Promise.all([
-          api.get('/pacientes'),
-          api.get('/tratamentos'),
+          api.get('/patients'),
+          api.get('/treatments'),
         ]);
         setPacientes(pacientesRes.data);
         setTratamentos(tratamentosRes.data);
       } catch (error) {
-        console.error('Erro ao carregar dados:', error);
+        console.error('Error loading data:', error);
       } finally {
         setLoading(false);
       }
@@ -30,31 +32,31 @@ export default function Dashboard() {
 
   const stats = [
     {
-      label: 'Pacientes Ativos',
-      value: pacientes.filter(p => p.status === 'ATIVO').length,
+      label: t('dashboard.activePatients'),
+      value: pacientes.filter(p => p.status === 'ACTIVE').length,
       icon: Users,
       color: 'text-primary',
       bg: 'bg-primary/10',
     },
     {
-      label: 'Tratamentos em Andamento',
-      value: tratamentos.filter(t => t.status === 'EM_ANDAMENTO').length,
+      label: t('dashboard.activeTreatments'),
+      value: tratamentos.filter(t => t.status === 'IN_PROGRESS').length,
       icon: Activity,
       color: 'text-secondary',
       bg: 'bg-secondary/10',
     },
     {
-      label: 'Total de Sessões',
-      value: tratamentos.reduce((acc, t) => acc + (t._count?.sessoes || 0), 0),
+      label: t('dashboard.totalSessions'),
+      value: tratamentos.reduce((acc, t) => acc + (t._count?.sessions || 0), 0),
       icon: Calendar,
       color: 'text-accent',
       bg: 'bg-accent/10',
     },
     {
-      label: 'Receita Mensal',
+      label: t('dashboard.monthlyRevenue'),
       value: 'R$ ' + tratamentos
-        .filter(t => t.status === 'EM_ANDAMENTO')
-        .reduce((acc, t) => acc + Number(t.valor), 0)
+        .filter(t => t.status === 'IN_PROGRESS')
+        .reduce((acc, t) => acc + Number(t.value), 0)
         .toLocaleString('pt-BR'),
       icon: TrendingUp,
       color: 'text-success',
@@ -65,7 +67,7 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-text-muted">Carregando...</div>
+        <div className="text-text-muted dark:text-text-muted-dark">{t('common.loading')}</div>
       </div>
     );
   }
@@ -73,12 +75,12 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-text">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-text dark:text-slate-100">{t('dashboard.title')}</h1>
         <Link
-          to="/pacientes/novo"
+          to="/patients/new"
           className="inline-flex items-center justify-center h-10 px-4 rounded-lg bg-primary text-white font-medium hover:bg-primary-dark transition-colors"
         >
-          + Novo Paciente
+          {t('dashboard.newPatient')}
         </Link>
       </div>
 
@@ -90,8 +92,8 @@ export default function Dashboard() {
                 <stat.icon className={`w-6 h-6 ${stat.color}`} />
               </div>
               <div>
-                <p className="text-sm text-text-muted">{stat.label}</p>
-                <p className="text-2xl font-bold text-text">{stat.value}</p>
+                <p className="text-sm text-text-muted dark:text-text-muted-dark">{stat.label}</p>
+                <p className="text-2xl font-bold text-text dark:text-slate-100">{stat.value}</p>
               </div>
             </div>
           </Card>
@@ -100,65 +102,65 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
-          <h2 className="text-lg font-semibold text-text mb-4">Pacientes Recentes</h2>
+          <h2 className="text-lg font-semibold text-text dark:text-slate-100 mb-4">{t('dashboard.recentPatients')}</h2>
           <div className="space-y-3">
             {pacientes.slice(0, 5).map((paciente) => (
               <Link
                 key={paciente.id}
-                to={`/pacientes/${paciente.id}`}
-                className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 transition-colors"
+                to={`/patients/${paciente.id}`}
+                className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
               >
                 <div>
-                  <p className="font-medium text-text">{paciente.nome}</p>
-                  <p className="text-sm text-text-muted">{paciente.cpf}</p>
+                  <p className="font-medium text-text dark:text-slate-100">{paciente.name}</p>
+                  <p className="text-sm text-text-muted dark:text-text-muted-dark">{paciente.cpf}</p>
                 </div>
                 <span
                   className={`px-2 py-1 text-xs font-medium rounded-full ${
-                    paciente.status === 'ATIVO'
+                    paciente.status === 'ACTIVE'
                       ? 'bg-success/10 text-success'
-                      : 'bg-slate-100 text-text-muted'
+                      : 'bg-slate-100 dark:bg-slate-700 text-text-muted dark:text-text-muted-dark'
                   }`}
                 >
-                  {paciente.status === 'ATIVO' ? 'Ativo' : 'Inativo'}
+                  {paciente.status === 'ACTIVE' ? t('patients.active') : t('patients.inactive')}
                 </span>
               </Link>
             ))}
             {pacientes.length === 0 && (
-              <p className="text-center text-text-muted py-4">
-                Nenhum paciente cadastrado
+              <p className="text-center text-text-muted dark:text-text-muted-dark py-4">
+                {t('dashboard.noData')}
               </p>
             )}
           </div>
         </Card>
 
         <Card>
-          <h2 className="text-lg font-semibold text-text mb-4">Tratamentos Ativos</h2>
+          <h2 className="text-lg font-semibold text-text dark:text-slate-100 mb-4">{t('dashboard.activeTreatmentsTitle')}</h2>
           <div className="space-y-3">
             {tratamentos
-              .filter((t) => t.status === 'EM_ANDAMENTO')
+              .filter((t) => t.status === 'IN_PROGRESS')
               .slice(0, 5)
               .map((tratamento) => (
                 <Link
                   key={tratamento.id}
-                  to={`/tratamentos/${tratamento.id}`}
-                  className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 transition-colors"
+                  to={`/treatments/${tratamento.id}`}
+                  className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
                 >
                   <div>
-                    <p className="font-medium text-text">
-                      {tratamento.paciente?.nome || 'Paciente'}
+                    <p className="font-medium text-text dark:text-slate-100">
+                      {tratamento.patient?.name || t('dashboard.patient')}
                     </p>
-                    <p className="text-sm text-text-muted">
-                      {tratamento.tempoEstimado} • {tratamento._count?.sessoes || 0} sessões
+                    <p className="text-sm text-text-muted dark:text-text-muted-dark">
+                      {tratamento.estimatedTime} • {tratamento._count?.sessions || 0} {t('dashboard.sessions')}
                     </p>
                   </div>
                   <span className="text-sm font-medium text-primary">
-                    R$ {Number(tratamento.valor).toLocaleString('pt-BR')}
+                    R$ {Number(tratamento.value).toLocaleString('pt-BR')}
                   </span>
                 </Link>
               ))}
-            {tratamentos.filter((t) => t.status === 'EM_ANDAMENTO').length === 0 && (
-              <p className="text-center text-text-muted py-4">
-                Nenhum tratamento em andamento
+            {tratamentos.filter((t) => t.status === 'IN_PROGRESS').length === 0 && (
+              <p className="text-center text-text-muted dark:text-text-muted-dark py-4">
+                {t('dashboard.noActiveTreatments')}
               </p>
             )}
           </div>

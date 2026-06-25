@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { UserPlus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
@@ -8,11 +9,12 @@ import api from '../lib/api';
 
 export default function Registro() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
-    nome: '',
+    name: '',
     email: '',
-    senha: '',
-    confirmarSenha: '',
+    password: '',
+    confirmPassword: '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -23,9 +25,9 @@ export default function Registro() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    
-    if (formData.senha !== formData.confirmarSenha) {
-      setError('As senhas não coincidem');
+
+    if (formData.password !== formData.confirmPassword) {
+      setError(t('auth.passwordMismatch'));
       return;
     }
 
@@ -34,27 +36,27 @@ export default function Registro() {
 
     try {
       await api.post('/auth/register', {
-        nome: formData.nome,
+        name: formData.name,
         email: formData.email,
-        senha: formData.senha,
+        password: formData.password,
       });
       navigate('/login');
     } catch (error: any) {
-      setError(error.response?.data?.message || 'Erro ao registrar');
+      setError(error.response?.data?.message || t('common.error'));
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+    <div className="min-h-screen flex items-center justify-center bg-background dark:bg-background-dark p-4">
       <Card className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-secondary/10 mb-4">
             <UserPlus className="w-8 h-8 text-secondary" />
           </div>
-          <h1 className="text-2xl font-bold text-text">Criar Conta</h1>
-          <p className="text-text-muted mt-1">Registre-se para começar</p>
+          <h1 className="text-2xl font-bold text-text dark:text-slate-100">{t('auth.createAccount')}</h1>
+          <p className="text-text-muted dark:text-text-muted-dark mt-1">{t('auth.registerSubtitle')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -65,16 +67,16 @@ export default function Registro() {
           )}
 
           <Input
-            label="Nome"
-            name="nome"
-            value={formData.nome}
+            label={t('auth.name')}
+            name="name"
+            value={formData.name}
             onChange={handleChange}
-            placeholder="Seu nome"
+            placeholder={t('auth.name')}
             required
           />
 
           <Input
-            label="Email"
+            label={t('auth.email')}
             name="email"
             type="email"
             value={formData.email}
@@ -84,34 +86,34 @@ export default function Registro() {
           />
 
           <Input
-            label="Senha"
-            name="senha"
+            label={t('auth.password')}
+            name="password"
             type="password"
-            value={formData.senha}
+            value={formData.password}
             onChange={handleChange}
             placeholder="••••••••"
             required
           />
 
           <Input
-            label="Confirmar Senha"
-            name="confirmarSenha"
+            label={t('auth.confirmPassword')}
+            name="confirmPassword"
             type="password"
-            value={formData.confirmarSenha}
+            value={formData.confirmPassword}
             onChange={handleChange}
             placeholder="••••••••"
             required
           />
 
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Criando conta...' : 'Criar Conta'}
+            {loading ? t('auth.creatingAccount') : t('auth.createAccount')}
           </Button>
         </form>
 
-        <p className="text-center text-sm text-text-muted mt-6">
-          Já tem uma conta?{' '}
+        <p className="text-center text-sm text-text-muted dark:text-text-muted-dark mt-6">
+          {t('auth.alreadyHaveAccount')}{' '}
           <Link to="/login" className="text-primary hover:text-primary-dark font-medium">
-            Entrar
+            {t('auth.loginNow')}
           </Link>
         </p>
       </Card>

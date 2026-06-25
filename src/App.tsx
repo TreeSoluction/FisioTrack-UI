@@ -1,15 +1,15 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
-import Pacientes from './pages/Pacientes';
-import PacienteForm from './pages/PacienteForm';
-import PacienteDetail from './pages/PacienteDetail';
-import Tratamentos from './pages/Tratamentos';
-import TratamentoForm from './pages/TratamentoForm';
-import TratamentoDetail from './pages/TratamentoDetail';
-import SessaoForm from './pages/SessaoForm';
+import Patients from './pages/Patients';
+import PatientForm from './pages/PatientForm';
+import PatientDetail from './pages/PatientDetail';
+import Treatments from './pages/Treatments';
+import TreatmentForm from './pages/TreatmentForm';
+import TreatmentDetail from './pages/TreatmentDetail';
+import SessionForm from './pages/SessionForm';
 import Login from './pages/Login';
-import Registro from './pages/Registro';
+import Register from './pages/Register';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const token = localStorage.getItem('token');
@@ -34,10 +34,10 @@ export default function App() {
           }
         />
         <Route
-          path="/registro"
+          path="/register"
           element={
             <PublicRoute>
-              <Registro />
+              <Register />
             </PublicRoute>
           }
         />
@@ -50,15 +50,15 @@ export default function App() {
           }
         >
           <Route index element={<Dashboard />} />
-          <Route path="pacientes" element={<Pacientes />} />
-          <Route path="pacientes/novo" element={<PacienteForm />} />
-          <Route path="pacientes/:id" element={<PacienteDetail />} />
-          <Route path="pacientes/:id/editar" element={<PacienteForm />} />
-          <Route path="tratamentos" element={<Tratamentos />} />
-          <Route path="tratamentos/novo" element={<TratamentoForm />} />
-          <Route path="tratamentos/:id" element={<TratamentoDetail />} />
-          <Route path="tratamentos/:id/editar" element={<TratamentoForm />} />
-          <Route path="sessoes/novo" element={<SessaoForm />} />
+          <Route path="patients" element={<Patients />} />
+          <Route path="patients/new" element={<PatientForm />} />
+          <Route path="patients/:id" element={<PatientDetail />} />
+          <Route path="patients/:id/edit" element={<PatientForm />} />
+          <Route path="treatments" element={<Treatments />} />
+          <Route path="treatments/new" element={<TreatmentForm />} />
+          <Route path="treatments/:id" element={<TreatmentDetail />} />
+          <Route path="treatments/:id/edit" element={<TreatmentForm />} />
+          <Route path="sessions/new" element={<SessionForm />} />
         </Route>
       </Routes>
     </BrowserRouter>

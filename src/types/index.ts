@@ -1,47 +1,47 @@
 export interface User {
   id: string;
-  nome: string;
+  name: string;
   email: string;
-  role: 'ADMIN' | 'FISIOTERAPEUTA';
+  role: 'ADMIN' | 'THERAPIST';
 }
 
-export interface Paciente {
+export interface Patient {
   id: string;
-  nome: string;
+  name: string;
   cpf: string;
-  dataNascimento: string;
-  telefone: string;
+  birthDate: string;
+  phone: string;
   email?: string;
-  endereco?: string;
-  historico?: string;
-  status: 'ATIVO' | 'INATIVO';
+  address?: string;
+  medicalHistory?: string;
+  status: 'ACTIVE' | 'INACTIVE';
   createdAt: string;
 }
 
-export interface Tratamento {
+export interface Treatment {
   id: string;
-  tempoEstimado: string;
-  exercicios: string;
-  valor: number;
-  status: 'EM_ANDAMENTO' | 'PAUSADO' | 'CONCLUIDO';
-  dataInicio: string;
-  dataFim?: string;
-  paciente?: Paciente;
-  _count?: { sessoes: number };
+  estimatedTime: string;
+  exercises: string;
+  value: number;
+  status: 'IN_PROGRESS' | 'PAUSED' | 'COMPLETED';
+  startDate: string;
+  endDate?: string;
+  patient?: Patient;
+  _count?: { sessions: number };
 }
 
-export interface Sessao {
+export interface Session {
   id: string;
-  data: string;
-  peso?: number;
-  escalaDor: number;
-  medidas?: Record<string, number>;
-  observacoes?: string;
+  date: string;
+  weight?: number;
+  painScale: number;
+  measurements?: Record<string, number>;
+  notes?: string;
 }
 
 export interface DashboardData {
-  data: string;
-  peso?: number;
-  escalaDor: number;
-  medidas?: Record<string, number>;
+  date: string;
+  weight?: number;
+  painScale: number;
+  measurements?: Record<string, number>;
 }
