@@ -126,10 +126,10 @@
     "saved": "Session saved successfully"
   },
   "landing": {
-    "heroTitle": "FisioTrack — Intelligent Management for Physiotherapy",
-    "heroSubtitle": "Manage patients, treatments and sessions with ease. Optimize your practice with our complete platform.",
+    "heroTitle": "Intelligent Management for Physiotherapy",
+    "heroSubtitle": "Manage patients, treatments and sessions with ease. Optimize your practice with our complete and professional platform.",
     "ctaLogin": "Login",
-    "ctaRegister": "Create Account",
+    "ctaRegister": "Create Free Account",
     "features": {
       "title": "Features",
       "subtitle": "Everything you need to manage your physiotherapy practice",
@@ -146,10 +146,98 @@
         "description": "Track treatment values, payments and revenue with complete financial reports."
       }
     },
+    "stats": {
+      "patients": "Active Patients",
+      "sessions": "Sessions Completed",
+      "clinics": "Active Clinics",
+      "satisfaction": "Satisfaction"
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Three simple steps to transform your clinic",
+      "step1": {
+        "title": "Register Your Patients",
+        "description": "Record complete patient data including medical information and history."
+      },
+      "step2": {
+        "title": "Create Treatments",
+        "description": "Define personalized treatments with exercises, values and schedules."
+      },
+      "step3": {
+        "title": "Track Progress",
+        "description": "Record sessions, track metrics and view detailed reports."
+      }
+    },
     "about": {
-      "title": "About FisioTrack",
-      "description": "FisioTrack was developed to simplify the daily routine of physiotherapists. With an intuitive interface and powerful features, you can focus on what really matters: your patients' health.",
-      "cta": "Get Started Now"
+      "title": "Why Choose FisioTrack?",
+      "description": "Developed by healthcare professionals for healthcare professionals. Intuitive interface, secure data and powerful reports.",
+      "cta": "Get Started Now",
+      "benefits": [
+        "Intuitive and easy to use interface",
+        "Encrypted and secure data",
+        "Detailed reports",
+        "Portuguese support"
+      ]
+    },
+    "testimonials": {
+      "title": "What our clients say",
+      "subtitle": "Professionals who have already transformed their management",
+      "testimonial1": {
+        "content": "FisioTrack revolutionized how I manage my patients. I save hours per week on paperwork."
+      },
+      "testimonial2": {
+        "content": "The platform is incredibly intuitive. My team adopted it in less than a week."
+      },
+      "testimonial3": {
+        "content": "The financial reports gave me a clear view of the business. I recommend it for all clinics."
+      }
+    },
+    "pricing": {
+      "title": "Plans and Pricing",
+      "subtitle": "Choose the ideal plan for your size",
+      "basic": {
+        "name": "Basic",
+        "price": "$9",
+        "description": "For solo professionals",
+        "features": [
+          "Up to 50 patients",
+          "Unlimited treatments",
+          "Basic reports",
+          "Email support"
+        ]
+      },
+      "professional": {
+        "name": "Professional",
+        "price": "$19",
+        "description": "For small clinics",
+        "features": [
+          "Unlimited patients",
+          "Unlimited treatments",
+          "Advanced reports",
+          "Priority support",
+          "Multi-user"
+        ],
+        "popular": true
+      },
+      "clinic": {
+        "name": "Clinic",
+        "price": "$39",
+        "description": "For large clinics",
+        "features": [
+          "Everything in Professional",
+          "Integration API",
+          "Custom reports",
+          "Dedicated account manager",
+          "Guaranteed SLA"
+        ]
+      }
+    },
+    "cta": {
+      "badge": "Special offer",
+      "title": "Start transforming your management today",
+      "description": "Join hundreds of physiotherapists who have already optimized their practice with FisioTrack.",
+      "button": "Create Free Account",
+      "note": "No credit card required. Cancel anytime."
     }
   },
   "footer": {

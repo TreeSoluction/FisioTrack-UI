@@ -126,10 +126,10 @@
     "saved": "Sessao salva com sucesso"
   },
   "landing": {
-    "heroTitle": "FisioTrack — Gestão Inteligente para Fisioterapia",
-    "heroSubtitle": "Gerencie pacientes, tratamentos e sessões com facilidade. Otimize sua prática com nossa plataforma completa.",
+    "heroTitle": "Gestão Inteligente para Fisioterapia",
+    "heroSubtitle": "Gerencie pacientes, tratamentos e sessões com facilidade. Otimize sua prática com nossa plataforma completa e profissional.",
     "ctaLogin": "Entrar",
-    "ctaRegister": "Criar Conta",
+    "ctaRegister": "Criar Conta Gratuitamente",
     "features": {
       "title": "Funcionalidades",
       "subtitle": "Tudo o que você precisa para gerenciar sua prática de fisioterapia",
@@ -146,10 +146,98 @@
         "description": "Acompanhe valores de tratamentos, pagamentos e receitas com relatórios financeiros completos."
       }
     },
+    "stats": {
+      "patients": "Pacientes Ativos",
+      "sessions": "Sessões Realizadas",
+      "clinics": "Clínicas Ativas",
+      "satisfaction": "Satisfação"
+    },
+    "howItWorks": {
+      "title": "Como Funciona",
+      "subtitle": "Três passos simples para transformar sua clínica",
+      "step1": {
+        "title": "Cadastre seus Pacientes",
+        "description": "Registre os dados completos dos seus pacientes incluindo informações médicas e histórico."
+      },
+      "step2": {
+        "title": "Crie Tratamentos",
+        "description": "Defina tratamentos personalizados com exercícios, valores e cronogramas."
+      },
+      "step3": {
+        "title": "Acompanhe o Progresso",
+        "description": "Registre sessões, acompanhe métricas e visualize relatórios detalhados."
+      }
+    },
     "about": {
-      "title": "Sobre o FisioTrack",
-      "description": "O FisioTrack foi desenvolvido para simplificar a rotina diária dos fisioterapeutas. Com uma interface intuitiva e recursos poderosos, você pode focar no que realmente importa: a saúde dos seus pacientes.",
-      "cta": "Comece Agora"
+      "title": "Por que escolher o FisioTrack?",
+      "description": "Desenvolvido por profissionais de saúde para profissionais de saúde. Interface intuitiva, dados seguros e relatórios poderosos.",
+      "cta": "Comece Agora",
+      "benefits": [
+        "Interface intuitiva e fácil de usar",
+        "Dados criptografados e seguros",
+        "Relatórios detalhados",
+        "Suporte em português"
+      ]
+    },
+    "testimonials": {
+      "title": "O que dizem nossos clientes",
+      "subtitle": "Profissionais que já transformaram sua gestão",
+      "testimonial1": {
+        "content": "O FisioTrack revolucionou a forma como gerencio meus pacientes. Economizo horas por semana em papelada."
+      },
+      "testimonial2": {
+        "content": "A plataforma é incrivelmente intuitiva. Minha equipe adotou em menos de uma semana."
+      },
+      "testimonial3": {
+        "content": "Os relatórios financeiros me deram uma visão clara do negócio. Recomendo para todas as clínicas."
+      }
+    },
+    "pricing": {
+      "title": "Planos e Preços",
+      "subtitle": "Escolha o plano ideal para o seu tamanho",
+      "basic": {
+        "name": "Básico",
+        "price": "R$ 49",
+        "description": "Para profissionais autônomos",
+        "features": [
+          "Até 50 pacientes",
+          "Tratamentos ilimitados",
+          "Relatórios básicos",
+          "Suporte por email"
+        ]
+      },
+      "professional": {
+        "name": "Profissional",
+        "price": "R$ 99",
+        "description": "Para clínicas pequenas",
+        "features": [
+          "Pacientes ilimitados",
+          "Tratamentos ilimitados",
+          "Relatórios avançados",
+          "Suporte prioritário",
+          "Multi-usuário"
+        ],
+        "popular": true
+      },
+      "clinic": {
+        "name": "Clínica",
+        "price": "R$ 199",
+        "description": "Para clínicas grandes",
+        "features": [
+          "Tudo do Profissional",
+          "API de integração",
+          "Relatórios personalizados",
+          "Gerente de conta dedicado",
+          "SLA garantido"
+        ]
+      }
+    },
+    "cta": {
+      "badge": "Oferta especial",
+      "title": "Comece a transformar sua gestão hoje",
+      "description": "Junte-se a centenas de fisioterapeutas que já otimizaram sua prática com o FisioTrack.",
+      "button": "Criar Conta Gratuitamente",
+      "note": "Não precisa de cartão de crédito. Cancele quando quiser."
     }
   },
   "footer": {
