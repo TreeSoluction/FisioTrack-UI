@@ -5,7 +5,11 @@ import LanguageToggle from './ui/LanguageToggle';
 import ThemeToggle from './ui/ThemeToggle';
 import Footer from './Footer';
 
-export default function PublicLayout() {
+interface PublicLayoutProps {
+  children?: React.ReactNode;
+}
+
+export default function PublicLayout({ children }: PublicLayoutProps) {
   const { t } = useTranslation();
   const location = useLocation();
 
@@ -49,7 +53,7 @@ export default function PublicLayout() {
       </header>
 
       <main className="flex-1">
-        <Outlet />
+        {children || <Outlet />}
       </main>
 
       <Footer />
