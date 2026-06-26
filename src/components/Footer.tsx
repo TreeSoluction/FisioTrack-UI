@@ -1,8 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin, Star } from 'lucide-react';
 
-export default function Footer() {
+interface FooterProps {
+  onReviewClick?: () => void;
+  canReview?: boolean;
+}
+
+export default function Footer({ onReviewClick, canReview }: FooterProps) {
   const { t } = useTranslation();
   const isAuthenticated = !!localStorage.getItem('token');
 
@@ -78,6 +83,17 @@ export default function Footer() {
                   {t('lgpd.consentTerms.title')}
                 </Link>
               </li>
+              {isAuthenticated && canReview && onReviewClick && (
+                <li>
+                  <button
+                    onClick={onReviewClick}
+                    className="flex items-center gap-2 text-sm text-primary hover:text-primary-dark font-medium transition-colors"
+                  >
+                    <Star className="w-4 h-4" />
+                    {t('footer.review')}
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
 

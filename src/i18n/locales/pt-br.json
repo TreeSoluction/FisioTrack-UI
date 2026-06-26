@@ -130,7 +130,13 @@
     "heroSubtitle": "Gerencie pacientes, tratamentos e sessões com facilidade. Otimize sua prática com nossa plataforma completa e profissional.",
     "ctaLogin": "Entrar",
     "ctaRegister": "Criar Conta Gratuitamente",
+    "hero": {
+      "free": "Gratuito para começar",
+      "noCreditCard": "Sem cartão de crédito",
+      "support": "Suporte em português"
+    },
     "features": {
+      "label": "Funcionalidades",
       "title": "Funcionalidades",
       "subtitle": "Tudo o que você precisa para gerenciar sua prática de fisioterapia",
       "patients": {
@@ -146,13 +152,8 @@
         "description": "Acompanhe valores de tratamentos, pagamentos e receitas com relatórios financeiros completos."
       }
     },
-    "stats": {
-      "patients": "Pacientes Ativos",
-      "sessions": "Sessões Realizadas",
-      "clinics": "Clínicas Ativas",
-      "satisfaction": "Satisfação"
-    },
     "howItWorks": {
+      "label": "Como Funciona",
       "title": "Como Funciona",
       "subtitle": "Três passos simples para transformar sua clínica",
       "step1": {
@@ -169,6 +170,7 @@
       }
     },
     "about": {
+      "label": "Por que nos escolher",
       "title": "Por que escolher o FisioTrack?",
       "description": "Desenvolvido por profissionais de saúde para profissionais de saúde. Interface intuitiva, dados seguros e relatórios poderosos.",
       "cta": "Comece Agora",
@@ -178,19 +180,6 @@
         "Relatórios detalhados",
         "Suporte em português"
       ]
-    },
-    "testimonials": {
-      "title": "O que dizem nossos clientes",
-      "subtitle": "Profissionais que já transformaram sua gestão",
-      "testimonial1": {
-        "content": "O FisioTrack revolucionou a forma como gerencio meus pacientes. Economizo horas por semana em papelada."
-      },
-      "testimonial2": {
-        "content": "A plataforma é incrivelmente intuitiva. Minha equipe adotou em menos de uma semana."
-      },
-      "testimonial3": {
-        "content": "Os relatórios financeiros me deram uma visão clara do negócio. Recomendo para todas as clínicas."
-      }
     },
     "pricing": {
       "title": "Planos e Preços",
@@ -385,9 +374,29 @@
     "actions": "Ações",
     "switchToLight": "Mudar para modo claro",
     "switchToDark": "Mudar para modo escuro",
-    "skipToContent": "Pular para o conteúdo principal"
+    "skipToContent": "Pular para o conteúdo principal",
+    "close": "Fechar"
   },
   "navigation": {
     "main": "Navegação principal"
+  },
+  "review": {
+    "title": "Avalie o FisioTrack",
+    "subtitle": "Sua opinião nos ajuda a melhorar!",
+    "star": "estrela",
+    "requiredRating": "Selecione uma nota",
+    "commentLabel": "Comentário (opcional)",
+    "commentPlaceholder": "Conte-nos o que achou...",
+    "submit": "Enviar Avaliação",
+    "later": "Avaliar Mais Tarde",
+    "dismiss": "Não Mostrar Novamente"
+  },
+  "footer": {
+    "description": "Sistema completo de gestão para clínicas de fisioterapia. Gerencie pacientes, tratamentos e sessões com facilidade.",
+    "navigation": "Navegação",
+    "legal": "Legal",
+    "contact": "Contato",
+    "copyright": "Todos os direitos reservados.",
+    "review": "Avalie-nos"
   }
 }

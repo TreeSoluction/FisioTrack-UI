@@ -130,7 +130,13 @@
     "heroSubtitle": "Manage patients, treatments and sessions with ease. Optimize your practice with our complete and professional platform.",
     "ctaLogin": "Login",
     "ctaRegister": "Create Free Account",
+    "hero": {
+      "free": "Free to start",
+      "noCreditCard": "No credit card required",
+      "support": "Portuguese support"
+    },
     "features": {
+      "label": "Features",
       "title": "Features",
       "subtitle": "Everything you need to manage your physiotherapy practice",
       "patients": {
@@ -146,13 +152,8 @@
         "description": "Track treatment values, payments and revenue with complete financial reports."
       }
     },
-    "stats": {
-      "patients": "Active Patients",
-      "sessions": "Sessions Completed",
-      "clinics": "Active Clinics",
-      "satisfaction": "Satisfaction"
-    },
     "howItWorks": {
+      "label": "How It Works",
       "title": "How It Works",
       "subtitle": "Three simple steps to transform your clinic",
       "step1": {
@@ -169,6 +170,7 @@
       }
     },
     "about": {
+      "label": "Why Choose Us",
       "title": "Why Choose FisioTrack?",
       "description": "Developed by healthcare professionals for healthcare professionals. Intuitive interface, secure data and powerful reports.",
       "cta": "Get Started Now",
@@ -178,19 +180,6 @@
         "Detailed reports",
         "Portuguese support"
       ]
-    },
-    "testimonials": {
-      "title": "What our clients say",
-      "subtitle": "Professionals who have already transformed their management",
-      "testimonial1": {
-        "content": "FisioTrack revolutionized how I manage my patients. I save hours per week on paperwork."
-      },
-      "testimonial2": {
-        "content": "The platform is incredibly intuitive. My team adopted it in less than a week."
-      },
-      "testimonial3": {
-        "content": "The financial reports gave me a clear view of the business. I recommend it for all clinics."
-      }
     },
     "pricing": {
       "title": "Plans and Pricing",
@@ -385,9 +374,29 @@
     "actions": "Actions",
     "switchToLight": "Switch to light mode",
     "switchToDark": "Switch to dark mode",
-    "skipToContent": "Skip to main content"
+    "skipToContent": "Skip to main content",
+    "close": "Close"
   },
   "navigation": {
     "main": "Main navigation"
+  },
+  "review": {
+    "title": "Rate FisioTrack",
+    "subtitle": "Your feedback helps us improve!",
+    "star": "star",
+    "requiredRating": "Please select a rating",
+    "commentLabel": "Comment (optional)",
+    "commentPlaceholder": "Tell us what you think...",
+    "submit": "Submit Review",
+    "later": "Review Later",
+    "dismiss": "Don't Show Again"
+  },
+  "footer": {
+    "description": "Complete management system for physiotherapy practices. Manage patients, treatments and sessions with ease.",
+    "navigation": "Navigation",
+    "legal": "Legal",
+    "contact": "Contact",
+    "copyright": "All rights reserved.",
+    "review": "Rate Us"
   }
 }

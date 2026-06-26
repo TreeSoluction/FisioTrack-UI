@@ -5,6 +5,8 @@ import { cn } from '../lib/utils';
 import LanguageToggle from './ui/LanguageToggle';
 import ThemeToggle from './ui/ThemeToggle';
 import Footer from './Footer';
+import ReviewModal from './ReviewModal';
+import { useReview } from '../hooks/useReview';
 
 interface LayoutProps {
   children?: React.ReactNode;
@@ -14,6 +16,14 @@ export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const {
+    showModal,
+    canReview,
+    submitReview,
+    dismissReview,
+    closeLater,
+    openModal,
+  } = useReview();
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const isFreePlan = user.plan === 'FREE' || !user.plan;
@@ -112,8 +122,16 @@ export default function Layout({ children }: LayoutProps) {
       </main>
 
       <div className="ml-64">
-        <Footer />
+        <Footer onReviewClick={openModal} canReview={canReview} />
       </div>
+
+      {showModal && (
+        <ReviewModal
+          onSubmit={submitReview}
+          onDismiss={dismissReview}
+          onLater={closeLater}
+        />
+      )}
     </div>
   );
 }
