@@ -165,7 +165,7 @@ export default function Landing() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <AnimatedSection key={index} delay={index * 150} type="slide-up">
+              <AnimatedSection key={index} delay={index * 200} type="slide-up">
                 <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg border border-border dark:border-border-dark hover-lift group">
                   <div className="w-14 h-14 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                     <feature.icon className="w-7 h-7 text-white" />

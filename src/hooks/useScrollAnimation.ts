@@ -40,24 +40,32 @@ export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
 }
 
 export function getAnimationClass(type: AnimationType, isVisible: boolean): string {
-  const base = 'transition-all duration-1000 ease-out';
+  const base = 'transition-all';
 
   if (!isVisible) {
     switch (type) {
       case 'fade-in':
         return `${base} opacity-0`;
       case 'slide-up':
-        return `${base} opacity-0 translate-y-16`;
+        return `${base} opacity-0 translate-y-12`;
       case 'slide-left':
-        return `${base} opacity-0 -translate-x-16`;
+        return `${base} opacity-0 -translate-x-12`;
       case 'slide-right':
-        return `${base} opacity-0 translate-x-16`;
+        return `${base} opacity-0 translate-x-12`;
       case 'scale-in':
-        return `${base} opacity-0 scale-90`;
+        return `${base} opacity-0 scale-95`;
       default:
         return `${base} opacity-0`;
     }
   }
 
   return `${base} opacity-100 translate-y-0 translate-x-0 scale-100`;
+}
+
+export function getAnimationStyle(delay: number): React.CSSProperties {
+  return {
+    transitionDuration: '800ms',
+    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    transitionDelay: `${delay}ms`,
+  };
 }

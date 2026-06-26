@@ -148,11 +148,9 @@ body {
 .stagger-4 { animation-delay: 0.4s; }
 .stagger-5 { animation-delay: 0.5s; }
 
-/* Reduced motion */
+/* Reduced motion - only for truly disabled users */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .animate-float, .animate-pulse-glow, .animate-gradient {
+    animation: none !important;
   }
 }

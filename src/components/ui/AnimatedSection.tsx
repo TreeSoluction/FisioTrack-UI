@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useScrollAnimation, getAnimationClass } from '../../hooks/useScrollAnimation';
+import { useScrollAnimation, getAnimationClass, getAnimationStyle } from '../../hooks/useScrollAnimation';
 
 type AnimationType = 'fade-in' | 'slide-up' | 'slide-left' | 'slide-right' | 'scale-in';
 
@@ -18,12 +18,13 @@ export default function AnimatedSection({
 }: AnimatedSectionProps) {
   const { ref, isVisible } = useScrollAnimation({ threshold: 0.1 });
   const animationClass = getAnimationClass(type, isVisible);
+  const animationStyle = getAnimationStyle(delay);
 
   return (
     <div
       ref={ref}
       className={`${animationClass} ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
+      style={animationStyle}
     >
       {children}
     </div>
