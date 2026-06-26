@@ -40,11 +40,12 @@ export default function Landing() {
     },
   ];
 
+  const benefitsList = t('landing.about.benefits', { returnObjects: true }) as string[];
   const benefits = [
-    { icon: Zap, text: t('landing.about.benefits[0]') },
-    { icon: Shield, text: t('landing.about.benefits[1]') },
-    { icon: BarChart3, text: t('landing.about.benefits[2]') },
-    { icon: Users, text: t('landing.about.benefits[3]') },
+    { icon: Zap, text: benefitsList[0] },
+    { icon: Shield, text: benefitsList[1] },
+    { icon: BarChart3, text: benefitsList[2] },
+    { icon: Users, text: benefitsList[3] },
   ];
 
   return (
@@ -316,12 +317,7 @@ export default function Landing() {
                 name={t('landing.pricing.basic.name')}
                 price={t('landing.pricing.basic.price')}
                 description={t('landing.pricing.basic.description')}
-                features={[
-                  t('landing.pricing.basic.features[0]'),
-                  t('landing.pricing.basic.features[1]'),
-                  t('landing.pricing.basic.features[2]'),
-                  t('landing.pricing.basic.features[3]'),
-                ]}
+                features={t('landing.pricing.basic.features', { returnObjects: true }) as string[]}
               />
             </AnimatedSection>
 
@@ -330,13 +326,7 @@ export default function Landing() {
                 name={t('landing.pricing.professional.name')}
                 price={t('landing.pricing.professional.price')}
                 description={t('landing.pricing.professional.description')}
-                features={[
-                  t('landing.pricing.professional.features[0]'),
-                  t('landing.pricing.professional.features[1]'),
-                  t('landing.pricing.professional.features[2]'),
-                  t('landing.pricing.professional.features[3]'),
-                  t('landing.pricing.professional.features[4]'),
-                ]}
+                features={t('landing.pricing.professional.features', { returnObjects: true }) as string[]}
                 popular
               />
             </AnimatedSection>
@@ -346,13 +336,7 @@ export default function Landing() {
                 name={t('landing.pricing.clinic.name')}
                 price={t('landing.pricing.clinic.price')}
                 description={t('landing.pricing.clinic.description')}
-                features={[
-                  t('landing.pricing.clinic.features[0]'),
-                  t('landing.pricing.clinic.features[1]'),
-                  t('landing.pricing.clinic.features[2]'),
-                  t('landing.pricing.clinic.features[3]'),
-                  t('landing.pricing.clinic.features[4]'),
-                ]}
+                features={t('landing.pricing.clinic.features', { returnObjects: true }) as string[]}
               />
             </AnimatedSection>
           </div>

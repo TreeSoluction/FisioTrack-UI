@@ -9,7 +9,7 @@ interface UseScrollAnimationOptions {
 }
 
 export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
-  const { threshold = 0.1, rootMargin = '0px 0px -50px 0px', triggerOnce = true } = options;
+  const { threshold = 0.05, rootMargin = '0px 0px -100px 0px', triggerOnce = true } = options;
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -40,20 +40,20 @@ export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
 }
 
 export function getAnimationClass(type: AnimationType, isVisible: boolean): string {
-  const base = 'transition-all duration-700 ease-out';
+  const base = 'transition-all duration-1000 ease-out';
 
   if (!isVisible) {
     switch (type) {
       case 'fade-in':
         return `${base} opacity-0`;
       case 'slide-up':
-        return `${base} opacity-0 translate-y-10`;
+        return `${base} opacity-0 translate-y-16`;
       case 'slide-left':
-        return `${base} opacity-0 -translate-x-10`;
+        return `${base} opacity-0 -translate-x-16`;
       case 'slide-right':
-        return `${base} opacity-0 translate-x-10`;
+        return `${base} opacity-0 translate-x-16`;
       case 'scale-in':
-        return `${base} opacity-0 scale-95`;
+        return `${base} opacity-0 scale-90`;
       default:
         return `${base} opacity-0`;
     }
