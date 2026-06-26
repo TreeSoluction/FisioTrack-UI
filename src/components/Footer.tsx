@@ -1,11 +1,17 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Mail, Phone, MapPin, Star } from 'lucide-react';
+import { Mail, MapPin, Star, MessageCircle } from 'lucide-react';
 
 interface FooterProps {
   onReviewClick?: () => void;
   canReview?: boolean;
 }
+
+const WHATSAPP_MESSAGE = encodeURIComponent('Olá, estou procurando suporte do FisioTrack');
+const WHATSAPP_NUMBERS = [
+  { number: '5554999997564', display: '(54) 99999-7564' },
+  { number: '5527992612834', display: '(27) 99261-2834' },
+];
 
 export default function Footer({ onReviewClick, canReview }: FooterProps) {
   const { t } = useTranslation();
@@ -102,17 +108,40 @@ export default function Footer({ onReviewClick, canReview }: FooterProps) {
               {t('footer.contact')}
             </h4>
             <ul className="space-y-2">
-              <li className="flex items-center gap-2 text-sm text-text-muted dark:text-text-muted-dark">
-                <Mail className="w-4 h-4" />
-                contato@fisiotrack.com
+              <li>
+                <a
+                  href="mailto:soluctiontree@gmail.com"
+                  className="flex items-center gap-2 text-sm text-text-muted dark:text-text-muted-dark hover:text-primary transition-colors"
+                >
+                  <Mail className="w-4 h-4 flex-shrink-0" />
+                  soluctiontree@gmail.com
+                </a>
               </li>
-              <li className="flex items-center gap-2 text-sm text-text-muted dark:text-text-muted-dark">
-                <Phone className="w-4 h-4" />
-                (11) 99999-9999
+              <li>
+                <a
+                  href="mailto:soluction@soluctiontree.com"
+                  className="flex items-center gap-2 text-sm text-text-muted dark:text-text-muted-dark hover:text-primary transition-colors"
+                >
+                  <Mail className="w-4 h-4 flex-shrink-0" />
+                  soluction@soluctiontree.com
+                </a>
               </li>
+              {WHATSAPP_NUMBERS.map((whatsapp) => (
+                <li key={whatsapp.number}>
+                  <a
+                    href={`https://wa.me/${whatsapp.number}?text=${WHATSAPP_MESSAGE}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm text-text-muted dark:text-text-muted-dark hover:text-success transition-colors"
+                  >
+                    <MessageCircle className="w-4 h-4 flex-shrink-0" />
+                    {whatsapp.display}
+                  </a>
+                </li>
+              ))}
               <li className="flex items-center gap-2 text-sm text-text-muted dark:text-text-muted-dark">
-                <MapPin className="w-4 h-4" />
-                São Paulo, SP
+                <MapPin className="w-4 h-4 flex-shrink-0" />
+                Erechim, RS
               </li>
             </ul>
           </div>
