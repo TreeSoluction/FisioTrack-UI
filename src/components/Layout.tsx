@@ -1,11 +1,12 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, Activity, LogOut, Crown, ArrowUpRight } from 'lucide-react';
+import { LayoutDashboard, Users, Activity, LogOut, Settings } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 import LanguageToggle from './ui/LanguageToggle';
 import ThemeToggle from './ui/ThemeToggle';
 import Footer from './Footer';
 import ReviewModal from './ReviewModal';
+import SubscriptionBadge from './SubscriptionBadge';
 import { useReview } from '../hooks/useReview';
 
 interface LayoutProps {
@@ -26,7 +27,7 @@ export default function Layout({ children }: LayoutProps) {
   } = useReview();
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const isFreePlan = user.plan === 'FREE' || !user.plan;
+  const plan = user.plan || 'FREE';
 
   const navigation = [
     { name: t('nav.dashboard'), href: '/dashboard', icon: LayoutDashboard },
@@ -90,27 +91,22 @@ export default function Layout({ children }: LayoutProps) {
             </ul>
           </nav>
 
-          {isFreePlan && (
-            <div className="mx-4 mb-4 p-3 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl border border-primary/20">
-              <div className="flex items-center gap-2 mb-2">
-                <Crown className="w-4 h-4 text-primary" aria-hidden="true" />
-                <span className="text-sm font-medium text-text dark:text-slate-100">Plano Gratuito</span>
-              </div>
-              <Link
-                to="/"
-                className="flex items-center gap-1 text-xs text-primary hover:text-primary-dark font-medium"
-              >
-                Upgrade para PRO
-                <ArrowUpRight className="w-3 h-3" aria-hidden="true" />
-              </Link>
-            </div>
-          )}
+          <div className="mx-4 mb-4">
+            <SubscriptionBadge plan={plan} />
+          </div>
 
           <div className="p-4 border-t border-border dark:border-border-dark">
             <div className="flex items-center justify-between mb-3">
               <LanguageToggle />
               <ThemeToggle />
             </div>
+            <Link
+              to="/settings"
+              className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm font-medium text-text-muted dark:text-text-muted-dark hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-text dark:hover:text-slate-100 transition-colors mb-2"
+            >
+              <Settings className="w-5 h-5" aria-hidden="true" />
+              {t('nav.settings')}
+            </Link>
             <button
               onClick={handleLogout}
               className="flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm font-medium text-text-muted dark:text-text-muted-dark hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-text dark:hover:text-slate-100 transition-colors"

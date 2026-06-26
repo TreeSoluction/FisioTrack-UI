@@ -1,6 +1,5 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Activity } from 'lucide-react';
 import LanguageToggle from './ui/LanguageToggle';
 import ThemeToggle from './ui/ThemeToggle';
 import Footer from './Footer';
