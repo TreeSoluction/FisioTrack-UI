@@ -195,20 +195,21 @@
     "pricing": {
       "title": "Plans and Pricing",
       "subtitle": "Choose the ideal plan for your size",
-      "basic": {
-        "name": "Basic",
-        "price": "$9",
+      "free": {
+        "name": "Free",
+        "price": "$0",
         "description": "For solo professionals",
         "features": [
           "Up to 50 patients",
           "Unlimited treatments",
           "Basic reports",
           "Email support"
-        ]
+        ],
+        "cta": "Start Free"
       },
-      "professional": {
-        "name": "Professional",
-        "price": "$19",
+      "pro": {
+        "name": "PRO",
+        "price": "$4.90",
         "description": "For small clinics",
         "features": [
           "Unlimited patients",
@@ -217,19 +218,21 @@
           "Priority support",
           "Multi-user"
         ],
+        "cta": "Subscribe PRO",
         "popular": true
       },
-      "clinic": {
-        "name": "Clinic",
-        "price": "$39",
+      "enterprise": {
+        "name": "Enterprise",
+        "price": "Custom",
         "description": "For large clinics",
         "features": [
-          "Everything in Professional",
+          "Everything in PRO",
           "Integration API",
           "Custom reports",
           "Dedicated account manager",
           "Guaranteed SLA"
-        ]
+        ],
+        "cta": "Request"
       }
     },
     "cta": {
@@ -330,6 +333,32 @@
     "termsOfUseCheck": "I have read and accept the",
     "consentTermsCheck": "I have read and accept the",
     "required": "You must accept all terms to continue"
+  },
+  "enterprise": {
+    "title": "Request Enterprise Plan",
+    "subtitle": "Fill out the form below to request the enterprise plan",
+    "form": {
+      "companyName": "Company Name",
+      "cnpj": "CNPJ (optional)",
+      "teamSize": "Team Size",
+      "phone": "Phone",
+      "message": "Message (optional)",
+      "submit": "Submit Request",
+      "submitting": "Submitting..."
+    },
+    "status": {
+      "pending": "Request under review",
+      "approved": "Request approved",
+      "rejected": "Request not approved"
+    },
+    "success": "Request submitted successfully! We will contact you within 48 hours.",
+    "alreadyRequested": "You already have a request in progress."
+  },
+  "limits": {
+    "patientsReached": "You have reached the free plan patient limit",
+    "upgradeToPro": "Upgrade to the PRO plan for unlimited patients",
+    "currentUsage": "Current usage",
+    "of": "of"
   },
   "common": {
     "loading": "Loading...",

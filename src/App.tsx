@@ -15,6 +15,7 @@ import Landing from './pages/Landing';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfUse from './pages/TermsOfUse';
 import ConsentTerms from './pages/ConsentTerms';
+import EnterpriseRequest from './pages/EnterpriseRequest';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const token = localStorage.getItem('token');
@@ -46,6 +47,7 @@ export default function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-use" element={<TermsOfUse />} />
           <Route path="/consent-terms" element={<ConsentTerms />} />
+          <Route path="/enterprise-request" element={<PrivateRoute><EnterpriseRequest /></PrivateRoute>} />
         </Route>
 
         <Route

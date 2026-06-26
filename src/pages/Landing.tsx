@@ -314,29 +314,35 @@ export default function Landing() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
             <AnimatedSection delay={0} type="slide-up">
               <PricingCard
-                name={t('landing.pricing.basic.name')}
-                price={t('landing.pricing.basic.price')}
-                description={t('landing.pricing.basic.description')}
-                features={t('landing.pricing.basic.features', { returnObjects: true }) as string[]}
+                name={t('landing.pricing.free.name')}
+                price={t('landing.pricing.free.price')}
+                description={t('landing.pricing.free.description')}
+                features={t('landing.pricing.free.features', { returnObjects: true }) as string[]}
+                cta={t('landing.pricing.free.cta')}
+                ctaLink="/register?plan=FREE"
               />
             </AnimatedSection>
 
-            <AnimatedSection delay={150} type="slide-up">
+            <AnimatedSection delay={200} type="slide-up">
               <PricingCard
-                name={t('landing.pricing.professional.name')}
-                price={t('landing.pricing.professional.price')}
-                description={t('landing.pricing.professional.description')}
-                features={t('landing.pricing.professional.features', { returnObjects: true }) as string[]}
+                name={t('landing.pricing.pro.name')}
+                price={t('landing.pricing.pro.price')}
+                description={t('landing.pricing.pro.description')}
+                features={t('landing.pricing.pro.features', { returnObjects: true }) as string[]}
+                cta={t('landing.pricing.pro.cta')}
+                ctaLink="/register?plan=PRO"
                 popular
               />
             </AnimatedSection>
 
-            <AnimatedSection delay={300} type="slide-up">
+            <AnimatedSection delay={400} type="slide-up">
               <PricingCard
-                name={t('landing.pricing.clinic.name')}
-                price={t('landing.pricing.clinic.price')}
-                description={t('landing.pricing.clinic.description')}
-                features={t('landing.pricing.clinic.features', { returnObjects: true }) as string[]}
+                name={t('landing.pricing.enterprise.name')}
+                price={t('landing.pricing.enterprise.price')}
+                description={t('landing.pricing.enterprise.description')}
+                features={t('landing.pricing.enterprise.features', { returnObjects: true }) as string[]}
+                cta={t('landing.pricing.enterprise.cta')}
+                ctaLink="/enterprise-request"
               />
             </AnimatedSection>
           </div>

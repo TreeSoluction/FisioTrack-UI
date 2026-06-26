@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, Activity, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, Activity, LogOut, Crown, ArrowUpRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 import LanguageToggle from './ui/LanguageToggle';
@@ -14,6 +14,9 @@ export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const isFreePlan = user.plan === 'FREE' || !user.plan;
 
   const navigation = [
     { name: t('nav.dashboard'), href: '/dashboard', icon: LayoutDashboard },
@@ -53,6 +56,22 @@ export default function Layout({ children }: LayoutProps) {
               </Link>
             ))}
           </nav>
+
+          {isFreePlan && (
+            <div className="mx-4 mb-4 p-3 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl border border-primary/20">
+              <div className="flex items-center gap-2 mb-2">
+                <Crown className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium text-text dark:text-slate-100">Plano Gratuito</span>
+              </div>
+              <Link
+                to="/"
+                className="flex items-center gap-1 text-xs text-primary hover:text-primary-dark font-medium"
+              >
+                Upgrade para PRO
+                <ArrowUpRight className="w-3 h-3" />
+              </Link>
+            </div>
+          )}
 
           <div className="p-4 border-t border-border dark:border-border-dark">
             <div className="flex items-center justify-between mb-3">

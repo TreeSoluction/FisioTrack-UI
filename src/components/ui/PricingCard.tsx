@@ -1,4 +1,5 @@
 import { Check } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import Button from './Button';
 
 interface PricingCardProps {
@@ -9,6 +10,8 @@ interface PricingCardProps {
   features: string[];
   popular?: boolean;
   cta?: string;
+  ctaLink?: string;
+  onClick?: () => void;
 }
 
 export default function PricingCard({
@@ -19,7 +22,22 @@ export default function PricingCard({
   features,
   popular = false,
   cta = 'Começar',
+  ctaLink,
+  onClick,
 }: PricingCardProps) {
+  const ButtonContent = () => (
+    <Button
+      className={`w-full ${
+        popular
+          ? 'bg-white text-primary hover:bg-white/90'
+          : 'bg-primary text-white hover:bg-primary-dark'
+      }`}
+      onClick={onClick}
+    >
+      {cta}
+    </Button>
+  );
+
   return (
     <div
       className={`relative rounded-2xl p-8 transition-all duration-300 hover-lift ${
@@ -62,15 +80,13 @@ export default function PricingCard({
         ))}
       </ul>
 
-      <Button
-        className={`w-full ${
-          popular
-            ? 'bg-white text-primary hover:bg-white/90'
-            : 'bg-primary text-white hover:bg-primary-dark'
-        }`}
-      >
-        {cta}
-      </Button>
+      {ctaLink ? (
+        <Link to={ctaLink}>
+          <ButtonContent />
+        </Link>
+      ) : (
+        <ButtonContent />
+      )}
     </div>
   );
 }

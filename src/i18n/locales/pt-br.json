@@ -195,20 +195,21 @@
     "pricing": {
       "title": "Planos e Preços",
       "subtitle": "Escolha o plano ideal para o seu tamanho",
-      "basic": {
-        "name": "Básico",
-        "price": "R$ 49",
+      "free": {
+        "name": "Gratuito",
+        "price": "R$ 0",
         "description": "Para profissionais autônomos",
         "features": [
           "Até 50 pacientes",
           "Tratamentos ilimitados",
           "Relatórios básicos",
           "Suporte por email"
-        ]
+        ],
+        "cta": "Começar Grátis"
       },
-      "professional": {
-        "name": "Profissional",
-        "price": "R$ 99",
+      "pro": {
+        "name": "PRO",
+        "price": "R$ 19,90",
         "description": "Para clínicas pequenas",
         "features": [
           "Pacientes ilimitados",
@@ -217,19 +218,21 @@
           "Suporte prioritário",
           "Multi-usuário"
         ],
+        "cta": "Assinar PRO",
         "popular": true
       },
-      "clinic": {
-        "name": "Clínica",
-        "price": "R$ 199",
+      "enterprise": {
+        "name": "Enterprise",
+        "price": "Custom",
         "description": "Para clínicas grandes",
         "features": [
-          "Tudo do Profissional",
+          "Tudo do PRO",
           "API de integração",
           "Relatórios personalizados",
           "Gerente de conta dedicado",
           "SLA garantido"
-        ]
+        ],
+        "cta": "Solicitar"
       }
     },
     "cta": {
@@ -330,6 +333,32 @@
     "termsOfUseCheck": "Li e aceito os",
     "consentTermsCheck": "Li e aceito o",
     "required": "Você deve aceitar todos os termos para continuar"
+  },
+  "enterprise": {
+    "title": "Solicitar Plano Enterprise",
+    "subtitle": "Preencha o formulário abaixo para solicitar o plano enterprise",
+    "form": {
+      "companyName": "Nome da Empresa",
+      "cnpj": "CNPJ (opcional)",
+      "teamSize": "Tamanho da Equipe",
+      "phone": "Telefone",
+      "message": "Mensagem (opcional)",
+      "submit": "Enviar Solicitação",
+      "submitting": "Enviando..."
+    },
+    "status": {
+      "pending": "Solicitação em análise",
+      "approved": "Solicitação aprovada",
+      "rejected": "Solicitação não aprovada"
+    },
+    "success": "Solicitação enviada com sucesso! Entraremos em contato em até 48 horas.",
+    "alreadyRequested": "Você já possui uma solicitação em andamento."
+  },
+  "limits": {
+    "patientsReached": "Você atingiu o limite de pacientes do plano gratuito",
+    "upgradeToPro": "Faça upgrade para o plano PRO e tenha pacientes ilimitados",
+    "currentUsage": "Uso atual",
+    "of": "de"
   },
   "common": {
     "loading": "Carregando...",
