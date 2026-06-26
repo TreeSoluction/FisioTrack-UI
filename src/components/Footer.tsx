@@ -25,7 +25,7 @@ export default function Footer() {
               {isAuthenticated && (
                 <>
                   <li>
-                    <Link to="/" className="text-sm text-text-muted dark:text-text-muted-dark hover:text-primary transition-colors">
+                    <Link to="/dashboard" className="text-sm text-text-muted dark:text-text-muted-dark hover:text-primary transition-colors">
                       {t('nav.dashboard')}
                     </Link>
                   </li>

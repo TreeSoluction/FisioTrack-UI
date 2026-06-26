@@ -6,13 +6,17 @@ import LanguageToggle from './ui/LanguageToggle';
 import ThemeToggle from './ui/ThemeToggle';
 import Footer from './Footer';
 
-export default function Layout() {
+interface LayoutProps {
+  children?: React.ReactNode;
+}
+
+export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   const navigation = [
-    { name: t('nav.dashboard'), href: '/', icon: LayoutDashboard },
+    { name: t('nav.dashboard'), href: '/dashboard', icon: LayoutDashboard },
     { name: t('nav.patients'), href: '/patients', icon: Users },
     { name: t('nav.treatments'), href: '/treatments', icon: Activity },
   ];
@@ -39,7 +43,7 @@ export default function Layout() {
                 to={item.href}
                 className={cn(
                   'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
-                  location.pathname === item.href || (item.href !== '/' && location.pathname.startsWith(item.href))
+                  location.pathname === item.href || (item.href !== '/dashboard' && location.pathname.startsWith(item.href))
                     ? 'bg-primary/10 text-primary'
                     : 'text-text-muted dark:text-text-muted-dark hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-text dark:hover:text-slate-100'
                 )}
@@ -67,7 +71,7 @@ export default function Layout() {
       </aside>
 
       <main className="ml-64 p-8 pb-32">
-        <Outlet />
+        {children || <Outlet />}
       </main>
 
       <div className="ml-64">

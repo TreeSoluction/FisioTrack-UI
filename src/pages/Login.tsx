@@ -32,7 +32,7 @@ export default function Login() {
         setMissingDocuments(response.data.missingDocuments);
         setShowConsent(true);
       } else {
-        navigate('/');
+        navigate('/dashboard');
       }
     } catch (error: any) {
       setError(error.response?.data?.message || t('common.error'));
@@ -43,7 +43,7 @@ export default function Login() {
 
   function handleConsentComplete() {
     setShowConsent(false);
-    navigate('/');
+    navigate('/dashboard');
   }
 
   if (showConsent) {

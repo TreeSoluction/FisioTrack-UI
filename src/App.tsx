@@ -23,15 +23,24 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
 
 function PublicRoute({ children }: { children: React.ReactNode }) {
   const token = localStorage.getItem('token');
-  return !token ? <>{children}</> : <Navigate to="/" replace />;
+  return !token ? <>{children}</> : <Navigate to="/dashboard" replace />;
+}
+
+function HomePage() {
+  const token = localStorage.getItem('token');
+  if (token) {
+    return <Layout><Dashboard /></Layout>;
+  }
+  return <PublicLayout><Landing /></PublicLayout>;
 }
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<HomePage />} />
+
         <Route element={<PublicLayout />}>
-          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
           <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -46,7 +55,7 @@ export default function App() {
             </PrivateRoute>
           }
         >
-          <Route index element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="patients" element={<Patients />} />
           <Route path="patients/new" element={<PatientForm />} />
           <Route path="patients/:id" element={<PatientDetail />} />
