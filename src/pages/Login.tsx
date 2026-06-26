@@ -60,7 +60,7 @@ export default function Login() {
       <Card className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-4">
-            <LogIn className="w-8 h-8 text-primary" />
+            <LogIn className="w-8 h-8 text-primary" aria-hidden="true" />
           </div>
           <h1 className="text-2xl font-bold text-text dark:text-slate-100">FisioTrack</h1>
           <p className="text-text-muted dark:text-text-muted-dark mt-1">{t('auth.subtitle')}</p>
@@ -68,7 +68,7 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="p-3 bg-danger/10 text-danger rounded-lg text-sm">
+            <div role="alert" className="p-3 bg-danger/10 text-danger rounded-lg text-sm">
               {error}
             </div>
           )}
@@ -76,6 +76,7 @@ export default function Login() {
           <Input
             label={t('auth.email')}
             type="email"
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="seu@email.com"
@@ -85,6 +86,7 @@ export default function Login() {
           <Input
             label={t('auth.password')}
             type="password"
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"

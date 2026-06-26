@@ -253,29 +253,46 @@
   "lgpd": {
     "privacyPolicy": {
       "title": "Política de Privacidade",
+      "lastUpdated": "Última atualização: 26 de junho de 2026",
       "section1": {
         "title": "1. Controlador dos Dados",
-        "content": "O controlador dos dados desta aplicação é o FisioTrack, responsável pelo tratamento dos dados pessoais coletados através da plataforma."
+        "content": "O controlador dos dados desta aplicação é o FisioTrack, CNPJ XX.XXX.XXX/0001-XX, inscrito no CNPJ sob o nº XX.XXX.XXX/0001-XX, com sede em [Endereço Completo], São Paulo/SP. Para dúvidas sobre esta política, entre em contato com nosso Encarregado de Proteção de Dados (DPO) via email: dpo@fisiotrack.com."
       },
       "section2": {
-        "title": "2. Dados Coletados",
-        "content": "Coletamos os seguintes dados pessoais: nome, email, CPF, telefone, endereço, histórico médico e informações de tratamento. Esses dados são necessários para o funcionamento adequado do sistema de gestão de fisioterapia."
+        "title": "2. Bases Legais para Tratamento",
+        "content": "O tratamento dos seus dados pessoais é realizado com base em: (a) Consentimento (Art. 7º, I da LGPD) - quando você aceita nossos termos e políticas; (b) Execução de contrato (Art. 7º, V) - para fornecer os serviços solicitados; (c) Legítimo interesse (Art. 7º, IX) - para melhorar nossos serviços e garantir a segurança da plataforma."
       },
       "section3": {
-        "title": "3. Finalidade do Tratamento",
-        "content": "Seus dados pessoais são utilizados exclusivamente para: gestão de pacientes, agendamento de tratamentos, registro de sessões, controle financeiro e comunicações relacionadas aos seus tratamentos."
+        "title": "3. Dados Coletados",
+        "content": "Coletamos os seguintes dados pessoais: nome, email, CPF, telefone, endereço, histórico médico e informações de tratamento. Dados sensíveis (CPF, histórico médico, endereço) são criptografados utilizando AES-256-GCM. Utilizamos armazenamento local (localStorage) para tokens de autenticação e preferências do usuário."
       },
       "section4": {
-        "title": "4. Proteção dos Dados",
-        "content": "Implementamos medidas técnicas e organizacionais adequadas para proteger seus dados pessoais contra acesso não autorizado, destruição acidental ou ilegítima, perda, alteração ou divulgação. Dados sensíveis como CPF e histórico médico são criptografados."
+        "title": "4. Finalidade do Tratamento",
+        "content": "Seus dados pessoais são utilizados exclusivamente para: gestão de pacientes, agendamento de tratamentos, registro de sessões, controle financeiro e comunicações relacionadas aos seus tratamentos. Não realizamos decisões automatizadas com base nos seus dados."
       },
       "section5": {
-        "title": "5. Compartilhamento de Dados",
-        "content": "Seus dados não serão compartilhados com terceiros sem seu consentimento explícito, exceto quando exigido por lei ou necessário para o funcionamento do serviço."
+        "title": "5. Proteção dos Dados",
+        "content": "Implementamos medidas técnicas e organizacionais adequadas para proteger seus dados pessoais contra acesso não autorizado, destruição acidental ou ilegítima, perda, alteração ou divulgação. Dados sensíveis como CPF e histórico médico são criptografados com AES-256-GCM."
       },
       "section6": {
-        "title": "6. Seus Direitos",
-        "content": "De acordo com a LGPD, você tem o direito de: acessar seus dados, corrigir dados incorretos, solicitar exclusão, solicitar portabilidade de dados e revogar o consentimento a qualquer momento."
+        "title": "6. Compartilhamento de Dados",
+        "content": "Seus dados não serão compartilhados com terceiros sem seu consentimento explícito, exceto quando exigido por lei ou necessário para o funcionamento do serviço. Não realizamos transferências internacionais de dados."
+      },
+      "section7": {
+        "title": "7. Seus Direitos (Art. 18 da LGPD)",
+        "content": "De acordo com a LGPD, você tem o direito de: (I) confirmar a existência de tratamento; (II) acessar seus dados; (III) corrigir dados incompletos ou desatualizados; (IV) anonimizar, bloquear ou eliminar dados desnecessários; (V) portabilidade dos dados; (VI) eliminar dados tratados com consentimento; (VII) obter informações sobre compartilhamento; (VIII) revogar o consentimento. Para exercer seus direitos, acesse as configurações da sua conta ou entre em contato conosco."
+      },
+      "section8": {
+        "title": "8. Incidentes de Segurança",
+        "content": "Em caso de incidente de segurança que possa acarretar risco ou dano relevante aos titulares, comunicaremos a Autoridade Nacional de Proteção de Dados (ANPD) e os titulares afetados, conforme Art. 48 da LGPD."
+      },
+      "section9": {
+        "title": "9. Retenção de Dados",
+        "content": "Seus dados serão retidos enquanto sua conta estiver ativa ou conforme necessário para fornecer o serviço. Após a exclusão da conta, os dados serão eliminados de nossos sistemas em até 30 dias, exceto quando obrigatório por lei."
+      },
+      "section10": {
+        "title": "10. Contato",
+        "content": "Para dúvidas sobre esta política ou para exercer seus direitos, entre em contato: Email: contato@fisiotrack.com | DPO: dpo@fisiotrack.com | Telefone: (11) 99999-9999"
       }
     },
     "termsOfUse": {
@@ -367,6 +384,10 @@
     "search": "Buscar",
     "actions": "Ações",
     "switchToLight": "Mudar para modo claro",
-    "switchToDark": "Mudar para modo escuro"
+    "switchToDark": "Mudar para modo escuro",
+    "skipToContent": "Pular para o conteúdo principal"
+  },
+  "navigation": {
+    "main": "Navegação principal"
   }
 }

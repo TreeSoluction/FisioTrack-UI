@@ -69,7 +69,7 @@ export default function Register() {
       <Card className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-secondary/10 mb-4">
-            <UserPlus className="w-8 h-8 text-secondary" />
+            <UserPlus className="w-8 h-8 text-secondary" aria-hidden="true" />
           </div>
           <h1 className="text-2xl font-bold text-text dark:text-slate-100">{t('auth.createAccount')}</h1>
           <p className="text-text-muted dark:text-text-muted-dark mt-1">{t('auth.registerSubtitle')}</p>
@@ -77,7 +77,7 @@ export default function Register() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="p-3 bg-danger/10 text-danger rounded-lg text-sm">
+            <div role="alert" className="p-3 bg-danger/10 text-danger rounded-lg text-sm">
               {error}
             </div>
           )}
@@ -85,6 +85,7 @@ export default function Register() {
           <Input
             label={t('auth.name')}
             name="name"
+            autoComplete="name"
             value={formData.name}
             onChange={handleChange}
             placeholder={t('auth.name')}
@@ -95,6 +96,7 @@ export default function Register() {
             label={t('auth.email')}
             name="email"
             type="email"
+            autoComplete="email"
             value={formData.email}
             onChange={handleChange}
             placeholder="seu@email.com"
@@ -105,6 +107,7 @@ export default function Register() {
             label={t('auth.password')}
             name="password"
             type="password"
+            autoComplete="new-password"
             value={formData.password}
             onChange={handleChange}
             placeholder="••••••••"
@@ -115,6 +118,7 @@ export default function Register() {
             label={t('auth.confirmPassword')}
             name="confirmPassword"
             type="password"
+            autoComplete="new-password"
             value={formData.confirmPassword}
             onChange={handleChange}
             placeholder="••••••••"
@@ -123,7 +127,7 @@ export default function Register() {
 
           <div className="space-y-3 pt-4 border-t border-border dark:border-border-dark">
             <p className="text-sm font-medium text-text dark:text-slate-100">{t('consent.title')}</p>
-            
+
             <label className="flex items-start gap-3 cursor-pointer">
               <input
                 type="checkbox"

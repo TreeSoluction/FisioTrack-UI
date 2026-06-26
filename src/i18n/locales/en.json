@@ -253,29 +253,46 @@
   "lgpd": {
     "privacyPolicy": {
       "title": "Privacy Policy",
+      "lastUpdated": "Last updated: June 26, 2026",
       "section1": {
         "title": "1. Data Controller",
-        "content": "The data controller for this application is FisioTrack, responsible for the processing of personal data collected through the platform."
+        "content": "The data controller for this application is FisioTrack, CNPJ XX.XXX.XXX/0001-XX, registered under CNPJ XX.XXX.XXX/0001-XX, headquartered at [Full Address], São Paulo/SP, Brazil. For questions about this policy, contact our Data Protection Officer (DPO) at: dpo@fisiotrack.com."
       },
       "section2": {
-        "title": "2. Data Collected",
-        "content": "We collect the following personal data: name, email, CPF, phone, address, medical history, and treatment information. This data is necessary for the proper functioning of the physiotherapy management system."
+        "title": "2. Legal Bases for Processing",
+        "content": "Your personal data is processed based on: (a) Consent (Art. 7, I of LGPD) - when you accept our terms and policies; (b) Contract execution (Art. 7, V) - to provide the requested services; (c) Legitimate interest (Art. 7, IX) - to improve our services and ensure platform security."
       },
       "section3": {
-        "title": "3. Purpose of Processing",
-        "content": "Your personal data is used exclusively for: patient management, treatment scheduling, session recording, financial control, and communication related to your treatments."
+        "title": "3. Data Collected",
+        "content": "We collect the following personal data: name, email, CPF, phone, address, medical history, and treatment information. Sensitive data (CPF, medical history, address) is encrypted using AES-256-GCM. We use localStorage for authentication tokens and user preferences."
       },
       "section4": {
-        "title": "4. Data Protection",
-        "content": "We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, accidental or unlawful destruction, loss, alteration, or disclosure. Sensitive data such as CPF and medical history are encrypted."
+        "title": "4. Purpose of Processing",
+        "content": "Your personal data is used exclusively for: patient management, treatment scheduling, session recording, financial control, and communication related to your treatments. We do not make automated decisions based on your data."
       },
       "section5": {
-        "title": "5. Data Sharing",
-        "content": "Your data will not be shared with third parties without your explicit consent, except when required by law or necessary for the operation of the service."
+        "title": "5. Data Protection",
+        "content": "We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, accidental or unlawful destruction, loss, alteration, or disclosure. Sensitive data such as CPF and medical history are encrypted with AES-256-GCM."
       },
       "section6": {
-        "title": "6. Your Rights",
-        "content": "In accordance with the LGPD, you have the right to: access your data, correct inaccurate data, request deletion, request data portability, and revoke consent at any time."
+        "title": "6. Data Sharing",
+        "content": "Your data will not be shared with third parties without your explicit consent, except when required by law or necessary for the operation of the service. We do not perform international data transfers."
+      },
+      "section7": {
+        "title": "7. Your Rights (Art. 18 of LGPD)",
+        "content": "In accordance with the LGPD, you have the right to: (I) confirm the existence of processing; (II) access your data; (III) correct incomplete or outdated data; (IV) anonymize, block, or delete unnecessary data; (V) data portability; (VI) delete data processed with consent; (VII) obtain information about sharing; (VIII) revoke consent. To exercise your rights, access your account settings or contact us."
+      },
+      "section8": {
+        "title": "8. Security Incidents",
+        "content": "In case of a security incident that may pose risk or relevant harm to data subjects, we will notify the National Data Protection Authority (ANPD) and affected data subjects, as per Art. 48 of LGPD."
+      },
+      "section9": {
+        "title": "9. Data Retention",
+        "content": "Your data will be retained as long as your account is active or as necessary to provide the service. After account deletion, data will be eliminated from our systems within 30 days, except when required by law."
+      },
+      "section10": {
+        "title": "10. Contact",
+        "content": "For questions about this policy or to exercise your rights, contact us: Email: contato@fisiotrack.com | DPO: dpo@fisiotrack.com | Phone: (11) 99999-9999"
       }
     },
     "termsOfUse": {
@@ -367,6 +384,10 @@
     "search": "Search",
     "actions": "Actions",
     "switchToLight": "Switch to light mode",
-    "switchToDark": "Switch to dark mode"
+    "switchToDark": "Switch to dark mode",
+    "skipToContent": "Skip to main content"
+  },
+  "navigation": {
+    "main": "Main navigation"
   }
 }
