@@ -55,8 +55,13 @@ export default function Layout({ children }: LayoutProps) {
       >
         <div className="flex flex-col h-full">
           <div className="p-6">
-            <span className="text-xl font-bold text-primary">FisioTrack</span>
-            <p className="text-xs text-text-muted dark:text-text-muted-dark">Gestão para Fisioterapia</p>
+            <Link to="/" className="flex items-center gap-3">
+              <img src="/images/logo-icon.svg" alt="" className="w-10 h-10" aria-hidden="true" />
+              <div>
+                <span className="text-xl font-bold text-primary">FisioTrack</span>
+                <p className="text-xs text-text-muted dark:text-text-muted-dark">Gestão para Fisioterapia</p>
+              </div>
+            </Link>
           </div>
 
           <nav aria-label={t('navigation.main')}>
