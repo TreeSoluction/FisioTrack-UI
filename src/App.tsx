@@ -31,14 +31,13 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<PublicLayout />}>
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
           <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-use" element={<TermsOfUse />} />
           <Route path="/consent-terms" element={<ConsentTerms />} />
         </Route>
-
-        <Route path="/" element={<PublicRoute><Landing /></PublicRoute>} />
 
         <Route
           element={
