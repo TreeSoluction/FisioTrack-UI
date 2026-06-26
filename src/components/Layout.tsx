@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 import LanguageToggle from './ui/LanguageToggle';
 import ThemeToggle from './ui/ThemeToggle';
+import Footer from './Footer';
 
 export default function Layout() {
   const location = useLocation();
@@ -65,9 +66,13 @@ export default function Layout() {
         </div>
       </aside>
 
-      <main className="ml-64 p-8">
+      <main className="ml-64 p-8 pb-32">
         <Outlet />
       </main>
+
+      <div className="ml-64">
+        <Footer />
+      </div>
     </div>
   );
 }

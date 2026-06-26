@@ -125,6 +125,124 @@
     "noSession": "Nenhuma sessão registrada",
     "saved": "Sessao salva com sucesso"
   },
+  "landing": {
+    "heroTitle": "FisioTrack — Gestão Inteligente para Fisioterapia",
+    "heroSubtitle": "Gerencie pacientes, tratamentos e sessões com facilidade. Otimize sua prática com nossa plataforma completa.",
+    "ctaLogin": "Entrar",
+    "ctaRegister": "Criar Conta",
+    "features": {
+      "title": "Funcionalidades",
+      "subtitle": "Tudo o que você precisa para gerenciar sua prática de fisioterapia",
+      "patients": {
+        "title": "Gestão de Pacientes",
+        "description": "Cadastre e gerencie seus pacientes com dados completos, histórico médico e controle de status."
+      },
+      "treatments": {
+        "title": "Tratamentos e Sessões",
+        "description": "Crie tratamentos, agende sessões e acompanhe o progresso dos pacientes com métricas detalhadas."
+      },
+      "financial": {
+        "title": "Controle Financeiro",
+        "description": "Acompanhe valores de tratamentos, pagamentos e receitas com relatórios financeiros completos."
+      }
+    },
+    "about": {
+      "title": "Sobre o FisioTrack",
+      "description": "O FisioTrack foi desenvolvido para simplificar a rotina diária dos fisioterapeutas. Com uma interface intuitiva e recursos poderosos, você pode focar no que realmente importa: a saúde dos seus pacientes.",
+      "cta": "Comece Agora"
+    }
+  },
+  "footer": {
+    "description": "Sistema completo de gestão para clínicas de fisioterapia. Gerencie pacientes, tratamentos e sessões com facilidade.",
+    "navigation": "Navegação",
+    "legal": "Legal",
+    "contact": "Contato",
+    "copyright": "Todos os direitos reservados."
+  },
+  "lgpd": {
+    "privacyPolicy": {
+      "title": "Política de Privacidade",
+      "section1": {
+        "title": "1. Controlador dos Dados",
+        "content": "O controlador dos dados desta aplicação é o FisioTrack, responsável pelo tratamento dos dados pessoais coletados através da plataforma."
+      },
+      "section2": {
+        "title": "2. Dados Coletados",
+        "content": "Coletamos os seguintes dados pessoais: nome, email, CPF, telefone, endereço, histórico médico e informações de tratamento. Esses dados são necessários para o funcionamento adequado do sistema de gestão de fisioterapia."
+      },
+      "section3": {
+        "title": "3. Finalidade do Tratamento",
+        "content": "Seus dados pessoais são utilizados exclusivamente para: gestão de pacientes, agendamento de tratamentos, registro de sessões, controle financeiro e comunicações relacionadas aos seus tratamentos."
+      },
+      "section4": {
+        "title": "4. Proteção dos Dados",
+        "content": "Implementamos medidas técnicas e organizacionais adequadas para proteger seus dados pessoais contra acesso não autorizado, destruição acidental ou ilegítima, perda, alteração ou divulgação. Dados sensíveis como CPF e histórico médico são criptografados."
+      },
+      "section5": {
+        "title": "5. Compartilhamento de Dados",
+        "content": "Seus dados não serão compartilhados com terceiros sem seu consentimento explícito, exceto quando exigido por lei ou necessário para o funcionamento do serviço."
+      },
+      "section6": {
+        "title": "6. Seus Direitos",
+        "content": "De acordo com a LGPD, você tem o direito de: acessar seus dados, corrigir dados incorretos, solicitar exclusão, solicitar portabilidade de dados e revogar o consentimento a qualquer momento."
+      }
+    },
+    "termsOfUse": {
+      "title": "Termos de Uso",
+      "section1": {
+        "title": "1. Aceitação",
+        "content": "Ao utilizar o FisioTrack, você concorda com estes Termos de Uso. Se não concordar com algum dos termos, por favor não utilize a aplicação."
+      },
+      "section2": {
+        "title": "2. Descrição do Serviço",
+        "content": "O FisioTrack é uma plataforma de gestão de fisioterapia que fornece ferramentas para gestão de pacientes, controle de tratamentos, registro de sessões e gestão financeira."
+      },
+      "section3": {
+        "title": "3. Responsabilidades do Usuário",
+        "content": "Você é responsável por: manter a confidencialidade de suas credenciais, todas as atividades que ocorrem em sua conta e a precisão dos dados que fornece."
+      },
+      "section4": {
+        "title": "4. Usos Proibidos",
+        "content": "Você concorda em não: utilizar o serviço para fins ilegais, tentar obter acesso não autorizado a outras contas, distribuir malware ou realizar ações que possam danificar o serviço."
+      },
+      "section5": {
+        "title": "5. Limitação de Responsabilidade",
+        "content": "O FisioTrack não será responsável por danos indiretos, incidentais, especiais ou consequenciais decorrentes do uso ou incapacidade de uso do serviço."
+      }
+    },
+    "consentTerms": {
+      "title": "Termo de Consentimento",
+      "section1": {
+        "title": "1. Consentimento para Tratamento de Dados",
+        "content": "Ao aceitar estes termos, você consento com o tratamento dos seus dados pessoais conforme descrito em nossa Política de Privacidade. Este consentimento é livre, informado e inequívoco."
+      },
+      "section2": {
+        "title": "2. Escopo do Consentimento",
+        "content": "Seu consentimento abrange: coleta, armazenamento, processamento e compartilhamento de dados necessários para o funcionamento do serviço de gestão de fisioterapia."
+      },
+      "section3": {
+        "title": "3. Revogação do Consentimento",
+        "content": "Você pode revogar seu consentimento a qualquer momento entrando em contato com nossa equipe de suporte. A revogação do consentimento não afeta a legalidade do tratamento baseado no consentimento antes de sua revogação."
+      },
+      "section4": {
+        "title": "4. Retenção de Dados",
+        "content": "Seus dados serão retidos enquanto sua conta estiver ativa ou conforme necessário para fornecer o serviço. Você pode solicitar a exclusão de seus dados a qualquer momento."
+      },
+      "section5": {
+        "title": "5. Contato",
+        "content": "Para dúvidas sobre este consentimento ou para exercer seus direitos pela LGPD, entre em contato conosco em contato@fisiotrack.com."
+      }
+    }
+  },
+  "consent": {
+    "title": "Termos e Condições",
+    "description": "Para continuar, por favor aceite nossos termos e políticas de privacidade.",
+    "acceptAll": "Aceitar Todos",
+    "privacyPolicyCheck": "Li e aceito a",
+    "termsOfUseCheck": "Li e aceito os",
+    "consentTermsCheck": "Li e aceito o",
+    "required": "Você deve aceitar todos os termos para continuar"
+  },
   "common": {
     "loading": "Carregando...",
     "error": "Erro",

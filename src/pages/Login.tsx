@@ -6,6 +6,7 @@ import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import api from '../lib/api';
+import ConsentModal from '../components/ConsentModal';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showConsent, setShowConsent] = useState(false);
+  const [missingDocuments, setMissingDocuments] = useState<string[]>([]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -24,12 +27,32 @@ export default function Login() {
       const response = await api.post('/auth/login', { email, password });
       localStorage.setItem('token', response.data.access_token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
-      navigate('/');
+
+      if (response.data.requiresConsent) {
+        setMissingDocuments(response.data.missingDocuments);
+        setShowConsent(true);
+      } else {
+        navigate('/');
+      }
     } catch (error: any) {
       setError(error.response?.data?.message || t('common.error'));
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleConsentComplete() {
+    setShowConsent(false);
+    navigate('/');
+  }
+
+  if (showConsent) {
+    return (
+      <ConsentModal
+        missingDocuments={missingDocuments}
+        onComplete={handleConsentComplete}
+      />
+    );
   }
 
   return (

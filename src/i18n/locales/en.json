@@ -125,6 +125,124 @@
     "noSession": "No session registered",
     "saved": "Session saved successfully"
   },
+  "landing": {
+    "heroTitle": "FisioTrack — Intelligent Management for Physiotherapy",
+    "heroSubtitle": "Manage patients, treatments and sessions with ease. Optimize your practice with our complete platform.",
+    "ctaLogin": "Login",
+    "ctaRegister": "Create Account",
+    "features": {
+      "title": "Features",
+      "subtitle": "Everything you need to manage your physiotherapy practice",
+      "patients": {
+        "title": "Patient Management",
+        "description": "Register and manage your patients with complete data, medical history and status control."
+      },
+      "treatments": {
+        "title": "Treatments and Sessions",
+        "description": "Create treatments, schedule sessions and track patient progress with detailed metrics."
+      },
+      "financial": {
+        "title": "Financial Control",
+        "description": "Track treatment values, payments and revenue with complete financial reports."
+      }
+    },
+    "about": {
+      "title": "About FisioTrack",
+      "description": "FisioTrack was developed to simplify the daily routine of physiotherapists. With an intuitive interface and powerful features, you can focus on what really matters: your patients' health.",
+      "cta": "Get Started Now"
+    }
+  },
+  "footer": {
+    "description": "Complete management system for physiotherapy practices. Manage patients, treatments and sessions with ease.",
+    "navigation": "Navigation",
+    "legal": "Legal",
+    "contact": "Contact",
+    "copyright": "All rights reserved."
+  },
+  "lgpd": {
+    "privacyPolicy": {
+      "title": "Privacy Policy",
+      "section1": {
+        "title": "1. Data Controller",
+        "content": "The data controller for this application is FisioTrack, responsible for the processing of personal data collected through the platform."
+      },
+      "section2": {
+        "title": "2. Data Collected",
+        "content": "We collect the following personal data: name, email, CPF, phone, address, medical history, and treatment information. This data is necessary for the proper functioning of the physiotherapy management system."
+      },
+      "section3": {
+        "title": "3. Purpose of Processing",
+        "content": "Your personal data is used exclusively for: patient management, treatment scheduling, session recording, financial control, and communication related to your treatments."
+      },
+      "section4": {
+        "title": "4. Data Protection",
+        "content": "We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, accidental or unlawful destruction, loss, alteration, or disclosure. Sensitive data such as CPF and medical history are encrypted."
+      },
+      "section5": {
+        "title": "5. Data Sharing",
+        "content": "Your data will not be shared with third parties without your explicit consent, except when required by law or necessary for the operation of the service."
+      },
+      "section6": {
+        "title": "6. Your Rights",
+        "content": "In accordance with the LGPD, you have the right to: access your data, correct inaccurate data, request deletion, request data portability, and revoke consent at any time."
+      }
+    },
+    "termsOfUse": {
+      "title": "Terms of Use",
+      "section1": {
+        "title": "1. Acceptance",
+        "content": "By using FisioTrack, you agree to these Terms of Use. If you do not agree with any of the terms, please do not use the application."
+      },
+      "section2": {
+        "title": "2. Service Description",
+        "content": "FisioTrack is a physiotherapy management platform that provides tools for patient management, treatment control, session recording, and financial management."
+      },
+      "section3": {
+        "title": "3. User Responsibilities",
+        "content": "You are responsible for: maintaining the confidentiality of your credentials, all activities that occur under your account, and the accuracy of the data you provide."
+      },
+      "section4": {
+        "title": "4. Prohibited Uses",
+        "content": "You agree not to: use the service for illegal purposes, attempt to gain unauthorized access to other accounts, distribute malware, or perform actions that may damage the service."
+      },
+      "section5": {
+        "title": "5. Limitation of Liability",
+        "content": "FisioTrack shall not be liable for indirect, incidental, special, or consequential damages arising from the use or inability to use the service."
+      }
+    },
+    "consentTerms": {
+      "title": "Consent Terms",
+      "section1": {
+        "title": "1. Consent for Data Processing",
+        "content": "By accepting these terms, you consent to the processing of your personal data as described in our Privacy Policy. This consent is free, informed, and unambiguous."
+      },
+      "section2": {
+        "title": "2. Scope of Consent",
+        "content": "Your consent covers: collection, storage, processing, and sharing of data necessary for the operation of the physiotherapy management service."
+      },
+      "section3": {
+        "title": "3. Withdrawal of Consent",
+        "content": "You may withdraw your consent at any time by contacting our support team. The withdrawal of consent does not affect the lawfulness of processing based on consent before its withdrawal."
+      },
+      "section4": {
+        "title": "4. Data Retention",
+        "content": "Your data will be retained for as long as your account is active or as needed to provide the service. You may request deletion of your data at any time."
+      },
+      "section5": {
+        "title": "5. Contact",
+        "content": "For questions about this consent or to exercise your rights under the LGPD, contact us at contato@fisiotrack.com."
+      }
+    }
+  },
+  "consent": {
+    "title": "Terms and Conditions",
+    "description": "To continue, please accept our terms and privacy policies.",
+    "acceptAll": "Accept All",
+    "privacyPolicyCheck": "I have read and accept the",
+    "termsOfUseCheck": "I have read and accept the",
+    "consentTermsCheck": "I have read and accept the",
+    "required": "You must accept all terms to continue"
+  },
   "common": {
     "loading": "Loading...",
     "error": "Error",

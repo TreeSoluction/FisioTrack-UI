@@ -7,7 +7,7 @@ import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import api from '../lib/api';
 
-export default function Registro() {
+export default function Register() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [formData, setFormData] = useState({
@@ -18,16 +18,32 @@ export default function Registro() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [consents, setConsents] = useState({
+    privacyPolicy: false,
+    termsOfUse: false,
+    consentTerms: false,
+  });
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
+
+  function handleConsentChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setConsents({ ...consents, [e.target.name]: e.target.checked });
+  }
+
+  const allConsentsAccepted = consents.privacyPolicy && consents.termsOfUse && consents.consentTerms;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
       setError(t('auth.passwordMismatch'));
+      return;
+    }
+
+    if (!allConsentsAccepted) {
+      setError(t('consent.required'));
       return;
     }
 
@@ -104,6 +120,58 @@ export default function Registro() {
             placeholder="••••••••"
             required
           />
+
+          <div className="space-y-3 pt-4 border-t border-border dark:border-border-dark">
+            <p className="text-sm font-medium text-text dark:text-slate-100">{t('consent.title')}</p>
+            
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                name="privacyPolicy"
+                checked={consents.privacyPolicy}
+                onChange={handleConsentChange}
+                className="mt-1 h-4 w-4 text-primary rounded border-gray-300"
+              />
+              <span className="text-sm text-text-muted dark:text-text-muted-dark">
+                {t('consent.privacyPolicyCheck')}{' '}
+                <Link to="/privacy-policy" target="_blank" className="text-primary hover:underline">
+                  {t('lgpd.privacyPolicy.title')}
+                </Link>
+              </span>
+            </label>
+
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                name="termsOfUse"
+                checked={consents.termsOfUse}
+                onChange={handleConsentChange}
+                className="mt-1 h-4 w-4 text-primary rounded border-gray-300"
+              />
+              <span className="text-sm text-text-muted dark:text-text-muted-dark">
+                {t('consent.termsOfUseCheck')}{' '}
+                <Link to="/terms-of-use" target="_blank" className="text-primary hover:underline">
+                  {t('lgpd.termsOfUse.title')}
+                </Link>
+              </span>
+            </label>
+
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                name="consentTerms"
+                checked={consents.consentTerms}
+                onChange={handleConsentChange}
+                className="mt-1 h-4 w-4 text-primary rounded border-gray-300"
+              />
+              <span className="text-sm text-text-muted dark:text-text-muted-dark">
+                {t('consent.consentTermsCheck')}{' '}
+                <Link to="/consent-terms" target="_blank" className="text-primary hover:underline">
+                  {t('lgpd.consentTerms.title')}
+                </Link>
+              </span>
+            </label>
+          </div>
 
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? t('auth.creatingAccount') : t('auth.createAccount')}
