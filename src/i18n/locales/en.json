@@ -246,7 +246,7 @@
       "lastUpdated": "Last updated: June 26, 2026",
       "section1": {
         "title": "1. Data Controller",
-        "content": "The data controller for this application is FisioTrack, CNPJ XX.XXX.XXX/0001-XX, registered under CNPJ XX.XXX.XXX/0001-XX, headquartered at [Full Address], São Paulo/SP, Brazil. For questions about this policy, contact our Data Protection Officer (DPO) at: dpo@fisiotrack.com."
+        "content": "The data controller for this application is SoluctionTree, registered under CNPJ (pending), headquartered in Erechim/RS, Brazil. For questions about this policy, contact our Data Protection Officer (DPO) at: soluctiontree@gmail.com."
       },
       "section2": {
         "title": "2. Legal Bases for Processing",
@@ -254,7 +254,7 @@
       },
       "section3": {
         "title": "3. Data Collected",
-        "content": "We collect the following personal data: name, email, CPF, phone, address, medical history, and treatment information. Sensitive data (CPF, medical history, address) is encrypted using AES-256-GCM. We use localStorage for authentication tokens and user preferences."
+        "content": "We collect the following personal data: name, email, CPF, phone, address, medical history, and treatment information. Sensitive data (CPF, phone, email, medical history, address) is encrypted using AES-256-GCM. We use localStorage for authentication tokens and user preferences."
       },
       "section4": {
         "title": "4. Purpose of Processing",
@@ -262,7 +262,7 @@
       },
       "section5": {
         "title": "5. Data Protection",
-        "content": "We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, accidental or unlawful destruction, loss, alteration, or disclosure. Sensitive data such as CPF and medical history are encrypted with AES-256-GCM."
+        "content": "We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, accidental or unlawful destruction, loss, alteration, or disclosure. Sensitive data such as CPF, phone, email, medical history, and address are encrypted with AES-256-GCM."
       },
       "section6": {
         "title": "6. Data Sharing",
@@ -282,7 +282,7 @@
       },
       "section10": {
         "title": "10. Contact",
-        "content": "For questions about this policy or to exercise your rights, contact us: Email: contato@fisiotrack.com | DPO: dpo@fisiotrack.com | Phone: (11) 99999-9999"
+        "content": "For questions about this policy or to exercise your rights, contact us: Email: soluctiontree@gmail.com | DPO: soluctiontree@gmail.com | WhatsApp: (54) 99999-7564"
       }
     },
     "termsOfUse": {

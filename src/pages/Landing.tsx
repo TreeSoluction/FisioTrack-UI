@@ -86,7 +86,7 @@ export default function Landing() {
           </AnimatedSection>
 
           <AnimatedSection type="fade-in" delay={500}>
-            <div className="mt-12 flex items-center justify-center gap-8 text-white/60 text-sm">
+            <div className="mt-12 flex flex-wrap items-center justify-center gap-4 md:gap-8 text-white/60 text-sm">
               <div className="flex items-center gap-2">
                 <Check className="w-4 h-4" />
                 <span>{t('landing.hero.free')}</span>

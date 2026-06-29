@@ -63,15 +63,15 @@ export default function TratamentoDetail() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-4">
         <button
           onClick={() => navigate(-1)}
           className="p-2 text-text-muted dark:text-text-muted-dark hover:text-text dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <div className="flex-1">
-          <h1 className="text-2xl font-bold text-text dark:text-slate-100">
+        <div className="flex-1 min-w-0">
+          <h1 className="text-2xl font-bold text-text dark:text-slate-100 truncate">
             {t('nav.treatments')} - {tratamento.patient?.name || t('treatments.patient')}
           </h1>
           <p className="text-text-muted dark:text-text-muted-dark">{tratamento.estimatedTime}</p>

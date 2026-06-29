@@ -81,15 +81,15 @@ export default function PacienteDetail() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-4">
         <Link
           to="/patients"
           className="p-2 text-text-muted dark:text-text-muted-dark hover:text-text dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
         </Link>
-        <div className="flex-1">
-          <h1 className="text-2xl font-bold text-text dark:text-slate-100">{paciente.name}</h1>
+        <div className="flex-1 min-w-0">
+          <h1 className="text-2xl font-bold text-text dark:text-slate-100 truncate">{paciente.name}</h1>
           <p className="text-text-muted dark:text-text-muted-dark">{paciente.cpf}</p>
         </div>
         <Link to={`/treatments/new?patientId=${id}`}>

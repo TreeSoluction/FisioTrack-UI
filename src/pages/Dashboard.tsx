@@ -74,7 +74,7 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-2xl font-bold text-text dark:text-slate-100">{t('dashboard.title')}</h1>
         <Link
           to="/patients/new"

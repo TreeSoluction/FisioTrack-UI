@@ -246,7 +246,7 @@
       "lastUpdated": "Última atualização: 26 de junho de 2026",
       "section1": {
         "title": "1. Controlador dos Dados",
-        "content": "O controlador dos dados desta aplicação é o FisioTrack, CNPJ XX.XXX.XXX/0001-XX, inscrito no CNPJ sob o nº XX.XXX.XXX/0001-XX, com sede em [Endereço Completo], São Paulo/SP. Para dúvidas sobre esta política, entre em contato com nosso Encarregado de Proteção de Dados (DPO) via email: dpo@fisiotrack.com."
+        "content": "O controlador dos dados desta aplicação é a SoluctionTree, inscrito sob o CNPJ pendente de registro, com sede em Erechim/RS, Brasil. Para dúvidas sobre esta política, entre em contato com nosso Encarregado de Proteção de Dados (DPO) via email: soluctiontree@gmail.com."
       },
       "section2": {
         "title": "2. Bases Legais para Tratamento",
@@ -254,7 +254,7 @@
       },
       "section3": {
         "title": "3. Dados Coletados",
-        "content": "Coletamos os seguintes dados pessoais: nome, email, CPF, telefone, endereço, histórico médico e informações de tratamento. Dados sensíveis (CPF, histórico médico, endereço) são criptografados utilizando AES-256-GCM. Utilizamos armazenamento local (localStorage) para tokens de autenticação e preferências do usuário."
+        "content": "Coletamos os seguintes dados pessoais: nome, email, CPF, telefone, endereço, histórico médico e informações de tratamento. Dados sensíveis (CPF, telefone, email, histórico médico, endereço) são criptografados utilizando AES-256-GCM. Utilizamos armazenamento local (localStorage) para tokens de autenticação e preferências do usuário."
       },
       "section4": {
         "title": "4. Finalidade do Tratamento",
@@ -262,7 +262,7 @@
       },
       "section5": {
         "title": "5. Proteção dos Dados",
-        "content": "Implementamos medidas técnicas e organizacionais adequadas para proteger seus dados pessoais contra acesso não autorizado, destruição acidental ou ilegítima, perda, alteração ou divulgação. Dados sensíveis como CPF e histórico médico são criptografados com AES-256-GCM."
+        "content": "Implementamos medidas técnicas e organizacionais adequadas para proteger seus dados pessoais contra acesso não autorizado, destruição acidental ou ilegítima, perda, alteração ou divulgação. Dados sensíveis como CPF, telefone, email, histórico médico e endereço são criptografados com AES-256-GCM."
       },
       "section6": {
         "title": "6. Compartilhamento de Dados",
@@ -282,7 +282,7 @@
       },
       "section10": {
         "title": "10. Contato",
-        "content": "Para dúvidas sobre esta política ou para exercer seus direitos, entre em contato: Email: contato@fisiotrack.com | DPO: dpo@fisiotrack.com | Telefone: (11) 99999-9999"
+        "content": "Para dúvidas sobre esta política ou para exercer seus direitos, entre em contato: Email: soluctiontree@gmail.com | DPO: soluctiontree@gmail.com | WhatsApp: (54) 99999-7564"
       }
     },
     "termsOfUse": {

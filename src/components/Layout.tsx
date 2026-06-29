@@ -1,5 +1,6 @@
+import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, Activity, LogOut, Settings } from 'lucide-react';
+import { LayoutDashboard, Users, Activity, LogOut, Settings, Menu, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 import LanguageToggle from './ui/LanguageToggle';
@@ -17,6 +18,7 @@ export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const {
     showModal,
     canReview,
@@ -35,6 +37,10 @@ export default function Layout({ children }: LayoutProps) {
     { name: t('nav.treatments'), href: '/treatments', icon: Activity },
   ];
 
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
+
   function handleLogout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -50,12 +56,41 @@ export default function Layout({ children }: LayoutProps) {
         {t('common.skipToContent')}
       </a>
 
+      {/* Mobile header */}
+      <div className="md:hidden fixed top-0 inset-x-0 z-40 bg-white dark:bg-slate-800 border-b border-border dark:border-border-dark px-4 h-14 flex items-center justify-between">
+        <button
+          onClick={() => setSidebarOpen(true)}
+          className="p-2 -ml-2 text-text-muted dark:text-text-muted-dark hover:text-text dark:hover:text-slate-100"
+          aria-label={t('navigation.main')}
+        >
+          <Menu className="w-6 h-6" />
+        </button>
+        <Link to="/dashboard" className="flex items-center gap-2">
+          <img src="/images/logo-icon.svg" alt="" className="w-8 h-8" aria-hidden="true" />
+          <span className="text-lg font-bold text-primary">FisioTrack</span>
+        </Link>
+        <div className="w-10" />
+      </div>
+
+      {/* Backdrop */}
+      {sidebarOpen && (
+        <div
+          className="md:hidden fixed inset-0 z-40 bg-black/50 transition-opacity"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
       <aside
         aria-label={t('navigation.main')}
-        className="fixed inset-y-0 left-0 w-64 bg-white dark:bg-slate-800 border-r border-border dark:border-border-dark"
+        className={cn(
+          'fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-800 border-r border-border dark:border-border-dark transition-transform duration-300',
+          'md:translate-x-0',
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+        )}
       >
         <div className="flex flex-col h-full">
-          <div className="p-6">
+          <div className="p-6 flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3">
               <img src="/images/logo-icon.svg" alt="" className="w-10 h-10" aria-hidden="true" />
               <div>
@@ -63,6 +98,13 @@ export default function Layout({ children }: LayoutProps) {
                 <p className="text-xs text-text-muted dark:text-text-muted-dark">Gestão para Fisioterapia</p>
               </div>
             </Link>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="md:hidden p-1 text-text-muted dark:text-text-muted-dark hover:text-text dark:hover:text-slate-100"
+              aria-label="Close menu"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
 
           <nav aria-label={t('navigation.main')}>
@@ -118,11 +160,12 @@ export default function Layout({ children }: LayoutProps) {
         </div>
       </aside>
 
-      <main id="main-content" className="ml-64 p-8 pb-32">
+      {/* Main content */}
+      <main id="main-content" className="md:ml-64 pt-14 md:pt-0 md:p-8 p-4 pb-32">
         {children || <Outlet />}
       </main>
 
-      <div className="ml-64">
+      <div className="md:ml-64">
         <Footer onReviewClick={openModal} canReview={canReview} />
       </div>
 
