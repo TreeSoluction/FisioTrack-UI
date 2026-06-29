@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { CreditCard, ExternalLink, AlertTriangle, CheckCircle } from 'lucide-react';
+import { CreditCard, ExternalLink, AlertTriangle, CheckCircle, Download, Shield, XCircle, Mail, Trash2 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import api from '../lib/api';
@@ -19,6 +19,7 @@ export default function Settings() {
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
   const [polling, setPolling] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     fetchSubscription();
@@ -77,7 +78,7 @@ export default function Settings() {
   }
 
   async function handleCancel() {
-    if (!confirm('Tem certeza que deseja cancelar sua assinatura? Ela permanecerá ativa até o fim do período.')) {
+    if (!confirm(t('settings.confirmCancelSubscription'))) {
       return;
     }
 
@@ -98,6 +99,62 @@ export default function Settings() {
     }
   }
 
+  async function handleExportData() {
+    if (!confirm(t('lgpd.exportDescription'))) return;
+
+    setExporting(true);
+    try {
+      const response = await api.get('/users/me/export');
+      const data = response.data;
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `fisiotrack-export-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      alert(t('lgpd.exportSuccess'));
+    } catch (err: any) {
+      alert(err.response?.data?.message || t('common.error'));
+    } finally {
+      setExporting(false);
+    }
+  }
+
+  async function handleRevokeConsent() {
+    if (!confirm(t('lgpd.revokeDescription'))) return;
+
+    try {
+      const types = ['PRIVACY_POLICY', 'TERMS_OF_USE', 'CONSENT_TERMS'];
+      for (const type of types) {
+        await api.delete(`/consent/${type}`).catch(() => {});
+      }
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      alert(t('consent.revoked'));
+      window.location.href = '/login';
+    } catch (err: any) {
+      alert(err.response?.data?.message || t('common.error'));
+    }
+  }
+
+  async function handleDeleteAccount() {
+    if (!confirm(t('settings.confirmDelete'))) return;
+    if (!confirm(t('settings.confirmDeleteFinal'))) return;
+
+    try {
+      await api.delete('/users/me');
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      alert(t('settings.accountDeleted'));
+      window.location.href = '/login';
+    } catch (err: any) {
+      alert(err.response?.data?.message || t('common.error'));
+    }
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background dark:bg-background-dark">
@@ -112,15 +169,16 @@ export default function Settings() {
   return (
     <div className="min-h-screen bg-background dark:bg-background-dark py-12">
       <div className="max-w-2xl mx-auto px-4">
-        <h1 className="text-3xl font-bold text-text dark:text-slate-100 mb-8">Configurações</h1>
+        <h1 className="text-3xl font-bold text-text dark:text-slate-100 mb-8">{t('settings.title')}</h1>
 
         {polling && (
           <div className="mb-6 p-4 bg-primary/10 text-primary rounded-lg flex items-center gap-3">
             <div className="animate-spin w-5 h-5 border-2 border-primary border-t-transparent rounded-full" />
-            Verificando status do pagamento...
+            {t('settings.checkingPayment')}
           </div>
         )}
 
+        {/* Subscription */}
         <Card className="mb-6">
           <div className="flex items-center gap-4 mb-6">
             <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${isPro ? 'bg-primary/10' : 'bg-slate-100 dark:bg-slate-700'}`}>
@@ -128,10 +186,10 @@ export default function Settings() {
             </div>
             <div>
               <h2 className="text-xl font-bold text-text dark:text-slate-100">
-                Plano {subscription?.plan || 'Gratuito'}
+                {t('settings.plan')} {subscription?.plan || 'FREE'}
               </h2>
               <p className="text-sm text-text-muted dark:text-text-muted-dark">
-                {isPro ? 'Acesso completo a todas as funcionalidades' : 'Funcionalidades limitadas'}
+                {isPro ? t('settings.fullAccess') : t('settings.limitedFeatures')}
               </p>
             </div>
           </div>
@@ -139,7 +197,7 @@ export default function Settings() {
           {isPro && subscription?.currentPeriodEnd && (
             <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
               <p className="text-sm text-text-muted dark:text-text-muted-dark">
-                {isCancelled ? 'Sua assinatura será cancelada em:' : 'Próxima cobrança:'}
+                {isCancelled ? t('settings.subscriptionEnds') : t('settings.nextBilling')}
               </p>
               <p className="font-semibold text-text dark:text-slate-100">
                 {new Date(subscription.currentPeriodEnd).toLocaleDateString('pt-BR')}
@@ -153,7 +211,7 @@ export default function Settings() {
                 onClick={() => window.location.href = '/pricing'}
                 className="w-full bg-primary text-white hover:bg-primary-dark"
               >
-                Assinar PRO
+                {t('settings.subscribePro')}
               </Button>
             ) : (
               <>
@@ -163,7 +221,7 @@ export default function Settings() {
                   className="w-full justify-center gap-2"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  Gerenciar Pagamento
+                  {t('settings.managePayment')}
                 </Button>
 
                 {isCancelled ? (
@@ -172,7 +230,7 @@ export default function Settings() {
                     className="w-full bg-success text-white hover:bg-green-600"
                   >
                     <CheckCircle className="w-4 h-4 mr-2" />
-                    Reativar Assinatura
+                    {t('settings.reactivate')}
                   </Button>
                 ) : (
                   <Button
@@ -181,12 +239,91 @@ export default function Settings() {
                     className="w-full text-danger hover:bg-danger/10"
                   >
                     <AlertTriangle className="w-4 h-4 mr-2" />
-                    Cancelar Assinatura
+                    {t('settings.cancelSubscription')}
                   </Button>
                 )}
               </>
             )}
           </div>
+        </Card>
+
+        {/* LGPD Data Rights */}
+        <Card className="mb-6">
+          <div className="flex items-center gap-3 mb-6">
+            <Shield className="w-6 h-6 text-primary" />
+            <h2 className="text-xl font-bold text-text dark:text-slate-100">{t('lgpd.yourRights')}</h2>
+          </div>
+
+          <div className="space-y-3">
+            <button
+              onClick={handleExportData}
+              disabled={exporting}
+              className="w-full flex items-center justify-between p-4 rounded-lg border border-border dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <Download className="w-5 h-5 text-primary" />
+                <div className="text-left">
+                  <p className="font-medium text-text dark:text-slate-100">{t('lgpd.exportData')}</p>
+                  <p className="text-sm text-text-muted dark:text-text-muted-dark">{t('lgpd.exportDescription')}</p>
+                </div>
+              </div>
+              {exporting && <div className="animate-spin w-5 h-5 border-2 border-primary border-t-transparent rounded-full" />}
+            </button>
+
+            <button
+              onClick={handleRevokeConsent}
+              className="w-full flex items-center justify-between p-4 rounded-lg border border-border dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <XCircle className="w-5 h-5 text-accent" />
+                <div className="text-left">
+                  <p className="font-medium text-text dark:text-slate-100">{t('lgpd.revokeConsent')}</p>
+                  <p className="text-sm text-text-muted dark:text-text-muted-dark">{t('lgpd.revokeDescription')}</p>
+                </div>
+              </div>
+            </button>
+
+            <a
+              href="mailto:soluctiontree@gmail.com?subject=FisioTrack - Dúvidas LGPD"
+              className="w-full flex items-center justify-between p-4 rounded-lg border border-border dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <Mail className="w-5 h-5 text-secondary" />
+                <div className="text-left">
+                  <p className="font-medium text-text dark:text-slate-100">{t('lgpd.contactDPO')}</p>
+                  <p className="text-sm text-text-muted dark:text-text-muted-dark">soluctiontree@gmail.com</p>
+                </div>
+              </div>
+            </a>
+          </div>
+        </Card>
+
+        {/* Data Security Info */}
+        <Card className="mb-6">
+          <div className="flex items-center gap-3 mb-4">
+            <Shield className="w-6 h-6 text-success" />
+            <h2 className="text-xl font-bold text-text dark:text-slate-100">{t('lgpd.dataSecurity')}</h2>
+          </div>
+          <p className="text-sm text-text-muted dark:text-text-muted-dark leading-relaxed">
+            {t('lgpd.dataSecurityInfo')}
+          </p>
+        </Card>
+
+        {/* Danger Zone */}
+        <Card className="border-danger/30">
+          <h2 className="text-xl font-bold text-danger mb-4">{t('settings.dangerZone')}</h2>
+          <button
+            onClick={handleDeleteAccount}
+            className="w-full flex items-center justify-between p-4 rounded-lg border border-danger/30 hover:bg-danger/5 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <Trash2 className="w-5 h-5 text-danger" />
+              <div className="text-left">
+                <p className="font-medium text-danger">{t('settings.deleteAccount')}</p>
+                <p className="text-sm text-text-muted dark:text-text-muted-dark">{t('settings.deleteAccountDescription')}</p>
+              </div>
+            </div>
+          </button>
         </Card>
       </div>
     </div>

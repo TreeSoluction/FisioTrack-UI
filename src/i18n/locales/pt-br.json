@@ -399,5 +399,36 @@
     "contact": "Contato",
     "copyright": "Todos os direitos reservados.",
     "review": "Avalie-nos"
+  },
+  "settings": {
+    "title": "Configurações",
+    "plan": "Plano",
+    "fullAccess": "Acesso completo a todas as funcionalidades",
+    "limitedFeatures": "Funcionalidades limitadas",
+    "subscribePro": "Assinar PRO",
+    "managePayment": "Gerenciar Pagamento",
+    "cancelSubscription": "Cancelar Assinatura",
+    "reactivate": "Reativar Assinatura",
+    "confirmCancelSubscription": "Tem certeza que deseja cancelar sua assinatura? Ela permanecerá ativa até o fim do período.",
+    "checkingPayment": "Verificando status do pagamento...",
+    "subscriptionEnds": "Sua assinatura será cancelada em:",
+    "nextBilling": "Próxima cobrança:",
+    "dangerZone": "Zona de Perigo",
+    "deleteAccount": "Excluir Conta",
+    "deleteAccountDescription": "Esta ação é irreversível. Todos os seus dados serão permanentemente excluídos.",
+    "confirmDelete": "Tem certeza que deseja excluir sua conta?",
+    "confirmDeleteFinal": "Esta ação é IRREVERSÍVEL. Confirma a exclusão?",
+    "accountDeleted": "Conta excluída com sucesso"
+  },
+  "lgpd": {
+    "yourRights": "Seus Direitos (LGPD)",
+    "exportData": "Exportar Meus Dados",
+    "exportDescription": "Seus dados serão exportados em formato JSON.",
+    "exportSuccess": "Dados exportados com sucesso.",
+    "revokeConsent": "Revogar Consentimento",
+    "revokeDescription": "Isso revogará seu consentimento para todos os documentos. Você precisará consentir novamente para usar o sistema.",
+    "contactDPO": "Contatar DPO",
+    "dataSecurity": "Segurança dos Dados",
+    "dataSecurityInfo": "Seus dados sensíveis (CPF, telefone, email, endereço, histórico médico) são criptografados com AES-256-GCM. Apenas você tem acesso aos seus dados."
   }
 }
