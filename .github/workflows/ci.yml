@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: soluctiontree/soluctiontree:frontend
+  IMAGE_NAME: soluctiontree/soluctiontree:fisiotrack-frontend
 
 jobs:
   build-push:
