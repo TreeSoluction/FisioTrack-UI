@@ -4,6 +4,8 @@ import { ArrowLeft, Plus, Activity, Calendar, TrendingUp } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
+import { SkeletonCard, SkeletonText } from '../components/ui/Skeleton';
+import ErrorState from '../components/ui/ErrorState';
 import api from '../lib/api';
 import type { Patient, Treatment, DashboardData } from '../types';
 
@@ -14,6 +16,7 @@ export default function PacienteDetail() {
   const [tratamentos, setTratamentos] = useState<Treatment[]>([]);
   const [dashboardData, setDashboardData] = useState<DashboardData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     loadData();
@@ -21,6 +24,8 @@ export default function PacienteDetail() {
 
   async function loadData() {
     try {
+      setError(null);
+      setLoading(true);
       const [pacienteRes, tratamentosRes, dashboardRes] = await Promise.all([
         api.get(`/patients/${id}`),
         api.get('/treatments'),
@@ -31,17 +36,45 @@ export default function PacienteDetail() {
         tratamentosRes.data.filter((t: Treatment) => t.patient?.id === id)
       );
       setDashboardData(dashboardRes.data);
-    } catch (error) {
-      console.error('Error loading data:', error);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erro ao carregar dados do paciente.');
     } finally {
       setLoading(false);
     }
   }
 
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-wrap items-center gap-4">
+          <Link to="/patients" className="p-2 text-text-muted dark:text-text-muted-dark hover:text-text dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
+            <ArrowLeft className="w-5 h-5" />
+          </Link>
+        </div>
+        <ErrorState message={error} onRetry={loadData} />
+      </div>
+    );
+  }
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-text-muted dark:text-text-muted-dark">{t('common.loading')}</div>
+      <div className="space-y-6">
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="p-2"><ArrowLeft className="w-5 h-5 text-text-muted" /></div>
+          <div className="flex-1 min-w-0 space-y-2">
+            <SkeletonText className="w-48 h-8" />
+            <SkeletonText className="w-32" />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
       </div>
     );
   }

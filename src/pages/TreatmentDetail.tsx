@@ -4,6 +4,8 @@ import { ArrowLeft, Plus, Calendar, Activity, TrendingUp, DollarSign } from 'luc
 import { useTranslation } from 'react-i18next';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
+import { SkeletonCard, SkeletonText } from '../components/ui/Skeleton';
+import ErrorState from '../components/ui/ErrorState';
 import api from '../lib/api';
 import type { Treatment, Session } from '../types';
 import { format } from 'date-fns';
@@ -16,6 +18,7 @@ export default function TratamentoDetail() {
   const [tratamento, setTratamento] = useState<Treatment | null>(null);
   const [sessoes, setSessoes] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     loadData();
@@ -23,20 +26,50 @@ export default function TratamentoDetail() {
 
   async function loadData() {
     try {
+      setError(null);
+      setLoading(true);
       const response = await api.get(`/treatments/${id}`);
       setTratamento(response.data);
       setSessoes(response.data.sessions || []);
-    } catch (error) {
-      console.error('Error loading treatment:', error);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erro ao carregar tratamento.');
     } finally {
       setLoading(false);
     }
   }
 
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-wrap items-center gap-4">
+          <button onClick={() => navigate(-1)} className="p-2 text-text-muted dark:text-text-muted-dark hover:text-text dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+        </div>
+        <ErrorState message={error} onRetry={loadData} />
+      </div>
+    );
+  }
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-text-muted dark:text-text-muted-dark">{t('common.loading')}</div>
+      <div className="space-y-6">
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="p-2"><ArrowLeft className="w-5 h-5 text-text-muted" /></div>
+          <div className="flex-1 min-w-0 space-y-2">
+            <SkeletonText className="w-64 h-8" />
+            <SkeletonText className="w-32" />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
       </div>
     );
   }

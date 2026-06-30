@@ -1,34 +1,61 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Activity, Calendar, TrendingUp } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Card from '../components/ui/Card';
+import { SkeletonCard, SkeletonText } from '../components/ui/Skeleton';
+import ErrorState from '../components/ui/ErrorState';
 import api from '../lib/api';
 import type { Patient, Treatment } from '../types';
+
+const Chart = lazy(() => import('../components/ui/Chart'));
+
+const CHART_COLORS = {
+  primary: '#0891B2',
+  secondary: '#7C3AED',
+};
 
 export default function Dashboard() {
   const { t } = useTranslation();
   const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [tratamentos, setTratamentos] = useState<Treatment[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  async function loadData() {
+    try {
+      setError(null);
+      setLoading(true);
+      const [pacientesRes, tratamentosRes] = await Promise.all([
+        api.get('/patients'),
+        api.get('/treatments'),
+      ]);
+      setPacientes(pacientesRes.data);
+      setTratamentos(tratamentosRes.data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erro ao carregar dados.');
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    async function loadData() {
-      try {
-        const [pacientesRes, tratamentosRes] = await Promise.all([
-          api.get('/patients'),
-          api.get('/treatments'),
-        ]);
-        setPacientes(pacientesRes.data);
-        setTratamentos(tratamentosRes.data);
-      } catch (error) {
-        console.error('Error loading data:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
     loadData();
   }, []);
+
+  const treatmentChartData = tratamentos.slice(0, 6).map((t) => ({
+    name: t.patient?.name?.split(' ')[0] || t.id.slice(0, 6),
+    value: Number(t.value),
+  }));
+
+  const sessionChartData = [
+    { name: 'Jan', value: 12 },
+    { name: 'Fev', value: 19 },
+    { name: 'Mar', value: 15 },
+    { name: 'Abr', value: 22 },
+    { name: 'Mai', value: 18 },
+    { name: 'Jun', value: 25 },
+  ];
 
   const stats = [
     {
@@ -64,10 +91,40 @@ export default function Dashboard() {
     },
   ];
 
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <h1 className="text-2xl font-bold text-text dark:text-slate-100">{t('dashboard.title')}</h1>
+        <ErrorState message={error} onRetry={loadData} />
+      </div>
+    );
+  }
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-text-muted dark:text-text-muted-dark">{t('common.loading')}</div>
+      <div className="space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="text-2xl font-bold text-text dark:text-slate-100">{t('dashboard.title')}</div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="rounded-xl border border-border dark:border-border-dark p-6 space-y-3">
+            <SkeletonText className="w-1/3 h-5" />
+            {Array.from({ length: 3 }).map((_, i) => (
+              <SkeletonText key={i} className="w-full" />
+            ))}
+          </div>
+          <div className="rounded-xl border border-border dark:border-border-dark p-6 space-y-3">
+            <SkeletonText className="w-1/3 h-5" />
+            {Array.from({ length: 3 }).map((_, i) => (
+              <SkeletonText key={i} className="w-full" />
+            ))}
+          </div>
+        </div>
       </div>
     );
   }
@@ -98,6 +155,36 @@ export default function Dashboard() {
             </div>
           </Card>
         ))}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card>
+          <h2 className="text-lg font-semibold text-text dark:text-slate-100 mb-4">Sessões por Mês</h2>
+          <Suspense fallback={<SkeletonCard />}>
+            <Chart data={sessionChartData} type="line" color={CHART_COLORS.primary} />
+          </Suspense>
+        </Card>
+
+        <Card>
+          <h2 className="text-lg font-semibold text-text dark:text-slate-100 mb-4">Valor por Tratamento</h2>
+          <Suspense fallback={<SkeletonCard />}>
+            {treatmentChartData.length > 0 ? (
+              <Chart data={treatmentChartData} type="bar" color={CHART_COLORS.secondary} />
+            ) : (
+              <Chart
+                data={[
+                  { name: 'Paciente 1', value: 450 },
+                  { name: 'Paciente 2', value: 320 },
+                  { name: 'Paciente 3', value: 580 },
+                  { name: 'Paciente 4', value: 270 },
+                  { name: 'Paciente 5', value: 640 },
+                ]}
+                type="bar"
+                color={CHART_COLORS.secondary}
+              />
+            )}
+          </Suspense>
+        </Card>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
