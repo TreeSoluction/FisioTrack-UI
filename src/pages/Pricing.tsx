@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import { Check, Zap } from 'lucide-react';
 import Button from '../components/ui/Button';
+import { SkeletonCard, SkeletonText } from '../components/ui/Skeleton';
 import api from '../lib/api';
 
 interface PricingData {
@@ -48,7 +50,7 @@ export default function Pricing() {
         window.location.href = response.data.paymentUrl;
       }
     } catch (err: any) {
-      alert(err.response?.data?.message || t('common.error'));
+      toast.error(err.response?.data?.message || t('common.error'));
     } finally {
       setCheckoutLoading(false);
     }
@@ -78,8 +80,21 @@ export default function Pricing() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background dark:bg-background-dark">
-        <p className="text-text-muted">{t('common.loading')}</p>
+      <div className="min-h-screen bg-background dark:bg-background-dark py-12">
+        <div className="max-w-4xl mx-auto px-4 space-y-8">
+          <div className="text-center space-y-2">
+            <SkeletonText className="w-64 h-8 mx-auto" />
+            <SkeletonText className="w-96 mx-auto" />
+          </div>
+          <div className="flex justify-center gap-2">
+            <SkeletonText className="w-20 h-10" />
+            <SkeletonText className="w-20 h-10" />
+            <SkeletonText className="w-20 h-10" />
+          </div>
+          <div className="max-w-md mx-auto">
+            <SkeletonCard />
+          </div>
+        </div>
       </div>
     );
   }

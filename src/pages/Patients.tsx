@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Plus, Edit, Trash2, Eye } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, Eye, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
+import ConfirmDialog from '../components/ui/ConfirmDialog';
+import { SkeletonText } from '../components/ui/Skeleton';
+import ErrorState from '../components/ui/ErrorState';
+import EmptyState from '../components/ui/EmptyState';
 import api from '../lib/api';
 import type { Patient } from '../types';
 
@@ -13,6 +17,8 @@ export default function Pacientes() {
   const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   useEffect(() => {
     loadPacientes();
@@ -20,23 +26,23 @@ export default function Pacientes() {
 
   async function loadPacientes() {
     try {
+      setError(null);
+      setLoading(true);
       const response = await api.get('/patients');
       setPacientes(response.data);
-    } catch (error) {
-      console.error('Error loading patients:', error);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erro ao carregar pacientes.');
     } finally {
       setLoading(false);
     }
   }
 
   async function handleDelete(id: string) {
-    if (window.confirm(t('patients.confirmDelete'))) {
-      try {
-        await api.delete(`/patients/${id}`);
-        setPacientes(pacientes.filter((p) => p.id !== id));
-      } catch (error) {
-        console.error('Error deleting patient:', error);
-      }
+    try {
+      await api.delete(`/patients/${id}`);
+      setPacientes(pacientes.filter((p) => p.id !== id));
+    } catch (error) {
+      console.error('Error deleting patient:', error);
     }
   }
 
@@ -68,13 +74,31 @@ export default function Pacientes() {
         />
       </div>
 
+      {error && !loading && (
+        <ErrorState message={error} onRetry={loadPacientes} />
+      )}
+
+      {!error && (
       <Card>
         {loading ? (
-          <div className="text-center py-8 text-text-muted dark:text-text-muted-dark">{t('common.loading')}</div>
-        ) : filteredPacientes.length === 0 ? (
-          <div className="text-center py-8 text-text-muted dark:text-text-muted-dark">
-            {search ? t('patients.noResults') : t('patients.noData')}
+          <div className="space-y-4">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-4 py-3">
+                <SkeletonText className="w-1/4" />
+                <SkeletonText className="w-1/5" />
+                <SkeletonText className="w-1/5" />
+                <SkeletonText className="w-1/6" />
+              </div>
+            ))}
           </div>
+        ) : filteredPacientes.length === 0 ? (
+          <EmptyState
+            icon={Users}
+            title={search ? t('patients.noResults') : t('patients.noData')}
+            description={search ? t('patients.noResults') : t('patients.noData')}
+            actionLabel={!search ? t('patients.newPatient') : undefined}
+            onAction={!search ? () => window.location.href = '/patients/new' : undefined}
+          />
         ) : (
           <>
             {/* Desktop table */}
@@ -123,7 +147,7 @@ export default function Pacientes() {
                             <Edit className="w-4 h-4" />
                           </Link>
                           <button
-                            onClick={() => handleDelete(paciente.id)}
+                            onClick={() => setConfirmDeleteId(paciente.id)}
                             className="p-2 text-text-muted dark:text-text-muted-dark hover:text-danger hover:bg-danger/10 rounded-lg transition-colors"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -174,7 +198,7 @@ export default function Pacientes() {
                       <Edit className="w-4 h-4" />
                     </Link>
                     <button
-                      onClick={() => handleDelete(paciente.id)}
+                      onClick={() => setConfirmDeleteId(paciente.id)}
                       className="p-2 text-text-muted dark:text-text-muted-dark hover:text-danger hover:bg-danger/10 rounded-lg transition-colors"
                       aria-label={t('common.delete')}
                     >
@@ -187,6 +211,20 @@ export default function Pacientes() {
           </>
         )}
       </Card>
+      )}
+
+      <ConfirmDialog
+        isOpen={confirmDeleteId !== null}
+        title={t('patients.confirmDelete')}
+        message={t('patients.confirmDelete')}
+        onConfirm={() => {
+          if (confirmDeleteId) {
+            handleDelete(confirmDeleteId);
+            setConfirmDeleteId(null);
+          }
+        }}
+        onCancel={() => setConfirmDeleteId(null)}
+      />
     </div>
   );
 }

@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import { CreditCard, ExternalLink, AlertTriangle, CheckCircle, Download, Shield, XCircle, Mail, Trash2 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
+import ConfirmDialog from '../components/ui/ConfirmDialog';
+import { SkeletonCard } from '../components/ui/Skeleton';
 import api from '../lib/api';
 
 interface Subscription {
@@ -11,6 +14,8 @@ interface Subscription {
   status: string;
   currentPeriodEnd: string | null;
   cancelAtPeriodEnd: boolean;
+  isOneTime?: boolean;
+  oneTimeExpiresAt?: string | null;
 }
 
 export default function Settings() {
@@ -21,6 +26,14 @@ export default function Settings() {
   const [polling, setPolling] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [priceChanged, setPriceChanged] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
+  const [paymentMessage, setPaymentMessage] = useState('');
+
+  const [confirmCancelOpen, setConfirmCancelOpen] = useState(false);
+  const [confirmExportOpen, setConfirmExportOpen] = useState(false);
+  const [confirmRevokeOpen, setConfirmRevokeOpen] = useState(false);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [confirmDeleteFinalOpen, setConfirmDeleteFinalOpen] = useState(false);
 
   useEffect(() => {
     fetchSubscription();
@@ -29,11 +42,26 @@ export default function Settings() {
       setPriceChanged(true);
     }
 
+    const payment = searchParams.get('payment');
     const sessionId = searchParams.get('session_id');
-    if (sessionId) {
+    const preferenceId = searchParams.get('preference_id');
+
+    if (payment === 'success') {
+      setPaymentStatus('success');
+      setPaymentMessage(t('settings.paymentSuccess'));
+      startPaymentPolling();
+    } else if (payment === 'pending') {
+      setPaymentStatus('pending');
+      setPaymentMessage(t('settings.paymentPending'));
+      startPaymentPolling();
+    } else if (payment === 'failure') {
+      setPaymentStatus('error');
+      setPaymentMessage(t('settings.paymentFailed'));
+    } else if (sessionId || preferenceId) {
       startPolling();
-      setSearchParams({});
     }
+
+    setSearchParams({});
   }, []);
 
   async function fetchSubscription() {
@@ -71,6 +99,37 @@ export default function Settings() {
     }, 2000);
   }
 
+  function startPaymentPolling() {
+    setPolling(true);
+    let attempts = 0;
+    const maxAttempts = 20;
+
+    const interval = setInterval(async () => {
+      attempts++;
+      try {
+        const response = await api.get('/billing/subscription');
+        setSubscription(response.data);
+
+        if (response.data.plan === 'PRO') {
+          setPaymentStatus('success');
+          setPaymentMessage(t('settings.paymentActivated'));
+          clearInterval(interval);
+          setPolling(false);
+        } else if (attempts >= maxAttempts) {
+          setPaymentStatus('pending');
+          setPaymentMessage(t('settings.paymentStillPending'));
+          clearInterval(interval);
+          setPolling(false);
+        }
+      } catch (err) {
+        if (attempts >= maxAttempts) {
+          clearInterval(interval);
+          setPolling(false);
+        }
+      }
+    }, 3000);
+  }
+
   async function handleOpenPortal() {
     try {
       const response = await api.post('/billing/portal');
@@ -78,20 +137,17 @@ export default function Settings() {
         window.location.href = response.data.url;
       }
     } catch (err: any) {
-      alert(err.response?.data?.message || t('common.error'));
+      toast.error(err.response?.data?.message || t('common.error'));
     }
   }
 
-  async function handleCancel() {
-    if (!confirm(t('settings.confirmCancelSubscription'))) {
-      return;
-    }
-
+  async function handleCancelConfirm() {
+    setConfirmCancelOpen(false);
     try {
       await api.post('/billing/cancel');
       fetchSubscription();
     } catch (err: any) {
-      alert(err.response?.data?.message || t('common.error'));
+      toast.error(err.response?.data?.message || t('common.error'));
     }
   }
 
@@ -100,13 +156,12 @@ export default function Settings() {
       await api.post('/billing/reactivate');
       fetchSubscription();
     } catch (err: any) {
-      alert(err.response?.data?.message || t('common.error'));
+      toast.error(err.response?.data?.message || t('common.error'));
     }
   }
 
-  async function handleExportData() {
-    if (!confirm(t('lgpd.exportDescription'))) return;
-
+  async function handleExportConfirm() {
+    setConfirmExportOpen(false);
     setExporting(true);
     try {
       const response = await api.get('/users/me/export');
@@ -120,17 +175,16 @@ export default function Settings() {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      alert(t('lgpd.exportSuccess'));
+      toast.success(t('lgpd.exportSuccess'));
     } catch (err: any) {
-      alert(err.response?.data?.message || t('common.error'));
+      toast.error(err.response?.data?.message || t('common.error'));
     } finally {
       setExporting(false);
     }
   }
 
-  async function handleRevokeConsent() {
-    if (!confirm(t('lgpd.revokeDescription'))) return;
-
+  async function handleRevokeConfirm() {
+    setConfirmRevokeOpen(false);
     try {
       const types = ['PRIVACY_POLICY', 'TERMS_OF_USE', 'CONSENT_TERMS'];
       for (const type of types) {
@@ -138,38 +192,43 @@ export default function Settings() {
       }
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      alert(t('consent.revoked'));
+      toast.success(t('consent.revoked'));
       window.location.href = '/login';
     } catch (err: any) {
-      alert(err.response?.data?.message || t('common.error'));
+      toast.error(err.response?.data?.message || t('common.error'));
     }
   }
 
-  async function handleDeleteAccount() {
-    if (!confirm(t('settings.confirmDelete'))) return;
-    if (!confirm(t('settings.confirmDeleteFinal'))) return;
-
+  async function handleDeleteAccountFinalConfirm() {
+    setConfirmDeleteFinalOpen(false);
     try {
       await api.delete('/users/me');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      alert(t('settings.accountDeleted'));
+      toast.success(t('settings.accountDeleted'));
       window.location.href = '/login';
     } catch (err: any) {
-      alert(err.response?.data?.message || t('common.error'));
+      toast.error(err.response?.data?.message || t('common.error'));
     }
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background dark:bg-background-dark">
-        <p className="text-text-muted">{t('common.loading')}</p>
+      <div className="min-h-screen bg-background dark:bg-background-dark py-12">
+        <div className="max-w-2xl mx-auto px-4 space-y-6">
+          <div className="text-3xl font-bold text-text dark:text-slate-100">{t('settings.title')}</div>
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
       </div>
     );
   }
 
   const isPro = subscription?.plan === 'PRO';
   const isCancelled = subscription?.cancelAtPeriodEnd;
+  const isOneTime = subscription?.isOneTime;
+  const oneTimeExpiresAt = subscription?.oneTimeExpiresAt;
 
   return (
     <div className="min-h-screen bg-background dark:bg-background-dark py-12">
@@ -184,7 +243,26 @@ export default function Settings() {
           </div>
         )}
 
-        {polling && (
+        {paymentStatus && (
+          <div className={`mb-6 p-4 rounded-lg flex items-center gap-3 ${
+            paymentStatus === 'success' ? 'bg-success/10 border border-success/30' :
+            paymentStatus === 'pending' ? 'bg-warning/10 border border-warning/30' :
+            'bg-danger/10 border border-danger/30'
+          }`}>
+            {paymentStatus === 'success' && <CheckCircle className="w-5 h-5 text-success" />}
+            {paymentStatus === 'pending' && <div className="animate-spin w-5 h-5 border-2 border-warning border-t-transparent rounded-full" />}
+            {paymentStatus === 'error' && <AlertTriangle className="w-5 h-5 text-danger" />}
+            <p className={`font-medium ${
+              paymentStatus === 'success' ? 'text-success' :
+              paymentStatus === 'pending' ? 'text-warning' :
+              'text-danger'
+            }`}>
+              {paymentMessage}
+            </p>
+          </div>
+        )}
+
+        {polling && !paymentStatus && (
           <div className="mb-6 p-4 bg-primary/10 text-primary rounded-lg flex items-center gap-3">
             <div className="animate-spin w-5 h-5 border-2 border-primary border-t-transparent rounded-full" />
             {t('settings.checkingPayment')}
@@ -207,13 +285,24 @@ export default function Settings() {
             </div>
           </div>
 
-          {isPro && subscription?.currentPeriodEnd && (
+          {isPro && subscription?.currentPeriodEnd && !isOneTime && (
             <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
               <p className="text-sm text-text-muted dark:text-text-muted-dark">
                 {isCancelled ? t('settings.subscriptionEnds') : t('settings.nextBilling')}
               </p>
               <p className="font-semibold text-text dark:text-slate-100">
                 {new Date(subscription.currentPeriodEnd).toLocaleDateString('pt-BR')}
+              </p>
+            </div>
+          )}
+
+          {isPro && isOneTime && oneTimeExpiresAt && (
+            <div className="mb-6 p-4 bg-warning/10 border border-warning/30 rounded-lg">
+              <p className="text-sm text-warning font-medium">
+                {t('settings.oneTimeAccess')}
+              </p>
+              <p className="font-semibold text-text dark:text-slate-100">
+                {t('settings.accessUntil')} {new Date(oneTimeExpiresAt).toLocaleDateString('pt-BR')}
               </p>
             </div>
           )}
@@ -225,6 +314,13 @@ export default function Settings() {
                 className="w-full bg-primary text-white hover:bg-primary-dark"
               >
                 {t('settings.subscribePro')}
+              </Button>
+            ) : isOneTime ? (
+              <Button
+                onClick={() => window.location.href = '/pricing'}
+                className="w-full bg-primary text-white hover:bg-primary-dark"
+              >
+                {t('settings.renewAccess')}
               </Button>
             ) : (
               <>
@@ -247,7 +343,7 @@ export default function Settings() {
                   </Button>
                 ) : (
                   <Button
-                    onClick={handleCancel}
+                    onClick={() => setConfirmCancelOpen(true)}
                     variant="ghost"
                     className="w-full text-danger hover:bg-danger/10"
                   >
@@ -269,7 +365,7 @@ export default function Settings() {
 
           <div className="space-y-3">
             <button
-              onClick={handleExportData}
+              onClick={() => setConfirmExportOpen(true)}
               disabled={exporting}
               className="w-full flex items-center justify-between p-4 rounded-lg border border-border dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
             >
@@ -284,7 +380,7 @@ export default function Settings() {
             </button>
 
             <button
-              onClick={handleRevokeConsent}
+              onClick={() => setConfirmRevokeOpen(true)}
               className="w-full flex items-center justify-between p-4 rounded-lg border border-border dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
             >
               <div className="flex items-center gap-3">
@@ -326,7 +422,7 @@ export default function Settings() {
         <Card className="border-danger/30">
           <h2 className="text-xl font-bold text-danger mb-4">{t('settings.dangerZone')}</h2>
           <button
-            onClick={handleDeleteAccount}
+            onClick={() => setConfirmDeleteOpen(true)}
             className="w-full flex items-center justify-between p-4 rounded-lg border border-danger/30 hover:bg-danger/5 transition-colors"
           >
             <div className="flex items-center gap-3">
@@ -339,6 +435,54 @@ export default function Settings() {
           </button>
         </Card>
       </div>
+
+      <ConfirmDialog
+        isOpen={confirmCancelOpen}
+        title={t('settings.cancelSubscription')}
+        message={t('settings.confirmCancelSubscription')}
+        onConfirm={handleCancelConfirm}
+        onCancel={() => setConfirmCancelOpen(false)}
+        variant="warning"
+      />
+
+      <ConfirmDialog
+        isOpen={confirmExportOpen}
+        title={t('lgpd.exportData')}
+        message={t('lgpd.exportDescription')}
+        onConfirm={handleExportConfirm}
+        onCancel={() => setConfirmExportOpen(false)}
+        variant="info"
+      />
+
+      <ConfirmDialog
+        isOpen={confirmRevokeOpen}
+        title={t('lgpd.revokeConsent')}
+        message={t('lgpd.revokeDescription')}
+        onConfirm={handleRevokeConfirm}
+        onCancel={() => setConfirmRevokeOpen(false)}
+        variant="danger"
+      />
+
+      <ConfirmDialog
+        isOpen={confirmDeleteOpen}
+        title={t('settings.deleteAccount')}
+        message={t('settings.confirmDelete')}
+        onConfirm={() => {
+          setConfirmDeleteOpen(false);
+          setConfirmDeleteFinalOpen(true);
+        }}
+        onCancel={() => setConfirmDeleteOpen(false)}
+        variant="danger"
+      />
+
+      <ConfirmDialog
+        isOpen={confirmDeleteFinalOpen}
+        title={t('settings.deleteAccount')}
+        message={t('settings.confirmDeleteFinal')}
+        onConfirm={handleDeleteAccountFinalConfirm}
+        onCancel={() => setConfirmDeleteFinalOpen(false)}
+        variant="danger"
+      />
     </div>
   );
 }
