@@ -7,6 +7,7 @@ import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import api from '../lib/api';
 import ConsentModal from '../components/ConsentModal';
+import { validateEmail } from '../lib/validations';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -17,9 +18,51 @@ export default function Login() {
   const [error, setError] = useState('');
   const [showConsent, setShowConsent] = useState(false);
   const [missingDocuments, setMissingDocuments] = useState<string[]>([]);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  function validateField(name: string, value: string): string {
+    switch (name) {
+      case 'email':
+        if (!value.trim()) return 'Email é obrigatório';
+        if (!validateEmail(value)) return 'Email inválido';
+        return '';
+      case 'password':
+        if (!value) return 'Senha é obrigatória';
+        if (value.length < 6) return 'Senha deve ter pelo menos 6 caracteres';
+        return '';
+      default:
+        return '';
+    }
+  }
+
+  function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    setTouched({ ...touched, [name]: true });
+    setErrors({ ...errors, [name]: validateField(name, value) });
+  }
+
+  function handleFieldChange(name: string, value: string) {
+    if (name === 'email') setEmail(value);
+    if (name === 'password') setPassword(value);
+    if (touched[name]) {
+      setErrors({ ...errors, [name]: validateField(name, value) });
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    const allTouched = { email: true, password: true };
+    const allErrors = {
+      email: validateField('email', email),
+      password: validateField('password', password),
+    };
+    setTouched(allTouched);
+    setErrors(allErrors);
+
+    if (Object.values(allErrors).some((e) => e)) return;
+
     setLoading(true);
     setError('');
 
@@ -79,9 +122,12 @@ export default function Login() {
           <Input
             label={t('auth.email')}
             type="email"
+            name="email"
             autoComplete="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => handleFieldChange('email', e.target.value)}
+            onBlur={handleBlur}
+            error={touched.email ? errors.email : undefined}
             placeholder="seu@email.com"
             required
           />
@@ -89,9 +135,12 @@ export default function Login() {
           <Input
             label={t('auth.password')}
             type="password"
+            name="password"
             autoComplete="current-password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => handleFieldChange('password', e.target.value)}
+            onBlur={handleBlur}
+            error={touched.password ? errors.password : undefined}
             placeholder="••••••••"
             required
           />

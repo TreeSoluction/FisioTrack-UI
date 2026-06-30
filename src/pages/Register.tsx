@@ -6,6 +6,7 @@ import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import api from '../lib/api';
+import { validateEmail, getPasswordStrength } from '../lib/validations';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -23,9 +24,47 @@ export default function Register() {
     termsOfUse: false,
     consentTerms: false,
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  function validateField(name: string, value: string): string {
+    switch (name) {
+      case 'name':
+        if (!value.trim()) return 'Nome é obrigatório';
+        if (value.trim().length < 2) return 'Nome deve ter pelo menos 2 caracteres';
+        return '';
+      case 'email':
+        if (!value.trim()) return 'Email é obrigatório';
+        if (!validateEmail(value)) return 'Email inválido';
+        return '';
+      case 'password':
+        if (!value) return 'Senha é obrigatória';
+        if (value.length < 8) return 'Senha deve ter pelo menos 8 caracteres';
+        return '';
+      case 'confirmPassword':
+        if (!value) return 'Confirmação de senha é obrigatória';
+        if (value !== formData.password) return 'Senhas não coincidem';
+        return '';
+      default:
+        return '';
+    }
+  }
+
+  function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    setTouched({ ...touched, [name]: true });
+    setErrors({ ...errors, [name]: validateField(name, value) });
+  }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    if (touched[name]) {
+      setErrors({ ...errors, [name]: validateField(name, value) });
+    }
+    if (name === 'password' && touched.confirmPassword) {
+      setErrors({ ...errors, confirmPassword: validateField('confirmPassword', formData.confirmPassword) });
+    }
   }
 
   function handleConsentChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -34,13 +73,22 @@ export default function Register() {
 
   const allConsentsAccepted = consents.privacyPolicy && consents.termsOfUse && consents.consentTerms;
 
+  const passwordStrength = getPasswordStrength(formData.password);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      setError(t('auth.passwordMismatch'));
-      return;
-    }
+    const allTouched = { name: true, email: true, password: true, confirmPassword: true };
+    const allErrors = {
+      name: validateField('name', formData.name),
+      email: validateField('email', formData.email),
+      password: validateField('password', formData.password),
+      confirmPassword: validateField('confirmPassword', formData.confirmPassword),
+    };
+    setTouched(allTouched);
+    setErrors(allErrors);
+
+    if (Object.values(allErrors).some((e) => e)) return;
 
     if (!allConsentsAccepted) {
       setError(t('consent.required'));
@@ -88,6 +136,8 @@ export default function Register() {
             autoComplete="name"
             value={formData.name}
             onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched.name ? errors.name : undefined}
             placeholder={t('auth.name')}
             required
           />
@@ -99,20 +149,55 @@ export default function Register() {
             autoComplete="email"
             value={formData.email}
             onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched.email ? errors.email : undefined}
             placeholder="seu@email.com"
             required
           />
 
-          <Input
-            label={t('auth.password')}
-            name="password"
-            type="password"
-            autoComplete="new-password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="••••••••"
-            required
-          />
+          <div>
+            <Input
+              label={t('auth.password')}
+              name="password"
+              type="password"
+              autoComplete="new-password"
+              value={formData.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.password ? errors.password : undefined}
+              placeholder="••••••••"
+              required
+            />
+            {formData.password.length > 0 && (
+              <div className="mt-2">
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <div
+                      key={i}
+                      className={`h-1 flex-1 rounded-full transition-colors ${
+                        i <= passwordStrength.score
+                          ? passwordStrength.score <= 2
+                            ? 'bg-danger'
+                            : passwordStrength.score <= 3
+                            ? 'bg-warning'
+                            : 'bg-success'
+                          : 'bg-slate-200 dark:bg-slate-600'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <p className={`text-xs mt-1 ${
+                  passwordStrength.score <= 2
+                    ? 'text-danger'
+                    : passwordStrength.score <= 3
+                    ? 'text-warning'
+                    : 'text-success'
+                }`}>
+                  {passwordStrength.label}
+                </p>
+              </div>
+            )}
+          </div>
 
           <Input
             label={t('auth.confirmPassword')}
@@ -121,6 +206,8 @@ export default function Register() {
             autoComplete="new-password"
             value={formData.confirmPassword}
             onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched.confirmPassword ? errors.confirmPassword : undefined}
             placeholder="••••••••"
             required
           />
