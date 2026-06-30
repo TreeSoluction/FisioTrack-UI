@@ -7,6 +7,7 @@ import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import api from '../lib/api';
+import { validateCPF, validateEmail, validatePhone } from '../lib/validations';
 
 export default function PacienteForm() {
   const navigate = useNavigate();
@@ -24,7 +25,8 @@ export default function PacienteForm() {
     medicalHistory: '',
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     if (isEditing) {
@@ -42,14 +44,58 @@ export default function PacienteForm() {
     }
   }
 
+  function validateField(name: string, value: string): string {
+    switch (name) {
+      case 'name':
+        if (!value.trim()) return 'Nome é obrigatório';
+        if (value.trim().length < 2) return 'Nome deve ter pelo menos 2 caracteres';
+        return '';
+      case 'cpf':
+        if (!value.trim()) return 'CPF é obrigatório';
+        if (!validateCPF(value)) return 'CPF inválido';
+        return '';
+      case 'phone':
+        if (!value.trim()) return 'Telefone é obrigatório';
+        if (!validatePhone(value)) return 'Telefone inválido';
+        return '';
+      case 'email':
+        if (!value.trim()) return 'Email é obrigatório';
+        if (!validateEmail(value)) return 'Email inválido';
+        return '';
+      default:
+        return '';
+    }
+  }
+
+  function handleBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    const { name, value } = e.target;
+    setTouched({ ...touched, [name]: true });
+    setErrors({ ...errors, [name]: validateField(name, value) });
+  }
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    if (touched[name]) {
+      setErrors({ ...errors, [name]: validateField(name, value) });
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    const allTouched: Record<string, boolean> = {};
+    const allErrors: Record<string, string> = {};
+    for (const [key, value] of Object.entries(formData)) {
+      allTouched[key] = true;
+      allErrors[key] = validateField(key, value);
+    }
+    setTouched(allTouched);
+    setErrors(allErrors);
+
+    if (Object.values(allErrors).some((e) => e)) return;
+
     setLoading(true);
-    setError('');
 
     try {
       if (isEditing) {
@@ -60,7 +106,6 @@ export default function PacienteForm() {
       toast.success(t('patients.saved'));
       navigate('/patients');
     } catch (error: any) {
-      setError(error.response?.data?.message || t('common.error'));
       toast.error(t('common.error'));
     } finally {
       setLoading(false);
@@ -83,18 +128,14 @@ export default function PacienteForm() {
 
       <Card>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="p-3 bg-danger/10 text-danger rounded-lg text-sm">
-              {error}
-            </div>
-          )}
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               label={t('patients.name')}
               name="name"
               value={formData.name}
               onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.name ? errors.name : undefined}
               required
             />
             <Input
@@ -102,6 +143,8 @@ export default function PacienteForm() {
               name="cpf"
               value={formData.cpf}
               onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.cpf ? errors.cpf : undefined}
               placeholder="000.000.000-00"
               required
             />
@@ -118,6 +161,8 @@ export default function PacienteForm() {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.phone ? errors.phone : undefined}
               placeholder="(00) 00000-0000"
               required
             />
@@ -127,6 +172,8 @@ export default function PacienteForm() {
               type="email"
               value={formData.email}
               onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.email ? errors.email : undefined}
             />
             <Input
               label={t('patients.address')}

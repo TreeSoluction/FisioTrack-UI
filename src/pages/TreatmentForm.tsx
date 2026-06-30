@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
+import Select from '../components/ui/Select';
+import Textarea from '../components/ui/Textarea';
 import Button from '../components/ui/Button';
 import api from '../lib/api';
 import type { Patient } from '../types';
@@ -27,12 +29,16 @@ export default function TratamentoForm() {
     endDate: '',
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     loadPacientes();
     if (isEditing) {
       loadTratamento();
+    }
+    if (pacienteIdFromUrl) {
+      setTouched((prev) => ({ ...prev, patientId: true }));
     }
   }, [id]);
 
@@ -63,14 +69,53 @@ export default function TratamentoForm() {
     }
   }
 
+  function validateField(name: string, value: string): string {
+    switch (name) {
+      case 'patientId':
+        if (!value) return 'Paciente é obrigatório';
+        return '';
+      case 'estimatedTime':
+        if (!value.trim()) return 'Tempo estimado é obrigatório';
+        return '';
+      case 'value':
+        if (!value) return 'Valor é obrigatório';
+        if (parseFloat(value) <= 0) return 'Valor deve ser positivo';
+        return '';
+      default:
+        return '';
+    }
+  }
+
+  function handleBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
+    const { name, value } = e.target;
+    setTouched({ ...touched, [name]: true });
+    setErrors({ ...errors, [name]: validateField(name, value) });
+  }
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    if (touched[name]) {
+      setErrors({ ...errors, [name]: validateField(name, value) });
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    const requiredFields = ['patientId', 'estimatedTime', 'value'];
+    const allTouched: Record<string, boolean> = {};
+    const allErrors: Record<string, string> = {};
+    for (const key of requiredFields) {
+      allTouched[key] = true;
+      allErrors[key] = validateField(key, formData[key as keyof typeof formData]);
+    }
+    setTouched(allTouched);
+    setErrors(allErrors);
+
+    if (Object.values(allErrors).some((e) => e)) return;
+
     setLoading(true);
-    setError('');
 
     try {
       const data = {
@@ -86,7 +131,6 @@ export default function TratamentoForm() {
       toast.success(t('treatments.saved'));
       navigate('/treatments');
     } catch (error: any) {
-      setError(error.response?.data?.message || t('common.error'));
       toast.error(t('common.error'));
     } finally {
       setLoading(false);
@@ -109,31 +153,22 @@ export default function TratamentoForm() {
 
       <Card>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="p-3 bg-danger/10 text-danger rounded-lg text-sm">
-              {error}
-            </div>
-          )}
-
-          <div>
-            <label className="block text-sm font-medium text-text dark:text-slate-200 mb-1">
-              {t('treatments.patient')}
-            </label>
-            <select
-              name="patientId"
-              value={formData.patientId}
-              onChange={handleChange}
-              required
-              className="w-full h-10 px-3 rounded-lg border border-border dark:border-border-dark bg-white dark:bg-slate-800 text-text dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
-            >
-              <option value="">{t('treatments.selectPatient')}</option>
-              {pacientes.map((paciente) => (
-                <option key={paciente.id} value={paciente.id}>
-                  {paciente.name} - {paciente.cpf}
-                </option>
-              ))}
-            </select>
-          </div>
+          <Select
+            label={t('treatments.patient')}
+            name="patientId"
+            value={formData.patientId}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={touched.patientId ? errors.patientId : undefined}
+            required
+          >
+            <option value="">{t('treatments.selectPatient')}</option>
+            {pacientes.map((paciente) => (
+              <option key={paciente.id} value={paciente.id}>
+                {paciente.name} - {paciente.cpf}
+              </option>
+            ))}
+          </Select>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
@@ -141,6 +176,8 @@ export default function TratamentoForm() {
               name="estimatedTime"
               value={formData.estimatedTime}
               onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.estimatedTime ? errors.estimatedTime : undefined}
               placeholder={t('treatments.timePlaceholder')}
               required
             />
@@ -151,6 +188,8 @@ export default function TratamentoForm() {
               step="0.01"
               value={formData.value}
               onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.value ? errors.value : undefined}
               required
             />
             <Input
@@ -169,20 +208,15 @@ export default function TratamentoForm() {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-text dark:text-slate-200 mb-1">
-              {t('treatments.exercises')}
-            </label>
-            <textarea
-              name="exercises"
-              value={formData.exercises}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-3 py-2 rounded-lg border border-border dark:border-border-dark bg-white dark:bg-slate-800 text-text dark:text-slate-100 placeholder:text-text-muted dark:placeholder:text-text-muted-dark focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors resize-none"
-              placeholder={t('treatments.exercisesPlaceholder')}
-              required
-            />
-          </div>
+          <Textarea
+            label={t('treatments.exercises')}
+            name="exercises"
+            value={formData.exercises}
+            onChange={handleChange}
+            rows={4}
+            placeholder={t('treatments.exercisesPlaceholder')}
+            required
+          />
 
           <div className="flex justify-end gap-3 pt-4">
             <Button

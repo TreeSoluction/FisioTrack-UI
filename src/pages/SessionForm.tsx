@@ -23,21 +23,50 @@ export default function SessaoForm() {
     notes: '',
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  function validateField(name: string, value: string): string {
+    switch (name) {
+      case 'painScale':
+        if (!value) return 'Escala de dor é obrigatória';
+        const pain = parseInt(value);
+        if (isNaN(pain) || pain < 0 || pain > 10) return 'Valor deve ser entre 0 e 10';
+        return '';
+      default:
+        return '';
+    }
+  }
+
+  function handleBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    const { name, value } = e.target;
+    setTouched({ ...touched, [name]: true });
+    setErrors({ ...errors, [name]: validateField(name, value) });
+  }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    if (touched[name]) {
+      setErrors({ ...errors, [name]: validateField(name, value) });
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!tratamentoId) {
-      setError(t('common.error'));
+      toast.error(t('common.error'));
+      return;
+    }
+
+    const painError = validateField('painScale', formData.painScale);
+    if (painError) {
+      setTouched({ ...touched, painScale: true });
+      setErrors({ ...errors, painScale: painError });
       return;
     }
 
     setLoading(true);
-    setError('');
 
     try {
       const data = {
@@ -55,7 +84,6 @@ export default function SessaoForm() {
       toast.success(t('sessions.saved'));
       navigate(`/treatments/${tratamentoId}`);
     } catch (error: any) {
-      setError(error.response?.data?.message || t('common.error'));
       toast.error(t('common.error'));
     } finally {
       setLoading(false);
@@ -76,12 +104,6 @@ export default function SessaoForm() {
 
       <Card>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="p-3 bg-danger/10 text-danger rounded-lg text-sm">
-              {error}
-            </div>
-          )}
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               label={t('sessions.weight')}
