@@ -424,17 +424,23 @@
   "pricing": {
     "monthly": "Monthly",
     "yearly": "Yearly",
+    "onetime": "One-time",
     "mostPopular": "Most Popular",
+    "onetimeBadge": "No commitment",
     "proDescription": "For small clinics",
+    "onetimeDescription": "30-day access",
     "feature1": "Unlimited patients",
     "feature2": "Unlimited treatments",
     "feature3": "Advanced reports",
     "feature4": "Priority support",
     "feature5": "Multi-user",
     "yearlyDiscount": "{{percent}}% off on annual plan",
+    "onetimeNotice": "30-day access. No automatic renewal.",
     "redirecting": "Redirecting...",
     "subscribePro": "Subscribe to PRO",
-    "stripeNotice": "Payment processed securely by Stripe. Cancel anytime."
+    "payOnetime": "Pay Now",
+    "onetimePaymentMethods": "PIX, Boleto or Credit Card",
+    "pagarmeNotice": "Payment processed securely by Pagar.me. PIX, Boleto and Card."
   },
   "lgpd": {
     "yourRights": "Your Rights (LGPD)",

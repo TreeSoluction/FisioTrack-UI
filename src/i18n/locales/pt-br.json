@@ -424,17 +424,23 @@
   "pricing": {
     "monthly": "Mensal",
     "yearly": "Anual",
+    "onetime": "Avulso",
     "mostPopular": "Mais Popular",
+    "onetimeBadge": "Sem compromisso",
     "proDescription": "Para clínicas pequenas",
+    "onetimeDescription": "Acesso por 30 dias",
     "feature1": "Pacientes ilimitados",
     "feature2": "Tratamentos ilimitados",
     "feature3": "Relatórios avançados",
     "feature4": "Suporte prioritário",
     "feature5": "Multi-usuário",
     "yearlyDiscount": "Economia de {{percent}}% no plano anual",
+    "onetimeNotice": "Acesso por 30 dias. Sem renovação automática.",
     "redirecting": "Redirecionando...",
     "subscribePro": "Assinar PRO",
-    "stripeNotice": "Pagamento processado com segurança pela Stripe. Cancele a qualquer momento."
+    "payOnetime": "Pagar Agora",
+    "onetimePaymentMethods": "PIX, Boleto ou Cartão de Crédito",
+    "pagarmeNotice": "Pagamento processado com segurança pela Pagar.me. PIX, Boleto e Cartão."
   },
   "lgpd": {
     "yourRights": "Seus Direitos (LGPD)",

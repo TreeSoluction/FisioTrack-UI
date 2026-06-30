@@ -1,23 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Check } from 'lucide-react';
+import { Check, Zap } from 'lucide-react';
 import Button from '../components/ui/Button';
 import api from '../lib/api';
 
-interface Price {
-  priceId: string;
-  amount: number;
-  currency: string;
-  monthlyEquivalent?: number;
-  discountPercent?: number;
-}
-
 interface PricingData {
-  product: { id: string; name: string; description: string | null; images: string[] } | null;
-  prices: {
-    monthly: Price | null;
-    yearly: Price | null;
-  };
+  monthly: { amount: number; currency: string };
+  yearly: { amount: number; currency: string; monthlyEquivalent: number; discountPercent: number };
+  onetime: { amount: number; currency: string; durationDays: number };
 }
 
 export default function Pricing() {
@@ -25,7 +15,7 @@ export default function Pricing() {
   const [pricing, setPricing] = useState<PricingData | null>(null);
   const [loading, setLoading] = useState(true);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
-  const [interval, setInterval] = useState<'month' | 'year'>('month');
+  const [interval, setInterval] = useState<'month' | 'year' | 'onetime'>('month');
 
   useEffect(() => {
     fetchPricing();
@@ -45,9 +35,17 @@ export default function Pricing() {
   async function handleCheckout() {
     setCheckoutLoading(true);
     try {
-      const response = await api.post('/billing/checkout', { interval });
-      if (response.data.url) {
-        window.location.href = response.data.url;
+      let response;
+      if (interval === 'onetime') {
+        response = await api.post('/billing/checkout-onetime');
+      } else {
+        response = await api.post('/billing/checkout', { plan: interval });
+      }
+
+      if (response.data.checkoutUrl) {
+        window.location.href = response.data.checkoutUrl;
+      } else if (response.data.paymentUrl) {
+        window.location.href = response.data.paymentUrl;
       }
     } catch (err: any) {
       alert(err.response?.data?.message || t('common.error'));
@@ -56,9 +54,19 @@ export default function Pricing() {
     }
   }
 
-  const monthlyAmount = pricing?.prices.monthly?.amount || 0;
-  const yearlyAmount = pricing?.prices.yearly?.amount || 0;
-  const discountPercent = pricing?.prices.yearly?.discountPercent || 0;
+  const getDisplayPrice = () => {
+    if (!pricing) return '0,00';
+    switch (interval) {
+      case 'month':
+        return (pricing.monthly.amount / 100).toFixed(2).replace('.', ',');
+      case 'year':
+        return (pricing.yearly.amount / 100 / 12).toFixed(2).replace('.', ',');
+      case 'onetime':
+        return (pricing.onetime.amount / 100).toFixed(2).replace('.', ',');
+    }
+  };
+
+  const discountPercent = pricing?.yearly?.discountPercent || 0;
 
   const features = [
     t('pricing.feature1'),
@@ -88,10 +96,11 @@ export default function Pricing() {
           </p>
         </div>
 
-        <div className="flex justify-center gap-4 mb-8">
+        {/* Interval selector */}
+        <div className="flex justify-center gap-2 mb-8 flex-wrap">
           <button
             onClick={() => setInterval('month')}
-            className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+            className={`px-5 py-2 rounded-lg font-medium transition-colors ${
               interval === 'month'
                 ? 'bg-primary text-white'
                 : 'bg-slate-100 dark:bg-slate-700 text-text dark:text-slate-200'
@@ -101,7 +110,7 @@ export default function Pricing() {
           </button>
           <button
             onClick={() => setInterval('year')}
-            className={`px-6 py-2 rounded-lg font-medium transition-colors relative ${
+            className={`px-5 py-2 rounded-lg font-medium transition-colors relative ${
               interval === 'year'
                 ? 'bg-primary text-white'
                 : 'bg-slate-100 dark:bg-slate-700 text-text dark:text-slate-200'
@@ -114,29 +123,47 @@ export default function Pricing() {
               </span>
             )}
           </button>
+          <button
+            onClick={() => setInterval('onetime')}
+            className={`px-5 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
+              interval === 'onetime'
+                ? 'bg-accent text-white'
+                : 'bg-slate-100 dark:bg-slate-700 text-text dark:text-slate-200'
+            }`}
+          >
+            <Zap className="w-4 h-4" />
+            {t('pricing.onetime')}
+          </button>
         </div>
 
+        {/* Pricing card */}
         <div className="max-w-md mx-auto">
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-primary/20 relative">
             <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-accent text-white text-sm font-semibold px-4 py-1 rounded-full">
-              {t('pricing.mostPopular')}
+              {interval === 'onetime' ? t('pricing.onetimeBadge') : t('pricing.mostPopular')}
             </div>
 
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-text dark:text-slate-100 mb-2">PRO</h2>
-              <p className="text-text-muted dark:text-text-muted-dark">{t('pricing.proDescription')}</p>
+              <p className="text-text-muted dark:text-text-muted-dark">
+                {interval === 'onetime' ? t('pricing.onetimeDescription') : t('pricing.proDescription')}
+              </p>
               <div className="mt-4">
                 <span className="text-4xl font-bold text-text dark:text-slate-100">
-                  R$ {interval === 'month'
-                    ? (monthlyAmount / 100).toFixed(2).replace('.', ',')
-                    : (yearlyAmount / 100 / 12).toFixed(2).replace('.', ',')
-                  }
+                  R$ {getDisplayPrice()}
                 </span>
-                <span className="text-text-muted dark:text-text-muted-dark">/mês</span>
+                <span className="text-text-muted dark:text-text-muted-dark">
+                  {interval === 'onetime' ? '' : '/mês'}
+                </span>
               </div>
               {interval === 'year' && discountPercent > 0 && (
                 <p className="text-sm text-success mt-2">
                   {t('pricing.yearlyDiscount', { percent: discountPercent })}
+                </p>
+              )}
+              {interval === 'onetime' && (
+                <p className="text-sm text-text-muted dark:text-text-muted-dark mt-2">
+                  {t('pricing.onetimeNotice')}
                 </p>
               )}
             </div>
@@ -152,16 +179,30 @@ export default function Pricing() {
 
             <Button
               onClick={handleCheckout}
-              className="w-full bg-primary text-white hover:bg-primary-dark"
+              className={`w-full ${
+                interval === 'onetime'
+                  ? 'bg-accent text-white hover:bg-accent/90'
+                  : 'bg-primary text-white hover:bg-primary-dark'
+              }`}
               disabled={checkoutLoading}
             >
-              {checkoutLoading ? t('pricing.redirecting') : t('pricing.subscribePro')}
+              {checkoutLoading
+                ? t('pricing.redirecting')
+                : interval === 'onetime'
+                  ? t('pricing.payOnetime')
+                  : t('pricing.subscribePro')}
             </Button>
+
+            {interval === 'onetime' && (
+              <p className="text-center text-xs text-text-muted dark:text-text-muted-dark mt-4">
+                {t('pricing.onetimePaymentMethods')}
+              </p>
+            )}
           </div>
         </div>
 
         <p className="text-center text-sm text-text-muted dark:text-text-muted-dark mt-6">
-          {t('pricing.stripeNotice')}
+          {t('pricing.pagarmeNotice')}
         </p>
       </div>
     </div>
