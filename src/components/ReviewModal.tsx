@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Star, X } from 'lucide-react';
 import Card from './ui/Card';
@@ -17,6 +17,45 @@ export default function ReviewModal({ onSubmit, onDismiss, onLater }: ReviewModa
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const modalRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    previousFocusRef.current = document.activeElement as HTMLElement;
+    const timer = setTimeout(() => {
+      modalRef.current?.focus();
+    }, 50);
+    return () => {
+      clearTimeout(timer);
+      previousFocusRef.current?.focus();
+    };
+  }, []);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      onLater();
+      return;
+    }
+    if (e.key === 'Tab') {
+      const focusable = modalRef.current?.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusable || focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+  }, [onLater]);
 
   async function handleSubmit() {
     if (rating === 0) {
@@ -45,7 +84,15 @@ export default function ReviewModal({ onSubmit, onDismiss, onLater }: ReviewModa
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div
+      ref={modalRef}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="review-modal-title"
+      tabIndex={-1}
+      onKeyDown={handleKeyDown}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+    >
       <Card className="w-full max-w-md relative">
         <button
           onClick={onLater}
@@ -56,7 +103,7 @@ export default function ReviewModal({ onSubmit, onDismiss, onLater }: ReviewModa
         </button>
 
         <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-text dark:text-slate-100 mb-2">
+          <h2 id="review-modal-title" className="text-2xl font-bold text-text dark:text-slate-100 mb-2">
             {t('review.title')}
           </h2>
           <p className="text-text-muted dark:text-text-muted-dark">

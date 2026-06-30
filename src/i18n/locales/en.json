@@ -379,7 +379,9 @@
     "close": "Close"
   },
   "navigation": {
-    "main": "Main navigation"
+    "main": "Main navigation",
+    "menu": "Menu",
+    "closeMenu": "Close menu"
   },
   "review": {
     "title": "Rate FisioTrack",
@@ -419,7 +421,15 @@
     "confirmDelete": "Are you sure you want to delete your account?",
     "confirmDeleteFinal": "This action is IRREVERSIBLE. Confirm deletion?",
     "accountDeleted": "Account deleted successfully",
-    "priceChanged": "Your subscription price has been updated. Check payment settings for details."
+    "priceChanged": "Your subscription price has been updated. Check payment settings for details.",
+    "paymentSuccess": "Payment approved! Checking activation...",
+    "paymentPending": "Payment pending. Checking status...",
+    "paymentFailed": "Payment failed. Please try again.",
+    "paymentActivated": "Payment confirmed! Your PRO plan has been activated.",
+    "paymentStillPending": "Payment still processing. Please check again in a few minutes.",
+    "oneTimeAccess": "One-time access",
+    "accessUntil": "Valid until:",
+    "renewAccess": "Renew Access"
   },
   "pricing": {
     "monthly": "Monthly",

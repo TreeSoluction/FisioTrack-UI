@@ -101,7 +101,7 @@ export default function Layout({ children }: LayoutProps) {
             <button
               onClick={() => setSidebarOpen(false)}
               className="md:hidden p-1 text-text-muted dark:text-text-muted-dark hover:text-text dark:hover:text-slate-100"
-              aria-label="Close menu"
+              aria-label={t('navigation.closeMenu')}
             >
               <X className="w-5 h-5" />
             </button>

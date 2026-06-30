@@ -379,7 +379,9 @@
     "close": "Fechar"
   },
   "navigation": {
-    "main": "Navegação principal"
+    "main": "Navegação principal",
+    "menu": "Menu",
+    "closeMenu": "Fechar menu"
   },
   "review": {
     "title": "Avalie o FisioTrack",
@@ -419,7 +421,15 @@
     "confirmDelete": "Tem certeza que deseja excluir sua conta?",
     "confirmDeleteFinal": "Esta ação é IRREVERSÍVEL. Confirma a exclusão?",
     "accountDeleted": "Conta excluída com sucesso",
-    "priceChanged": "O valor da sua assinatura foi atualizado. Acesse as configurações de pagamento para mais detalhes."
+    "priceChanged": "O valor da sua assinatura foi atualizado. Acesse as configurações de pagamento para mais detalhes.",
+    "paymentSuccess": "Pagamento aprovado! Verificando ativação...",
+    "paymentPending": "Pagamento pendente. Verificando status...",
+    "paymentFailed": "Falha no pagamento. Tente novamente.",
+    "paymentActivated": "Pagamento confirmado! Seu plano PRO foi ativado.",
+    "paymentStillPending": "Pagamento ainda em processamento. Verifique novamente em alguns minutos.",
+    "oneTimeAccess": "Acesso avulso",
+    "accessUntil": "Válido até:",
+    "renewAccess": "Renovar Acesso"
   },
   "pricing": {
     "monthly": "Mensal",
