@@ -26,7 +26,10 @@ export default function Login() {
     try {
       const response = await api.post('/auth/login', { email, password });
       localStorage.setItem('token', response.data.access_token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      localStorage.setItem('user', JSON.stringify({
+        ...response.data.user,
+        priceChanged: response.data.priceChanged,
+      }));
 
       if (response.data.requiresConsent) {
         setMissingDocuments(response.data.missingDocuments);

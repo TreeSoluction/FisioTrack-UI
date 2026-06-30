@@ -20,9 +20,14 @@ export default function Settings() {
   const [loading, setLoading] = useState(true);
   const [polling, setPolling] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [priceChanged, setPriceChanged] = useState(false);
 
   useEffect(() => {
     fetchSubscription();
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user.priceChanged) {
+      setPriceChanged(true);
+    }
 
     const sessionId = searchParams.get('session_id');
     if (sessionId) {
@@ -170,6 +175,14 @@ export default function Settings() {
     <div className="min-h-screen bg-background dark:bg-background-dark py-12">
       <div className="max-w-2xl mx-auto px-4">
         <h1 className="text-3xl font-bold text-text dark:text-slate-100 mb-8">{t('settings.title')}</h1>
+
+        {priceChanged && (
+          <div className="mb-6 p-4 bg-accent/10 border border-accent/30 rounded-lg">
+            <p className="text-accent font-medium">
+              {t('settings.priceChanged')}
+            </p>
+          </div>
+        )}
 
         {polling && (
           <div className="mb-6 p-4 bg-primary/10 text-primary rounded-lg flex items-center gap-3">

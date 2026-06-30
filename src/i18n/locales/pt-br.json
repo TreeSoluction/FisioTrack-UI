@@ -418,7 +418,23 @@
     "deleteAccountDescription": "Esta ação é irreversível. Todos os seus dados serão permanentemente excluídos.",
     "confirmDelete": "Tem certeza que deseja excluir sua conta?",
     "confirmDeleteFinal": "Esta ação é IRREVERSÍVEL. Confirma a exclusão?",
-    "accountDeleted": "Conta excluída com sucesso"
+    "accountDeleted": "Conta excluída com sucesso",
+    "priceChanged": "O valor da sua assinatura foi atualizado. Acesse as configurações de pagamento para mais detalhes."
+  },
+  "pricing": {
+    "monthly": "Mensal",
+    "yearly": "Anual",
+    "mostPopular": "Mais Popular",
+    "proDescription": "Para clínicas pequenas",
+    "feature1": "Pacientes ilimitados",
+    "feature2": "Tratamentos ilimitados",
+    "feature3": "Relatórios avançados",
+    "feature4": "Suporte prioritário",
+    "feature5": "Multi-usuário",
+    "yearlyDiscount": "Economia de {{percent}}% no plano anual",
+    "redirecting": "Redirecionando...",
+    "subscribePro": "Assinar PRO",
+    "stripeNotice": "Pagamento processado com segurança pela Stripe. Cancele a qualquer momento."
   },
   "lgpd": {
     "yourRights": "Seus Direitos (LGPD)",

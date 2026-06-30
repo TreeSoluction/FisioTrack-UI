@@ -56,16 +56,25 @@ export default function Pricing() {
     }
   }
 
+  const monthlyAmount = pricing?.prices.monthly?.amount || 0;
   const yearlyAmount = pricing?.prices.yearly?.amount || 0;
   const discountPercent = pricing?.prices.yearly?.discountPercent || 0;
 
   const features = [
-    'Pacientes ilimitados',
-    'Tratamentos ilimitados',
-    'Relatórios avançados',
-    'Suporte prioritário',
-    'Multi-usuário',
+    t('pricing.feature1'),
+    t('pricing.feature2'),
+    t('pricing.feature3'),
+    t('pricing.feature4'),
+    t('pricing.feature5'),
   ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background dark:bg-background-dark">
+        <p className="text-text-muted">{t('common.loading')}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background dark:bg-background-dark py-12">
@@ -88,7 +97,7 @@ export default function Pricing() {
                 : 'bg-slate-100 dark:bg-slate-700 text-text dark:text-slate-200'
             }`}
           >
-            Mensal
+            {t('pricing.monthly')}
           </button>
           <button
             onClick={() => setInterval('year')}
@@ -98,7 +107,7 @@ export default function Pricing() {
                 : 'bg-slate-100 dark:bg-slate-700 text-text dark:text-slate-200'
             }`}
           >
-            Anual
+            {t('pricing.yearly')}
             {discountPercent > 0 && (
               <span className="absolute -top-2 -right-2 bg-success text-white text-xs px-2 py-0.5 rounded-full">
                 -{discountPercent}%
@@ -110,21 +119,24 @@ export default function Pricing() {
         <div className="max-w-md mx-auto">
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-primary/20 relative">
             <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-accent text-white text-sm font-semibold px-4 py-1 rounded-full">
-              Mais Popular
+              {t('pricing.mostPopular')}
             </div>
 
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-text dark:text-slate-100 mb-2">PRO</h2>
-              <p className="text-text-muted dark:text-text-muted-dark">Para clínicas pequenas</p>
+              <p className="text-text-muted dark:text-text-muted-dark">{t('pricing.proDescription')}</p>
               <div className="mt-4">
                 <span className="text-4xl font-bold text-text dark:text-slate-100">
-                  R$ {interval === 'month' ? '19,90' : `${(yearlyAmount / 100 / 12).toFixed(2).replace('.', ',')}`}
+                  R$ {interval === 'month'
+                    ? (monthlyAmount / 100).toFixed(2).replace('.', ',')
+                    : (yearlyAmount / 100 / 12).toFixed(2).replace('.', ',')
+                  }
                 </span>
                 <span className="text-text-muted dark:text-text-muted-dark">/mês</span>
               </div>
               {interval === 'year' && discountPercent > 0 && (
                 <p className="text-sm text-success mt-2">
-                  Economia de {discountPercent}% no plano anual
+                  {t('pricing.yearlyDiscount', { percent: discountPercent })}
                 </p>
               )}
             </div>
@@ -141,15 +153,15 @@ export default function Pricing() {
             <Button
               onClick={handleCheckout}
               className="w-full bg-primary text-white hover:bg-primary-dark"
-              disabled={checkoutLoading || loading}
+              disabled={checkoutLoading}
             >
-              {checkoutLoading ? 'Redirecionando...' : 'Assinar PRO'}
+              {checkoutLoading ? t('pricing.redirecting') : t('pricing.subscribePro')}
             </Button>
           </div>
         </div>
 
         <p className="text-center text-sm text-text-muted dark:text-text-muted-dark mt-6">
-          Pagamento processado com segurança pela Stripe. Cancele a qualquer momento.
+          {t('pricing.stripeNotice')}
         </p>
       </div>
     </div>
