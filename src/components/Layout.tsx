@@ -3,6 +3,7 @@ import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Users, Activity, LogOut, Settings, Menu, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
+import api from '../lib/api';
 import LanguageToggle from './ui/LanguageToggle';
 import ThemeToggle from './ui/ThemeToggle';
 import Footer from './Footer';
@@ -41,8 +42,14 @@ export default function Layout({ children }: LayoutProps) {
     setSidebarOpen(false);
   }, [location.pathname]);
 
-  function handleLogout() {
+  async function handleLogout() {
+    try {
+      await api.post('/auth/logout');
+    } catch {
+      // Continue with local logout even if API call fails
+    }
     localStorage.removeItem('token');
+    localStorage.removeItem('refresh_token');
     localStorage.removeItem('user');
     navigate('/login');
   }

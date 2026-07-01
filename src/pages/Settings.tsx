@@ -190,7 +190,9 @@ export default function Settings() {
       for (const type of types) {
         await api.delete(`/consent/${type}`).catch(() => {});
       }
+      try { await api.post('/auth/logout'); } catch { /* continue */ }
       localStorage.removeItem('token');
+      localStorage.removeItem('refresh_token');
       localStorage.removeItem('user');
       toast.success(t('consent.revoked'));
       window.location.href = '/login';
@@ -203,7 +205,9 @@ export default function Settings() {
     setConfirmDeleteFinalOpen(false);
     try {
       await api.delete('/users/me');
+      try { await api.post('/auth/logout'); } catch { /* continue */ }
       localStorage.removeItem('token');
+      localStorage.removeItem('refresh_token');
       localStorage.removeItem('user');
       toast.success(t('settings.accountDeleted'));
       window.location.href = '/login';

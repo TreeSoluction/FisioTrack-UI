@@ -69,6 +69,7 @@ export default function Login() {
     try {
       const response = await api.post('/auth/login', { email, password });
       localStorage.setItem('token', response.data.access_token);
+      localStorage.setItem('refresh_token', response.data.refresh_token);
       localStorage.setItem('user', JSON.stringify({
         ...response.data.user,
         priceChanged: response.data.priceChanged,
