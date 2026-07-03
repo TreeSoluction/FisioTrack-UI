@@ -70,7 +70,7 @@ describe('Login', () => {
     renderLogin();
     fireEvent.blur(screen.getByLabelText('Email'));
     await waitFor(() => {
-      expect(screen.getByText(/email é obrigatório/i)).toBeDefined();
+      expect(screen.getByText(/validation\.emailRequired/i)).toBeDefined();
     });
   });
 
@@ -80,7 +80,7 @@ describe('Login', () => {
     fireEvent.change(passwordInput, { target: { value: '123' } });
     fireEvent.blur(passwordInput);
     await waitFor(() => {
-      expect(screen.getByText(/pelo menos 6 caracteres/i)).toBeDefined();
+      expect(screen.getByText(/validation\.passwordMinLength/i)).toBeDefined();
     });
   });
 

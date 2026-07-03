@@ -29,7 +29,7 @@ export default function Login() {
         return '';
       case 'password':
         if (!value) return t('validation.passwordRequired');
-        if (value.length < 6) return t('validation.passwordMinLength', { min: 6 });
+        if (value.length < 8) return t('validation.passwordMinLength', { min: 8 });
         return '';
       default:
         return '';
