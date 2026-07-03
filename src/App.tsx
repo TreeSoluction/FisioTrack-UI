@@ -20,6 +20,7 @@ const ConsentTerms = lazy(() => import('./pages/ConsentTerms'));
 const EnterpriseRequest = lazy(() => import('./pages/EnterpriseRequest'));
 const Pricing = lazy(() => import('./pages/Pricing'));
 const Settings = lazy(() => import('./pages/Settings'));
+const MetricDefinitions = lazy(() => import('./pages/MetricDefinitions'));
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const token = localStorage.getItem('token');
@@ -82,6 +83,7 @@ export default function App() {
           >
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/metric-definitions" element={<MetricDefinitions />} />
             <Route path="patients" element={<Patients />} />
             <Route path="patients/new" element={<PatientForm />} />
             <Route path="patients/:id" element={<PatientDetail />} />

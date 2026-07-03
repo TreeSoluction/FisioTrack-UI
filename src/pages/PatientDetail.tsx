@@ -1,22 +1,25 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Plus, Activity, Calendar, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Plus, Activity, Calendar, TrendingUp, Download, FileText } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { SkeletonCard, SkeletonText } from '../components/ui/Skeleton';
 import ErrorState from '../components/ui/ErrorState';
 import api from '../lib/api';
-import type { Patient, Treatment, DashboardData } from '../types';
+import type { Patient, Treatment, SessionWithTreatment, MetricDefinition } from '../types';
 
 export default function PacienteDetail() {
   const { id } = useParams();
   const { t } = useTranslation();
   const [paciente, setPaciente] = useState<Patient | null>(null);
   const [tratamentos, setTratamentos] = useState<Treatment[]>([]);
-  const [dashboardData, setDashboardData] = useState<DashboardData[]>([]);
+  const [sessions, setSessions] = useState<SessionWithTreatment[]>([]);
+  const [metricDefinitions, setMetricDefinitions] = useState<MetricDefinition[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -26,21 +29,81 @@ export default function PacienteDetail() {
     try {
       setError(null);
       setLoading(true);
-      const [pacienteRes, tratamentosRes, dashboardRes] = await Promise.all([
+      const [pacienteRes, tratamentosRes, historyRes] = await Promise.all([
         api.get(`/patients/${id}`),
         api.get('/treatments'),
-        api.get(`/sessions/dashboard/${id}`),
+        api.get(`/patients/${id}/history`),
       ]);
       setPaciente(pacienteRes.data);
       setTratamentos(
         tratamentosRes.data.items.filter((t: Treatment) => t.patient?.id === id)
       );
-      setDashboardData(dashboardRes.data);
+      setSessions(historyRes.data.sessions);
+      setMetricDefinitions(historyRes.data.metricDefinitions);
     } catch (err) {
       setError(err instanceof Error ? err.message : t('common.errorLoadingPatientData'));
     } finally {
       setLoading(false);
     }
+  }
+
+  async function handleExport(format: 'csv' | 'pdf') {
+    setExporting(true);
+    try {
+      if (format === 'csv') {
+        const response = await api.get(`/patients/${id}/export?format=csv`, { responseType: 'blob' });
+        const blob = new Blob([response.data.csv || response.data], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = response.data.filename || `historico-${paciente?.name}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        toast.success(t('history.exportCsv') + ' OK');
+      } else {
+        generatePdf();
+      }
+    } catch (err) {
+      toast.error(t('common.error'));
+    } finally {
+      setExporting(false);
+    }
+  }
+
+  function generatePdf() {
+    const rows = sessions.map((s) => {
+      const measurements = (s.measurements as Record<string, any>) || {};
+      return {
+        date: new Date(s.date).toLocaleDateString('pt-BR'),
+        pain: s.painScale,
+        weight: s.weight ?? '-',
+        notes: s.notes ?? '',
+        metrics: metricDefinitions.map((m) => ({
+          name: m.name,
+          value: measurements[m.id]?.value ?? '-',
+        })),
+      };
+    });
+
+    const metricHeaders = metricDefinitions.map((m) => m.name).join(' | ');
+    const header = `Data | Dor | Peso${metricHeaders ? ' | ' + metricHeaders : ''} | Notas`;
+    const lines = rows.map((r) =>
+      `${r.date} | ${r.pain} | ${r.weight}${r.metrics.length ? ' | ' + r.metrics.map((m) => m.value).join(' | ') : ''} | ${r.notes}`
+    );
+
+    const content = `${t('history.title')}: ${paciente?.name}\n${'='.repeat(60)}\n\n${header}\n${'-'.repeat(60)}\n${lines.join('\n')}`;
+
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `historico-${paciente?.name?.replace(/\s+/g, '-')}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 
   if (error) {
@@ -71,10 +134,6 @@ export default function PacienteDetail() {
             <SkeletonCard key={i} />
           ))}
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <SkeletonCard />
-          <SkeletonCard />
-        </div>
       </div>
     );
   }
@@ -90,22 +149,22 @@ export default function PacienteDetail() {
   const stats = [
     {
       label: t('treatments.sessions'),
-      value: dashboardData.length,
+      value: sessions.length,
       icon: Calendar,
       color: 'text-primary',
     },
     {
       label: t('treatments.pain'),
-      value: dashboardData.length
-        ? (dashboardData.reduce((acc, d) => acc + d.painScale, 0) / dashboardData.length).toFixed(1)
+      value: sessions.length
+        ? (sessions.reduce((acc, s) => acc + s.painScale, 0) / sessions.length).toFixed(1)
         : '-',
       icon: Activity,
       color: 'text-secondary',
     },
     {
       label: t('treatments.weight'),
-      value: dashboardData.length
-        ? `${dashboardData[dashboardData.length - 1].weight || '-'} kg`
+      value: sessions.length
+        ? `${sessions.find((s) => s.weight)?.weight || '-'} kg`
         : '-',
       icon: TrendingUp,
       color: 'text-accent',
@@ -125,12 +184,30 @@ export default function PacienteDetail() {
           <h1 className="text-2xl font-bold text-text dark:text-slate-100 truncate">{paciente.name}</h1>
           <p className="text-text-muted dark:text-text-muted-dark">{paciente.cpf}</p>
         </div>
-        <Link to={`/treatments/new?patientId=${id}`}>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            {t('patients.newTreatment')}
+        <div className="flex gap-2">
+          <Button
+            variant="ghost"
+            onClick={() => handleExport('csv')}
+            disabled={exporting || sessions.length === 0}
+          >
+            <Download className="w-4 h-4 mr-2" />
+            {t('history.exportCsv')}
           </Button>
-        </Link>
+          <Button
+            variant="ghost"
+            onClick={() => handleExport('pdf')}
+            disabled={exporting || sessions.length === 0}
+          >
+            <FileText className="w-4 h-4 mr-2" />
+            {t('history.exportPdf')}
+          </Button>
+          <Link to={`/treatments/new?patientId=${id}`}>
+            <Button>
+              <Plus className="w-4 h-4 mr-2" />
+              {t('patients.newTreatment')}
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -147,6 +224,7 @@ export default function PacienteDetail() {
         ))}
       </div>
 
+      {/* Patient Info + Treatments */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <h2 className="text-lg font-semibold text-text dark:text-slate-100 mb-4">{t('patients.info')}</h2>
@@ -234,30 +312,62 @@ export default function PacienteDetail() {
         </Card>
       </div>
 
-      {dashboardData.length > 0 && (
+      {/* Session History Timeline */}
+      {sessions.length > 0 && (
         <Card>
-          <h2 className="text-lg font-semibold text-text dark:text-slate-100 mb-4">{t('patients.painEvolution')}</h2>
-          <div className="h-64 flex items-end gap-2">
-            {dashboardData.map((data, index) => (
-              <div
-                key={index}
-                className="flex-1 flex flex-col items-center gap-1"
-              >
-                <div
-                  className="w-full bg-secondary/20 rounded-t"
-                  style={{ height: `${(data.painScale / 10) * 200}px` }}
-                >
-                  <div
-                    className="w-full bg-secondary rounded-t"
-                    style={{ height: `${(data.painScale / 10) * 100}%` }}
-                  />
+          <h2 className="text-lg font-semibold text-text dark:text-slate-100 mb-4">{t('history.title')}</h2>
+          <div className="space-y-4 max-h-[500px] overflow-y-auto">
+            {sessions.map((session) => {
+              const measurements = (session.measurements as Record<string, any>) || {};
+              return (
+                <div key={session.id} className="flex gap-4 p-4 rounded-lg border border-border dark:border-border-dark">
+                  <div className="flex flex-col items-center min-w-[60px]">
+                    <span className="text-lg font-bold text-secondary">{session.painScale}</span>
+                    <span className="text-xs text-text-muted dark:text-text-muted-dark">{t('history.pain')}</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-sm font-medium text-text dark:text-slate-100">
+                        {new Date(session.date).toLocaleDateString('pt-BR')}
+                      </span>
+                      {session.weight && (
+                        <span className="text-xs text-text-muted dark:text-text-muted-dark">
+                          · {session.weight} kg
+                        </span>
+                      )}
+                      <span className="text-xs text-text-muted dark:text-text-muted-dark">
+                        · {session.treatment.estimatedTime}
+                      </span>
+                    </div>
+                    {metricDefinitions.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {metricDefinitions.map((m) => {
+                          const entry = measurements[m.id];
+                          if (!entry) return null;
+                          return (
+                            <span key={m.id} className="text-xs px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-text dark:text-slate-300">
+                              {m.name}: {entry.value}{m.unit ? ` ${m.unit}` : ''}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    )}
+                    {session.notes && (
+                      <p className="text-sm text-text-muted dark:text-text-muted-dark mt-2">{session.notes}</p>
+                    )}
+                  </div>
                 </div>
-                <span className="text-xs text-text-muted dark:text-text-muted-dark">
-                  {new Date(data.date).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}
-                </span>
-              </div>
-            ))}
+              );
+            })}
           </div>
+        </Card>
+      )}
+
+      {sessions.length === 0 && !loading && (
+        <Card>
+          <p className="text-center text-text-muted dark:text-text-muted-dark py-8">
+            {t('history.noHistory')}
+          </p>
         </Card>
       )}
     </div>
