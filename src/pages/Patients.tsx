@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Search, Plus, Edit, Trash2, Eye, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
@@ -14,6 +15,7 @@ import type { Patient } from '../types';
 
 export default function Pacientes() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
@@ -43,6 +45,7 @@ export default function Pacientes() {
       setPacientes(pacientes.filter((p) => p.id !== id));
     } catch (error) {
       console.error('Error deleting patient:', error);
+      toast.error(t('common.errorDeleting'));
     }
   }
 
@@ -97,7 +100,7 @@ export default function Pacientes() {
             title={search ? t('patients.noResults') : t('patients.noData')}
             description={search ? t('patients.noResults') : t('patients.noData')}
             actionLabel={!search ? t('patients.newPatient') : undefined}
-            onAction={!search ? () => window.location.href = '/patients/new' : undefined}
+            onAction={!search ? () => navigate('/patients/new') : undefined}
           />
         ) : (
           <>

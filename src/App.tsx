@@ -20,6 +20,7 @@ const ConsentTerms = lazy(() => import('./pages/ConsentTerms'));
 const EnterpriseRequest = lazy(() => import('./pages/EnterpriseRequest'));
 const Pricing = lazy(() => import('./pages/Pricing'));
 const Settings = lazy(() => import('./pages/Settings'));
+const MetricDefinitions = lazy(() => import('./pages/MetricDefinitions'));
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const token = localStorage.getItem('token');
@@ -37,6 +38,14 @@ function HomePage() {
     return <Layout><Dashboard /></Layout>;
   }
   return <PublicLayout><Landing /></PublicLayout>;
+}
+
+function PricingPage() {
+  const token = localStorage.getItem('token');
+  if (token) {
+    return <Layout><Pricing /></Layout>;
+  }
+  return <PublicLayout><Pricing /></PublicLayout>;
 }
 
 function PageLoader() {
@@ -60,9 +69,10 @@ export default function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-use" element={<TermsOfUse />} />
             <Route path="/consent-terms" element={<ConsentTerms />} />
-            <Route path="/pricing" element={<Pricing />} />
             <Route path="/enterprise-request" element={<PrivateRoute><EnterpriseRequest /></PrivateRoute>} />
           </Route>
+
+          <Route path="/pricing" element={<PricingPage />} />
 
           <Route
             element={
@@ -73,6 +83,7 @@ export default function App() {
           >
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/metric-definitions" element={<MetricDefinitions />} />
             <Route path="patients" element={<Patients />} />
             <Route path="patients/new" element={<PatientForm />} />
             <Route path="patients/:id" element={<PatientDetail />} />

@@ -140,7 +140,7 @@ export default function Layout({ children }: LayoutProps) {
             </ul>
           </nav>
 
-          <div className="mx-4 mb-4">
+          <div className="mx-4 mt-4 mb-4">
             <SubscriptionBadge plan={plan} />
           </div>
 

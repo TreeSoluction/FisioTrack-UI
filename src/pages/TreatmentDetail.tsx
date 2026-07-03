@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Plus, Calendar, Activity, TrendingUp, DollarSign } from 'lucide-react';
+import { ArrowLeft, Plus, Calendar, Activity, TrendingUp, DollarSign, Download } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { SkeletonCard, SkeletonText } from '../components/ui/Skeleton';
@@ -35,6 +36,24 @@ export default function TratamentoDetail() {
       setError(err instanceof Error ? err.message : t('common.errorLoadingTreatmentData'));
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleExport(_format: 'csv' | 'pdf') {
+    try {
+      const response = await api.get(`/treatments/${id}/export?format=csv`);
+      const blob = new Blob([response.data.csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = response.data.filename || `tratamento-${id}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast.success(t('history.exportCsv') + ' OK');
+    } catch (err) {
+      toast.error(t('common.error'));
     }
   }
 
@@ -109,12 +128,18 @@ export default function TratamentoDetail() {
           </h1>
           <p className="text-text-muted dark:text-text-muted-dark">{tratamento.estimatedTime}</p>
         </div>
-        <Link to={`/sessions/new?treatmentId=${id}`}>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            {t('treatments.newSession')}
+        <div className="flex gap-2">
+          <Button variant="ghost" onClick={() => handleExport('csv')} disabled={sessoes.length === 0}>
+            <Download className="w-4 h-4 mr-2" />
+            {t('history.exportCsv')}
           </Button>
-        </Link>
+          <Link to={`/sessions/new?treatmentId=${id}`}>
+            <Button>
+              <Plus className="w-4 h-4 mr-2" />
+              {t('treatments.newSession')}
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
