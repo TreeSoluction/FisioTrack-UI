@@ -40,27 +40,27 @@ export default function PacienteForm() {
       setFormData(response.data);
     } catch (error) {
       console.error('Error loading patient:', error);
-      toast.error(t('common.error'));
+      toast.error(t('common.errorLoadingData'));
     }
   }
 
   function validateField(name: string, value: string): string {
     switch (name) {
       case 'name':
-        if (!value.trim()) return 'Nome é obrigatório';
-        if (value.trim().length < 2) return 'Nome deve ter pelo menos 2 caracteres';
+        if (!value.trim()) return t('validation.nameRequired');
+        if (value.trim().length < 2) return t('validation.nameMinLength');
         return '';
       case 'cpf':
-        if (!value.trim()) return 'CPF é obrigatório';
-        if (!validateCPF(value)) return 'CPF inválido';
+        if (!value.trim()) return t('validation.cpfRequired');
+        if (!validateCPF(value)) return t('validation.cpfInvalid');
         return '';
       case 'phone':
-        if (!value.trim()) return 'Telefone é obrigatório';
-        if (!validatePhone(value)) return 'Telefone inválido';
+        if (!value.trim()) return t('validation.phoneRequired');
+        if (!validatePhone(value)) return t('validation.phoneInvalid');
         return '';
       case 'email':
-        if (!value.trim()) return 'Email é obrigatório';
-        if (!validateEmail(value)) return 'Email inválido';
+        if (!value.trim()) return t('validation.emailRequired');
+        if (!validateEmail(value)) return t('validation.emailInvalid');
         return '';
       default:
         return '';

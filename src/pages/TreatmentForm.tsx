@@ -65,21 +65,21 @@ export default function TratamentoForm() {
       });
     } catch (error) {
       console.error('Error loading treatment:', error);
-      toast.error(t('common.error'));
+      toast.error(t('common.errorLoadingTreatmentData'));
     }
   }
 
   function validateField(name: string, value: string): string {
     switch (name) {
       case 'patientId':
-        if (!value) return 'Paciente é obrigatório';
+        if (!value) return t('validation.patientRequired');
         return '';
       case 'estimatedTime':
-        if (!value.trim()) return 'Tempo estimado é obrigatório';
+        if (!value.trim()) return t('validation.timeRequired');
         return '';
       case 'value':
-        if (!value) return 'Valor é obrigatório';
-        if (parseFloat(value) <= 0) return 'Valor deve ser positivo';
+        if (!value) return t('validation.valueRequired');
+        if (parseFloat(value) <= 0) return t('validation.valuePositive');
         return '';
       default:
         return '';

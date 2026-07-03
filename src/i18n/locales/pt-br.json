@@ -37,7 +37,12 @@
     "newPatient": "+ Novo Paciente",
     "patient": "Paciente",
     "sessions": "sessões",
-    "noActiveTreatments": "Nenhum tratamento em andamento"
+    "noActiveTreatments": "Nenhum tratamento em andamento",
+    "sessionsPerMonth": "Sessões por Mês",
+    "valuePerTreatment": "Valor por Tratamento",
+    "noSessions": "Nenhuma sessão registrada",
+    "noSessionsDescription": "Registre sessões para ver o gráfico de evolução.",
+    "noActiveTreatmentsDescription": "Crie tratamentos para visualizar os dados."
   },
   "patients": {
     "title": "Pacientes",
@@ -72,7 +77,8 @@
     "notFound": "Paciente não encontrado",
     "newTreatment": "Novo Tratamento",
     "historyPlaceholder": "Descreva o histórico médico do paciente...",
-    "saved": "Paciente salvo com sucesso"
+    "saved": "Paciente salvo com sucesso",
+    "painEvolution": "Evolução da Dor"
   },
   "treatments": {
     "title": "Tratamentos",
@@ -104,7 +110,8 @@
     "valueLabel": "Valor",
     "saved": "Tratamento salvo com sucesso",
     "save": "Salvar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "painEvolution": "Evolução da Dor"
   },
   "sessions": {
     "title": "Nova Sessão",
@@ -376,7 +383,35 @@
     "switchToLight": "Mudar para modo claro",
     "switchToDark": "Mudar para modo escuro",
     "skipToContent": "Pular para o conteúdo principal",
-    "close": "Fechar"
+    "close": "Fechar",
+    "retry": "Tentar novamente",
+    "somethingWentWrong": "Algo deu errado",
+    "errorLoadingData": "Erro ao carregar dados.",
+    "errorLoadingPatientData": "Erro ao carregar dados do paciente.",
+    "errorLoadingTreatmentData": "Erro ao carregar tratamento.",
+    "errorLoadingPatients": "Erro ao carregar pacientes.",
+    "errorLoadingTreatments": "Erro ao carregar tratamentos.",
+    "errorDeleting": "Erro ao excluir."
+  },
+  "validation": {
+    "nameRequired": "Nome é obrigatório",
+    "nameMinLength": "Nome deve ter pelo menos 2 caracteres",
+    "cpfRequired": "CPF é obrigatório",
+    "cpfInvalid": "CPF inválido",
+    "phoneRequired": "Telefone é obrigatório",
+    "phoneInvalid": "Telefone inválido",
+    "emailRequired": "Email é obrigatório",
+    "emailInvalid": "Email inválido",
+    "passwordRequired": "Senha é obrigatória",
+    "passwordMinLength": "Senha deve ter pelo menos {{min}} caracteres",
+    "confirmPasswordRequired": "Confirmação de senha é obrigatória",
+    "passwordMismatch": "Senhas não coincidem",
+    "patientRequired": "Paciente é obrigatório",
+    "timeRequired": "Tempo estimado é obrigatório",
+    "valueRequired": "Valor é obrigatório",
+    "valuePositive": "Valor deve ser positivo",
+    "painScaleRequired": "Escala de dor é obrigatória",
+    "painScaleRange": "Valor deve ser entre 0 e 10"
   },
   "navigation": {
     "main": "Navegação principal",

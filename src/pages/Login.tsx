@@ -24,12 +24,12 @@ export default function Login() {
   function validateField(name: string, value: string): string {
     switch (name) {
       case 'email':
-        if (!value.trim()) return 'Email é obrigatório';
-        if (!validateEmail(value)) return 'Email inválido';
+        if (!value.trim()) return t('validation.emailRequired');
+        if (!validateEmail(value)) return t('validation.emailInvalid');
         return '';
       case 'password':
-        if (!value) return 'Senha é obrigatória';
-        if (value.length < 6) return 'Senha deve ter pelo menos 6 caracteres';
+        if (!value) return t('validation.passwordRequired');
+        if (value.length < 6) return t('validation.passwordMinLength', { min: 6 });
         return '';
       default:
         return '';
