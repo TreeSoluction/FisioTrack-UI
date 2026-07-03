@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import Card from '../components/ui/Card';
 import { SkeletonCard, SkeletonText } from '../components/ui/Skeleton';
 import ErrorState from '../components/ui/ErrorState';
+import EmptyState from '../components/ui/EmptyState';
 import api from '../lib/api';
-import type { Patient, Treatment } from '../types';
 
 const Chart = lazy(() => import('../components/ui/Chart'));
 
@@ -15,10 +15,18 @@ const CHART_COLORS = {
   secondary: '#7C3AED',
 };
 
+interface DashboardData {
+  activePatients: number;
+  activeTreatments: number;
+  totalSessions: number;
+  monthlyRevenue: number;
+  sessionsChartData: Array<{ name: string; value: number }>;
+  treatmentChartData: Array<{ name: string; value: number }>;
+}
+
 export default function Dashboard() {
   const { t } = useTranslation();
-  const [pacientes, setPacientes] = useState<Patient[]>([]);
-  const [tratamentos, setTratamentos] = useState<Treatment[]>([]);
+  const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,12 +34,8 @@ export default function Dashboard() {
     try {
       setError(null);
       setLoading(true);
-      const [pacientesRes, tratamentosRes] = await Promise.all([
-        api.get('/patients'),
-        api.get('/treatments'),
-      ]);
-      setPacientes(pacientesRes.data.items);
-      setTratamentos(tratamentosRes.data.items);
+      const response = await api.get('/sessions/summary');
+      setData(response.data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao carregar dados.');
     } finally {
@@ -43,54 +47,6 @@ export default function Dashboard() {
     loadData();
   }, []);
 
-  const treatmentChartData = tratamentos.slice(0, 6).map((t) => ({
-    name: t.patient?.name?.split(' ')[0] || t.id.slice(0, 6),
-    value: Number(t.value),
-  }));
-
-  const sessionChartData = [
-    { name: 'Jan', value: 12 },
-    { name: 'Fev', value: 19 },
-    { name: 'Mar', value: 15 },
-    { name: 'Abr', value: 22 },
-    { name: 'Mai', value: 18 },
-    { name: 'Jun', value: 25 },
-  ];
-
-  const stats = [
-    {
-      label: t('dashboard.activePatients'),
-      value: pacientes.filter(p => p.status === 'ACTIVE').length,
-      icon: Users,
-      color: 'text-primary',
-      bg: 'bg-primary/10',
-    },
-    {
-      label: t('dashboard.activeTreatments'),
-      value: tratamentos.filter(t => t.status === 'IN_PROGRESS').length,
-      icon: Activity,
-      color: 'text-secondary',
-      bg: 'bg-secondary/10',
-    },
-    {
-      label: t('dashboard.totalSessions'),
-      value: tratamentos.reduce((acc, t) => acc + (t._count?.sessions || 0), 0),
-      icon: Calendar,
-      color: 'text-accent',
-      bg: 'bg-accent/10',
-    },
-    {
-      label: t('dashboard.monthlyRevenue'),
-      value: 'R$ ' + tratamentos
-        .filter(t => t.status === 'IN_PROGRESS')
-        .reduce((acc, t) => acc + Number(t.value), 0)
-        .toLocaleString('pt-BR'),
-      icon: TrendingUp,
-      color: 'text-success',
-      bg: 'bg-success/10',
-    },
-  ];
-
   if (error) {
     return (
       <div className="space-y-6">
@@ -100,7 +56,7 @@ export default function Dashboard() {
     );
   }
 
-  if (loading) {
+  if (loading || !data) {
     return (
       <div className="space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-2">
@@ -128,6 +84,37 @@ export default function Dashboard() {
       </div>
     );
   }
+
+  const stats = [
+    {
+      label: t('dashboard.activePatients'),
+      value: data.activePatients,
+      icon: Users,
+      color: 'text-primary',
+      bg: 'bg-primary/10',
+    },
+    {
+      label: t('dashboard.activeTreatments'),
+      value: data.activeTreatments,
+      icon: Activity,
+      color: 'text-secondary',
+      bg: 'bg-secondary/10',
+    },
+    {
+      label: t('dashboard.totalSessions'),
+      value: data.totalSessions,
+      icon: Calendar,
+      color: 'text-accent',
+      bg: 'bg-accent/10',
+    },
+    {
+      label: t('dashboard.monthlyRevenue'),
+      value: 'R$ ' + data.monthlyRevenue.toLocaleString('pt-BR'),
+      icon: TrendingUp,
+      color: 'text-success',
+      bg: 'bg-success/10',
+    },
+  ];
 
   return (
     <div className="space-y-6">
@@ -159,98 +146,33 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
-          <h2 className="text-lg font-semibold text-text dark:text-slate-100 mb-4">Sessões por Mês</h2>
+          <h2 className="text-lg font-semibold text-text dark:text-slate-100 mb-4">{t('dashboard.sessionsPerMonth')}</h2>
           <Suspense fallback={<SkeletonCard />}>
-            <Chart data={sessionChartData} type="line" color={CHART_COLORS.primary} />
-          </Suspense>
-        </Card>
-
-        <Card>
-          <h2 className="text-lg font-semibold text-text dark:text-slate-100 mb-4">Valor por Tratamento</h2>
-          <Suspense fallback={<SkeletonCard />}>
-            {treatmentChartData.length > 0 ? (
-              <Chart data={treatmentChartData} type="bar" color={CHART_COLORS.secondary} />
+            {data.sessionsChartData.length > 0 ? (
+              <Chart data={data.sessionsChartData} type="line" color={CHART_COLORS.primary} />
             ) : (
-              <Chart
-                data={[
-                  { name: 'Paciente 1', value: 450 },
-                  { name: 'Paciente 2', value: 320 },
-                  { name: 'Paciente 3', value: 580 },
-                  { name: 'Paciente 4', value: 270 },
-                  { name: 'Paciente 5', value: 640 },
-                ]}
-                type="bar"
-                color={CHART_COLORS.secondary}
+              <EmptyState
+                icon={Calendar}
+                title={t('dashboard.noSessions')}
+                description={t('dashboard.noSessionsDescription')}
               />
             )}
           </Suspense>
         </Card>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <h2 className="text-lg font-semibold text-text dark:text-slate-100 mb-4">{t('dashboard.recentPatients')}</h2>
-          <div className="space-y-3">
-            {pacientes.slice(0, 5).map((paciente) => (
-              <Link
-                key={paciente.id}
-                to={`/patients/${paciente.id}`}
-                className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
-              >
-                <div>
-                  <p className="font-medium text-text dark:text-slate-100">{paciente.name}</p>
-                  <p className="text-sm text-text-muted dark:text-text-muted-dark">{paciente.cpf}</p>
-                </div>
-                <span
-                  className={`px-2 py-1 text-xs font-medium rounded-full ${
-                    paciente.status === 'ACTIVE'
-                      ? 'bg-success/10 text-success'
-                      : 'bg-slate-100 dark:bg-slate-700 text-text-muted dark:text-text-muted-dark'
-                  }`}
-                >
-                  {paciente.status === 'ACTIVE' ? t('patients.active') : t('patients.inactive')}
-                </span>
-              </Link>
-            ))}
-            {pacientes.length === 0 && (
-              <p className="text-center text-text-muted dark:text-text-muted-dark py-4">
-                {t('dashboard.noData')}
-              </p>
-            )}
-          </div>
-        </Card>
 
         <Card>
-          <h2 className="text-lg font-semibold text-text dark:text-slate-100 mb-4">{t('dashboard.activeTreatmentsTitle')}</h2>
-          <div className="space-y-3">
-            {tratamentos
-              .filter((t) => t.status === 'IN_PROGRESS')
-              .slice(0, 5)
-              .map((tratamento) => (
-                <Link
-                  key={tratamento.id}
-                  to={`/treatments/${tratamento.id}`}
-                  className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
-                >
-                  <div>
-                    <p className="font-medium text-text dark:text-slate-100">
-                      {tratamento.patient?.name || t('dashboard.patient')}
-                    </p>
-                    <p className="text-sm text-text-muted dark:text-text-muted-dark">
-                      {tratamento.estimatedTime} • {tratamento._count?.sessions || 0} {t('dashboard.sessions')}
-                    </p>
-                  </div>
-                  <span className="text-sm font-medium text-primary">
-                    R$ {Number(tratamento.value).toLocaleString('pt-BR')}
-                  </span>
-                </Link>
-              ))}
-            {tratamentos.filter((t) => t.status === 'IN_PROGRESS').length === 0 && (
-              <p className="text-center text-text-muted dark:text-text-muted-dark py-4">
-                {t('dashboard.noActiveTreatments')}
-              </p>
+          <h2 className="text-lg font-semibold text-text dark:text-slate-100 mb-4">{t('dashboard.valuePerTreatment')}</h2>
+          <Suspense fallback={<SkeletonCard />}>
+            {data.treatmentChartData.length > 0 ? (
+              <Chart data={data.treatmentChartData} type="bar" color={CHART_COLORS.secondary} />
+            ) : (
+              <EmptyState
+                icon={Activity}
+                title={t('dashboard.noActiveTreatments')}
+                description={t('dashboard.noActiveTreatmentsDescription')}
+              />
             )}
-          </div>
+          </Suspense>
         </Card>
       </div>
     </div>
