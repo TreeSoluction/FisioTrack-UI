@@ -118,15 +118,19 @@ export default function TratamentoForm() {
     setLoading(true);
 
     try {
-      const data = {
-        ...formData,
+      const payload = {
+        patientId: formData.patientId,
+        estimatedTime: formData.estimatedTime,
+        exercises: formData.exercises,
         value: parseFloat(formData.value),
+        ...(formData.startDate && { startDate: formData.startDate }),
+        ...(formData.endDate && { endDate: formData.endDate }),
       };
 
       if (isEditing) {
-        await api.put(`/treatments/${id}`, data);
+        await api.put(`/treatments/${id}`, payload);
       } else {
-        await api.post('/treatments', data);
+        await api.post('/treatments', payload);
       }
       toast.success(t('treatments.saved'));
       navigate('/treatments');
