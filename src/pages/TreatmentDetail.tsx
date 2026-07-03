@@ -32,7 +32,7 @@ export default function TratamentoDetail() {
       setTratamento(response.data);
       setSessoes(response.data.sessions || []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao carregar tratamento.');
+      setError(err instanceof Error ? err.message : t('common.errorLoadingTreatmentData'));
     } finally {
       setLoading(false);
     }
@@ -264,7 +264,7 @@ export default function TratamentoDetail() {
 
       {sessoes.length > 0 && (
         <Card>
-          <h2 className="text-lg font-semibold text-text dark:text-slate-100 mb-4">Evolução da Dor</h2>
+          <h2 className="text-lg font-semibold text-text dark:text-slate-100 mb-4">{t('treatments.painEvolution')}</h2>
           <div className="h-64 flex items-end gap-2">
             {sessoes.map((sessao) => (
               <div

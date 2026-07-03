@@ -37,7 +37,12 @@
     "newPatient": "+ New Patient",
     "patient": "Patient",
     "sessions": "sessions",
-    "noActiveTreatments": "No active treatments"
+    "noActiveTreatments": "No active treatments",
+    "sessionsPerMonth": "Sessions per Month",
+    "valuePerTreatment": "Value per Treatment",
+    "noSessions": "No sessions registered",
+    "noSessionsDescription": "Register sessions to see the evolution chart.",
+    "noActiveTreatmentsDescription": "Create treatments to view the data."
   },
   "patients": {
     "title": "Patients",
@@ -72,7 +77,8 @@
     "notFound": "Patient not found",
     "newTreatment": "New Treatment",
     "historyPlaceholder": "Describe the patient's medical history...",
-    "saved": "Patient saved successfully"
+    "saved": "Patient saved successfully",
+    "painEvolution": "Pain Evolution"
   },
   "treatments": {
     "title": "Treatments",
@@ -104,7 +110,8 @@
     "valueLabel": "Value",
     "saved": "Treatment saved successfully",
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "painEvolution": "Pain Evolution"
   },
   "sessions": {
     "title": "New Session",
@@ -376,7 +383,35 @@
     "switchToLight": "Switch to light mode",
     "switchToDark": "Switch to dark mode",
     "skipToContent": "Skip to main content",
-    "close": "Close"
+    "close": "Close",
+    "retry": "Try again",
+    "somethingWentWrong": "Something went wrong",
+    "errorLoadingData": "Error loading data.",
+    "errorLoadingPatientData": "Error loading patient data.",
+    "errorLoadingTreatmentData": "Error loading treatment.",
+    "errorLoadingPatients": "Error loading patients.",
+    "errorLoadingTreatments": "Error loading treatments.",
+    "errorDeleting": "Error deleting."
+  },
+  "validation": {
+    "nameRequired": "Name is required",
+    "nameMinLength": "Name must be at least 2 characters",
+    "cpfRequired": "CPF is required",
+    "cpfInvalid": "Invalid CPF",
+    "phoneRequired": "Phone is required",
+    "phoneInvalid": "Invalid phone",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Invalid email",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least {{min}} characters",
+    "confirmPasswordRequired": "Password confirmation is required",
+    "passwordMismatch": "Passwords do not match",
+    "patientRequired": "Patient is required",
+    "timeRequired": "Estimated time is required",
+    "valueRequired": "Value is required",
+    "valuePositive": "Value must be positive",
+    "painScaleRequired": "Pain scale is required",
+    "painScaleRange": "Value must be between 0 and 10"
   },
   "navigation": {
     "main": "Main navigation",

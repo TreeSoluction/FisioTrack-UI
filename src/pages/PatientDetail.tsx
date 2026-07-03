@@ -37,7 +37,7 @@ export default function PacienteDetail() {
       );
       setDashboardData(dashboardRes.data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao carregar dados do paciente.');
+      setError(err instanceof Error ? err.message : t('common.errorLoadingPatientData'));
     } finally {
       setLoading(false);
     }
@@ -236,7 +236,7 @@ export default function PacienteDetail() {
 
       {dashboardData.length > 0 && (
         <Card>
-          <h2 className="text-lg font-semibold text-text dark:text-slate-100 mb-4">Evolução da Dor</h2>
+          <h2 className="text-lg font-semibold text-text dark:text-slate-100 mb-4">{t('patients.painEvolution')}</h2>
           <div className="h-64 flex items-end gap-2">
             {dashboardData.map((data, index) => (
               <div

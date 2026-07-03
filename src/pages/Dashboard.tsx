@@ -37,7 +37,7 @@ export default function Dashboard() {
       const response = await api.get('/sessions/summary');
       setData(response.data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao carregar dados.');
+      setError(err instanceof Error ? err.message : t('common.errorLoadingData'));
     } finally {
       setLoading(false);
     }

@@ -29,9 +29,9 @@ export default function SessaoForm() {
   function validateField(name: string, value: string): string {
     switch (name) {
       case 'painScale':
-        if (!value) return 'Escala de dor é obrigatória';
+        if (!value) return t('validation.painScaleRequired');
         const pain = parseInt(value);
-        if (isNaN(pain) || pain < 0 || pain > 10) return 'Valor deve ser entre 0 e 10';
+        if (isNaN(pain) || pain < 0 || pain > 10) return t('validation.painScaleRange');
         return '';
       default:
         return '';
@@ -78,7 +78,7 @@ export default function SessaoForm() {
       toast.success(t('sessions.saved'));
       navigate(`/treatments/${tratamentoId}`);
     } catch (error: any) {
-      toast.error(t('common.error'));
+      toast.error(t('common.errorLoadingData'));
     } finally {
       setLoading(false);
     }

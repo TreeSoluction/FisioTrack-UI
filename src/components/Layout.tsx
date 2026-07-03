@@ -102,7 +102,7 @@ export default function Layout({ children }: LayoutProps) {
               <img src="/images/logo-icon.svg" alt="" className="w-10 h-10" aria-hidden="true" />
               <div>
                 <span className="text-xl font-bold text-primary">FisioTrack</span>
-                <p className="text-xs text-text-muted dark:text-text-muted-dark">Gestão para Fisioterapia</p>
+                <p className="text-xs text-text-muted dark:text-text-muted-dark">{t('auth.subtitle')}</p>
               </div>
             </Link>
             <button

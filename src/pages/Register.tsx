@@ -30,20 +30,20 @@ export default function Register() {
   function validateField(name: string, value: string): string {
     switch (name) {
       case 'name':
-        if (!value.trim()) return 'Nome é obrigatório';
-        if (value.trim().length < 2) return 'Nome deve ter pelo menos 2 caracteres';
+        if (!value.trim()) return t('validation.nameRequired');
+        if (value.trim().length < 2) return t('validation.nameMinLength');
         return '';
       case 'email':
-        if (!value.trim()) return 'Email é obrigatório';
-        if (!validateEmail(value)) return 'Email inválido';
+        if (!value.trim()) return t('validation.emailRequired');
+        if (!validateEmail(value)) return t('validation.emailInvalid');
         return '';
       case 'password':
-        if (!value) return 'Senha é obrigatória';
-        if (value.length < 8) return 'Senha deve ter pelo menos 8 caracteres';
+        if (!value) return t('validation.passwordRequired');
+        if (value.length < 8) return t('validation.passwordMinLength', { min: 8 });
         return '';
       case 'confirmPassword':
-        if (!value) return 'Confirmação de senha é obrigatória';
-        if (value !== formData.password) return 'Senhas não coincidem';
+        if (!value) return t('validation.confirmPasswordRequired');
+        if (value !== formData.password) return t('validation.passwordMismatch');
         return '';
       default:
         return '';
