@@ -168,7 +168,7 @@ export default function Layout({ children }: LayoutProps) {
       </aside>
 
       {/* Main content */}
-      <main id="main-content" className="pt-14 px-4 pb-8 md:ml-64 md:px-8 md:pt-0 md:pb-8">
+      <main id="main-content" className="pt-14 px-4 pb-8 md:ml-64 md:px-8 md:pt-6 md:pb-8">
         {children || <Outlet />}
       </main>
 
