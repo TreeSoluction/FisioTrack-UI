@@ -38,12 +38,6 @@ export default function SessaoForm() {
     }
   }
 
-  function handleBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    const { name, value } = e.target;
-    setTouched({ ...touched, [name]: true });
-    setErrors({ ...errors, [name]: validateField(name, value) });
-  }
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });

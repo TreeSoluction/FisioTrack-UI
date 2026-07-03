@@ -1,3 +1,5 @@
+/// <reference types="@testing-library/jest-dom/vitest" />
+import { vi, beforeEach } from 'vitest';
 import '@testing-library/jest-dom';
 
 // Mock localStorage

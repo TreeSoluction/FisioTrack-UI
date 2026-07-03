@@ -68,7 +68,7 @@ describe('useTheme', () => {
 
   it('should remove dark class from document when light', () => {
     document.documentElement.classList.add('dark');
-    const { result } = renderHook(() => useTheme());
+    renderHook(() => useTheme());
 
     expect(document.documentElement.classList.contains('dark')).toBe(false);
   });
