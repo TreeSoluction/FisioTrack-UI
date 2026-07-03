@@ -118,7 +118,7 @@ export default function Pricing() {
             className={`px-5 py-2 rounded-lg font-medium transition-colors ${
               interval === 'month'
                 ? 'bg-primary text-white'
-                : 'bg-slate-100 dark:bg-slate-700 text-text dark:text-slate-200'
+                : 'bg-slate-100 dark:bg-slate-700 text-text dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'
             }`}
           >
             {t('pricing.monthly')}
@@ -128,7 +128,7 @@ export default function Pricing() {
             className={`px-5 py-2 rounded-lg font-medium transition-colors relative ${
               interval === 'year'
                 ? 'bg-primary text-white'
-                : 'bg-slate-100 dark:bg-slate-700 text-text dark:text-slate-200'
+                : 'bg-slate-100 dark:bg-slate-700 text-text dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'
             }`}
           >
             {t('pricing.yearly')}
@@ -143,7 +143,7 @@ export default function Pricing() {
             className={`px-5 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
               interval === 'onetime'
                 ? 'bg-accent text-white'
-                : 'bg-slate-100 dark:bg-slate-700 text-text dark:text-slate-200'
+                : 'bg-slate-100 dark:bg-slate-700 text-text dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600'
             }`}
           >
             <Zap className="w-4 h-4" />
