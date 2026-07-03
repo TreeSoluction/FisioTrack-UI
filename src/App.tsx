@@ -39,6 +39,14 @@ function HomePage() {
   return <PublicLayout><Landing /></PublicLayout>;
 }
 
+function PricingPage() {
+  const token = localStorage.getItem('token');
+  if (token) {
+    return <Layout><Pricing /></Layout>;
+  }
+  return <PublicLayout><Pricing /></PublicLayout>;
+}
+
 function PageLoader() {
   return (
     <div className="flex items-center justify-center h-64">
@@ -60,9 +68,10 @@ export default function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-use" element={<TermsOfUse />} />
             <Route path="/consent-terms" element={<ConsentTerms />} />
-            <Route path="/pricing" element={<Pricing />} />
             <Route path="/enterprise-request" element={<PrivateRoute><EnterpriseRequest /></PrivateRoute>} />
           </Route>
+
+          <Route path="/pricing" element={<PricingPage />} />
 
           <Route
             element={
