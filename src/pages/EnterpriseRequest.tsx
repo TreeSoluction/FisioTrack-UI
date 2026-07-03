@@ -6,6 +6,7 @@ import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import api from '../lib/api';
+import { maskCNPJ, maskPhone } from '../lib/masks';
 
 export default function EnterpriseRequest() {
   const navigate = useNavigate();
@@ -38,7 +39,11 @@ export default function EnterpriseRequest() {
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    let masked = value;
+    if (name === 'cnpj') masked = maskCNPJ(value);
+    if (name === 'phone') masked = maskPhone(value);
+    setFormData({ ...formData, [name]: masked });
   }
 
   async function handleSubmit(e: React.FormEvent) {

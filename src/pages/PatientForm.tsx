@@ -8,6 +8,7 @@ import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import api from '../lib/api';
 import { validateCPF, validateEmail, validatePhone } from '../lib/validations';
+import { maskCPF, maskPhone } from '../lib/masks';
 
 export default function PacienteForm() {
   const navigate = useNavigate();
@@ -75,9 +76,12 @@ export default function PacienteForm() {
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    let masked = value;
+    if (name === 'cpf') masked = maskCPF(value);
+    if (name === 'phone') masked = maskPhone(value);
+    setFormData({ ...formData, [name]: masked });
     if (touched[name]) {
-      setErrors({ ...errors, [name]: validateField(name, value) });
+      setErrors({ ...errors, [name]: validateField(name, masked) });
     }
   }
 
