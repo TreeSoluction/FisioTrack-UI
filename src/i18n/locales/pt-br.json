@@ -337,7 +337,16 @@
         "title": "5. Contato",
         "content": "Para dúvidas sobre este consentimento ou para exercer seus direitos pela LGPD, entre em contato conosco em contato@fisiotrack.com."
       }
-    }
+    },
+    "yourRights": "Seus Direitos (LGPD)",
+    "exportData": "Exportar Meus Dados",
+    "exportDescription": "Seus dados serão exportados em formato JSON.",
+    "exportSuccess": "Dados exportados com sucesso.",
+    "revokeConsent": "Revogar Consentimento",
+    "revokeDescription": "Isso revogará seu consentimento para todos os documentos. Você precisará consentir novamente para usar o sistema.",
+    "contactDPO": "Contatar DPO",
+    "dataSecurity": "Segurança dos Dados",
+    "dataSecurityInfo": "Seus dados sensíveis (CPF, telefone, email, endereço, histórico médico) são criptografados com AES-256-GCM. Apenas você tem acesso aos seus dados."
   },
   "consent": {
     "title": "Termos e Condições",
@@ -486,16 +495,5 @@
     "payOnetime": "Pagar Agora",
     "onetimePaymentMethods": "PIX, Boleto ou Cartão de Crédito",
     "pagarmeNotice": "Pagamento processado com segurança pela Pagar.me. PIX, Boleto e Cartão."
-  },
-  "lgpd": {
-    "yourRights": "Seus Direitos (LGPD)",
-    "exportData": "Exportar Meus Dados",
-    "exportDescription": "Seus dados serão exportados em formato JSON.",
-    "exportSuccess": "Dados exportados com sucesso.",
-    "revokeConsent": "Revogar Consentimento",
-    "revokeDescription": "Isso revogará seu consentimento para todos os documentos. Você precisará consentir novamente para usar o sistema.",
-    "contactDPO": "Contatar DPO",
-    "dataSecurity": "Segurança dos Dados",
-    "dataSecurityInfo": "Seus dados sensíveis (CPF, telefone, email, endereço, histórico médico) são criptografados com AES-256-GCM. Apenas você tem acesso aos seus dados."
   }
 }

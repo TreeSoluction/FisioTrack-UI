@@ -337,7 +337,16 @@
         "title": "5. Contact",
         "content": "For questions about this consent or to exercise your rights under the LGPD, contact us at contato@fisiotrack.com."
       }
-    }
+    },
+    "yourRights": "Your Rights (LGPD)",
+    "exportData": "Export My Data",
+    "exportDescription": "Your data will be exported in JSON format.",
+    "exportSuccess": "Data exported successfully.",
+    "revokeConsent": "Revoke Consent",
+    "revokeDescription": "This will revoke your consent for all documents. You will need to consent again to use the system.",
+    "contactDPO": "Contact DPO",
+    "dataSecurity": "Data Security",
+    "dataSecurityInfo": "Your sensitive data (CPF, phone, email, address, medical history) is encrypted with AES-256-GCM. Only you have access to your data."
   },
   "consent": {
     "title": "Terms and Conditions",
@@ -486,16 +495,5 @@
     "payOnetime": "Pay Now",
     "onetimePaymentMethods": "PIX, Boleto or Credit Card",
     "pagarmeNotice": "Payment processed securely by Pagar.me. PIX, Boleto and Card."
-  },
-  "lgpd": {
-    "yourRights": "Your Rights (LGPD)",
-    "exportData": "Export My Data",
-    "exportDescription": "Your data will be exported in JSON format.",
-    "exportSuccess": "Data exported successfully.",
-    "revokeConsent": "Revoke Consent",
-    "revokeDescription": "This will revoke your consent for all documents. You will need to consent again to use the system.",
-    "contactDPO": "Contact DPO",
-    "dataSecurity": "Data Security",
-    "dataSecurityInfo": "Your sensitive data (CPF, phone, email, address, medical history) is encrypted with AES-256-GCM. Only you have access to your data."
   }
 }
