@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { CreditCard, ExternalLink, AlertTriangle, CheckCircle, Download, Shield, XCircle, Mail, Trash2 } from 'lucide-react';
+import { CreditCard, ExternalLink, AlertTriangle, CheckCircle, Download, Shield, XCircle, Mail, Trash2, Ruler } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import ConfirmDialog from '../components/ui/ConfirmDialog';
@@ -358,6 +358,23 @@ export default function Settings() {
               </>
             )}
           </div>
+        </Card>
+
+        {/* Custom Metrics */}
+        <Card className="mb-6">
+          <Link
+            to="/metric-definitions"
+            className="flex items-center justify-between p-4 rounded-lg border border-border dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <Ruler className="w-5 h-5 text-primary" />
+              <div className="text-left">
+                <p className="font-medium text-text dark:text-slate-100">{t('metrics.title')}</p>
+                <p className="text-sm text-text-muted dark:text-text-muted-dark">{t('metrics.subtitle')}</p>
+              </div>
+            </div>
+            <ExternalLink className="w-5 h-5 text-text-muted dark:text-text-muted-dark" />
+          </Link>
         </Card>
 
         {/* LGPD Data Rights */}

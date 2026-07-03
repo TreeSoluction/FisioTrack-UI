@@ -45,3 +45,23 @@ export interface DashboardData {
   painScale: number;
   measurements?: Record<string, number>;
 }
+
+export interface MetricDefinition {
+  id: string;
+  name: string;
+  type: 'NUMBER' | 'TEXT';
+  unit?: string;
+  min?: number;
+  max?: number;
+}
+
+export interface SessionWithTreatment extends Session {
+  treatment: { id: string; estimatedTime: string };
+  notes?: string;
+}
+
+export interface PatientHistory {
+  patient: Patient;
+  sessions: SessionWithTreatment[];
+  metricDefinitions: MetricDefinition[];
+}

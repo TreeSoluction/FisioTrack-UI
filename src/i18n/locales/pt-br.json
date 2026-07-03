@@ -111,7 +111,8 @@
     "saved": "Tratamento salvo com sucesso",
     "save": "Salvar",
     "cancel": "Cancelar",
-    "painEvolution": "Evolução da Dor"
+    "painEvolution": "Evolução da Dor",
+    "confirmDelete": "Tem certeza que deseja excluir este tratamento?"
   },
   "sessions": {
     "title": "Nova Sessão",
@@ -190,6 +191,7 @@
       ]
     },
     "pricing": {
+      "label": "Preços",
       "title": "Planos e Preços",
       "subtitle": "Escolha o plano ideal para o seu tamanho",
       "free": {
@@ -239,13 +241,6 @@
       "button": "Criar Conta Gratuitamente",
       "note": "Não precisa de cartão de crédito. Cancele quando quiser."
     }
-  },
-  "footer": {
-    "description": "Sistema completo de gestão para clínicas de fisioterapia. Gerencie pacientes, tratamentos e sessões com facilidade.",
-    "navigation": "Navegação",
-    "legal": "Legal",
-    "contact": "Contato",
-    "copyright": "Todos os direitos reservados."
   },
   "lgpd": {
     "privacyPolicy": {
@@ -355,7 +350,8 @@
     "privacyPolicyCheck": "Li e aceito a",
     "termsOfUseCheck": "Li e aceito os",
     "consentTermsCheck": "Li e aceito o",
-    "required": "Você deve aceitar todos os termos para continuar"
+    "required": "Você deve aceitar todos os termos para continuar",
+    "revoked": "Consentimento revogado com sucesso"
   },
   "enterprise": {
     "title": "Solicitar Plano Enterprise",
@@ -394,7 +390,9 @@
     "skipToContent": "Pular para o conteúdo principal",
     "close": "Fechar",
     "retry": "Tentar novamente",
-    "somethingWentWrong": "Algo deu errado",
+    "view": "Ver",
+    "edit": "Editar",
+    "delete": "Excluir",
     "errorLoadingData": "Erro ao carregar dados.",
     "errorLoadingPatientData": "Erro ao carregar dados do paciente.",
     "errorLoadingTreatmentData": "Erro ao carregar tratamento.",
@@ -421,6 +419,42 @@
     "valuePositive": "Valor deve ser positivo",
     "painScaleRequired": "Escala de dor é obrigatória",
     "painScaleRange": "Valor deve ser entre 0 e 10"
+  },
+  "metrics": {
+    "title": "Métricas Personalizadas",
+    "subtitle": "Defina as métricas que deseja acompanhar nos tratamentos",
+    "newMetric": "Nova Métrica",
+    "name": "Nome",
+    "namePlaceholder": "Ex: Amplitude de movimento",
+    "type": "Tipo",
+    "typeNumber": "Número",
+    "typeText": "Texto",
+    "unit": "Unidade",
+    "unitPlaceholder": "Ex: cm, °, kg",
+    "min": "Mínimo",
+    "max": "Máximo",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "confirmDelete": "Tem certeza que deseja excluir esta métrica?",
+    "noMetrics": "Nenhuma métrica cadastrada",
+    "noMetricsDescription": "Crie métricas para personalizar o acompanhamento dos seus pacientes.",
+    "saved": "Métrica salva com sucesso",
+    "deleted": "Métrica excluída com sucesso",
+    "editing": "Editar Métrica",
+    "creating": "Nova Métrica"
+  },
+  "history": {
+    "title": "Histórico",
+    "sessionDate": "Data da Sessão",
+    "treatment": "Tratamento",
+    "pain": "Dor",
+    "weight": "Peso",
+    "notes": "Observações",
+    "noHistory": "Nenhum registro encontrado",
+    "exportCsv": "Exportar CSV",
+    "exportPdf": "Exportar PDF",
+    "exporting": "Exportando..."
   },
   "navigation": {
     "main": "Navegação principal",

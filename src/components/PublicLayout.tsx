@@ -53,7 +53,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
                 className="md:hidden p-2 -mr-2 text-text-muted dark:text-text-muted-dark hover:text-text dark:hover:text-slate-100"
-                aria-label={t('navigation.menu')}
+                aria-label={menuOpen ? t('navigation.closeMenu') : t('navigation.menu')}
               >
                 {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
