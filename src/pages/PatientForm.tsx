@@ -98,10 +98,13 @@ export default function PacienteForm() {
     setLoading(true);
 
     try {
+      const payload = Object.fromEntries(
+        Object.entries(formData).filter(([_, v]) => v !== '')
+      );
       if (isEditing) {
-        await api.put(`/patients/${id}`, formData);
+        await api.put(`/patients/${id}`, payload);
       } else {
-        await api.post('/patients', formData);
+        await api.post('/patients', payload);
       }
       toast.success(t('patients.saved'));
       navigate('/patients');
