@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Plus, Eye, Edit, Trash2, Activity } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import ConfirmDialog from '../components/ui/ConfirmDialog';
@@ -13,6 +14,7 @@ import type { Treatment } from '../types';
 
 export default function Tratamentos() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [tratamentos, setTratamentos] = useState<Treatment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -41,6 +43,7 @@ export default function Tratamentos() {
       setTratamentos(tratamentos.filter((t) => t.id !== id));
     } catch (error) {
       console.error('Error deleting treatment:', error);
+      toast.error(t('common.errorDeleting'));
     }
   }
 
@@ -92,7 +95,7 @@ export default function Tratamentos() {
             title={t('treatments.noData')}
             description={t('treatments.noData')}
             actionLabel={t('treatments.newTreatment')}
-            onAction={() => window.location.href = '/treatments/new'}
+            onAction={() => navigate('/treatments/new')}
           />
         ) : (
           <>

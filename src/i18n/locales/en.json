@@ -111,7 +111,8 @@
     "saved": "Treatment saved successfully",
     "save": "Save",
     "cancel": "Cancel",
-    "painEvolution": "Pain Evolution"
+    "painEvolution": "Pain Evolution",
+    "confirmDelete": "Are you sure you want to delete this treatment?"
   },
   "sessions": {
     "title": "New Session",
@@ -190,6 +191,7 @@
       ]
     },
     "pricing": {
+      "label": "Pricing",
       "title": "Plans and Pricing",
       "subtitle": "Choose the ideal plan for your size",
       "free": {
@@ -239,13 +241,6 @@
       "button": "Create Free Account",
       "note": "No credit card required. Cancel anytime."
     }
-  },
-  "footer": {
-    "description": "Complete management system for physiotherapy practices. Manage patients, treatments and sessions with ease.",
-    "navigation": "Navigation",
-    "legal": "Legal",
-    "contact": "Contact",
-    "copyright": "All rights reserved."
   },
   "lgpd": {
     "privacyPolicy": {
@@ -355,7 +350,8 @@
     "privacyPolicyCheck": "I have read and accept the",
     "termsOfUseCheck": "I have read and accept the",
     "consentTermsCheck": "I have read and accept the",
-    "required": "You must accept all terms to continue"
+    "required": "You must accept all terms to continue",
+    "revoked": "Consent revoked successfully"
   },
   "enterprise": {
     "title": "Request Enterprise Plan",
@@ -394,7 +390,9 @@
     "skipToContent": "Skip to main content",
     "close": "Close",
     "retry": "Try again",
-    "somethingWentWrong": "Something went wrong",
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
     "errorLoadingData": "Error loading data.",
     "errorLoadingPatientData": "Error loading patient data.",
     "errorLoadingTreatmentData": "Error loading treatment.",
