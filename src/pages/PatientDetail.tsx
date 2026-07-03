@@ -33,7 +33,7 @@ export default function PacienteDetail() {
       ]);
       setPaciente(pacienteRes.data);
       setTratamentos(
-        (tratamentosRes.data.data ?? tratamentosRes.data).filter((t: Treatment) => t.patient?.id === id)
+        tratamentosRes.data.items.filter((t: Treatment) => t.patient?.id === id)
       );
       setDashboardData(dashboardRes.data);
     } catch (err) {

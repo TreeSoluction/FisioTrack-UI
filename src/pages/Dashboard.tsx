@@ -30,8 +30,8 @@ export default function Dashboard() {
         api.get('/patients'),
         api.get('/treatments'),
       ]);
-      setPacientes(pacientesRes.data.data ?? pacientesRes.data);
-      setTratamentos(tratamentosRes.data.data ?? tratamentosRes.data);
+      setPacientes(pacientesRes.data.items);
+      setTratamentos(tratamentosRes.data.items);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao carregar dados.');
     } finally {

@@ -45,7 +45,7 @@ export default function TratamentoForm() {
   async function loadPacientes() {
     try {
       const response = await api.get('/patients');
-      setPacientes(response.data.data ?? response.data);
+      setPacientes(response.data.items);
     } catch (error) {
       console.error('Error loading patients:', error);
       toast.error(t('common.error'));

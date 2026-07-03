@@ -27,7 +27,7 @@ export default function Tratamentos() {
       setError(null);
       setLoading(true);
       const response = await api.get('/treatments');
-      setTratamentos(response.data.data ?? response.data);
+      setTratamentos(response.data.items);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao carregar tratamentos.');
     } finally {

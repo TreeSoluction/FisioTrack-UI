@@ -29,7 +29,7 @@ export default function Pacientes() {
       setError(null);
       setLoading(true);
       const response = await api.get('/patients');
-      setPacientes(response.data.data ?? response.data);
+      setPacientes(response.data.items);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao carregar pacientes.');
     } finally {
